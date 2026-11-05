@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ============================ SEO BÁSICO ============================ -->
+    <title>Alquiler y venta de propiedades en Panamá | AlquilaPTY</title>
+    <meta name="description" content="Alquila o compra apartamentos, casas y oficinas en Ciudad de Panamá. Compara propiedades, calcula tu hipoteca y ROI y encuentra roommates en AlquilaPTY.">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <link rel="canonical" href="https://gianmontilla1607.github.io/Alquiler/">
+    <meta name="theme-color" content="#1E3A5F">
+    <meta name="application-name" content="AlquilaPTY">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+    <!-- ===================== REDES SOCIALES (Open Graph / X) ===================== -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="AlquilaPTY">
+    <meta property="og:locale" content="es_PA">
+    <meta property="og:title" content="Alquiler y venta de propiedades en Panamá | AlquilaPTY">
+    <meta property="og:description" content="Apartamentos, casas y oficinas en Ciudad de Panamá. Compara, calcula tu hipoteca y encuentra roommates.">
+    <meta property="og:url" content="https://gianmontilla1607.github.io/Alquiler/">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&amp;fit=crop&amp;w=1200&amp;h=630&amp;q=80">
+    <meta property="og:image:alt" content="Edificio de apartamentos moderno en Ciudad de Panamá">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Alquiler y venta de propiedades en Panamá | AlquilaPTY">
+    <meta name="twitter:description" content="Apartamentos, casas y oficinas en Ciudad de Panamá. Compara, calcula tu hipoteca y encuentra roommates.">
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&amp;fit=crop&amp;w=1200&amp;h=630&amp;q=80">
+
+    <!-- ============ COMUNICACIÓN CON EL BACKEND ============
+         Ruta base de la API. "/api" = mismo servidor que sirve esta página.
+         Si el backend está en otro dominio, pon aquí su URL completa,
+         p. ej. https://api.alquilapty.com/api (y configura CORS_ORIGIN en el backend). -->
+    <meta name="api-base" content="/api">
+
+    <!-- ============================ RENDIMIENTO ============================ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+
+    <!-- CSS crítico: Tailwind compilado (npm run build:css) + estilos propios -->
+    <link rel="stylesheet" href="css/tailwind.css">
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Fuentes: solo los pesos usados; "display=swap" evita texto invisible mientras cargan -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Poppins:wght@600;700;800&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <!-- Iconos: no bloquean el primer pintado -->
+    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Poppins:wght@600;700;800&amp;display=swap">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </noscript>
+
+    <!-- Chart.js (versión fija, con defer: no bloquea el renderizado) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <!-- ============================ DATOS ESTRUCTURADOS (JSON-LD) ============================ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": ["Organization", "RealEstateAgent"],
+          "@id": "https://gianmontilla1607.github.io/Alquiler/#organization",
+          "name": "AlquilaPTY",
+          "url": "https://gianmontilla1607.github.io/Alquiler/",
+          "description": "Plataforma inmobiliaria de Panamá para alquilar, comprar y analizar propiedades.",
+          "areaServed": { "@type": "City", "name": "Ciudad de Panamá" }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://gianmontilla1607.github.io/Alquiler/#website",
+          "url": "https://gianmontilla1607.github.io/Alquiler/",
+          "name": "AlquilaPTY",
+          "inLanguage": "es",
+          "publisher": { "@id": "https://gianmontilla1607.github.io/Alquiler/#organization" }
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://gianmontilla1607.github.io/Alquiler/#webpage",
+          "url": "https://gianmontilla1607.github.io/Alquiler/",
+          "name": "Alquiler y venta de propiedades en Panamá | AlquilaPTY",
+          "isPartOf": { "@id": "https://gianmontilla1607.github.io/Alquiler/#website" },
+          "about": { "@id": "https://gianmontilla1607.github.io/Alquiler/#organization" },
+          "inLanguage": "es"
+        }
+      ]
+    }
+    </script>
+</head>
+<body data-plan="free" class="antialiased">
+
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+    <noscript><p style="padding:1rem;background:#fef3c7;text-align:center">AlquilaPTY necesita JavaScript para mostrar propiedades y herramientas.</p></noscript>
+
+    <!-- SIMULADOR DE PLANES Y ESTADO DE REGISTRO (WIDGET FLOTANTE) -->
+    <div class="fixed bottom-4 right-4 z-50 bg-white/95 backdrop-blur rounded-2xl shadow-2xl border-2 border-primary p-3.5 w-72 transition-all hover:scale-102">
+        <div class="flex items-center justify-between border-b pb-2 mb-2">
+            <p class="font-heading font-bold text-primary text-xs flex items-center gap-1.5">
+                <i class="fas fa-sliders-h text-secondary"></i> Simulador de Suscripción
+            </p>
+            <span id="current-plan-badge" class="bg-gray-100 text-gray-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Plan Free</span>
+        </div>
+        <p class="text-[10px] text-gray-500 mb-2">Cambia de plan para probar funcionalidades exclusivas y comportamiento publicitario.</p>
+        <div class="grid grid-cols-2 gap-1.5">
+            <button onclick="App.changePlan('visitor')" id="btn-plan-visitor" class="py-1.5 px-2 rounded-xl text-[11px] font-semibold transition-all bg-gray-100 text-gray-700 hover:bg-gray-200 text-center">
+                👁️ Visitante
+            </button>
+            <button onclick="App.changePlan('free')" id="btn-plan-free" class="py-1.5 px-2 rounded-xl text-[11px] font-semibold transition-all bg-primary text-white text-center shadow-sm">
+                🆓 FREE ($0)
+            </button>
+            <button onclick="App.changePlan('premium')" id="btn-plan-premium" class="py-1.5 px-2 rounded-xl text-[11px] font-semibold transition-all bg-yellow-50 text-amber-800 border border-gold hover:bg-yellow-100 text-center">
+                ⭐ PREMIUM ($3)
+            </button>
+            <button onclick="App.changePlan('holding')" id="btn-plan-holding" class="py-1.5 px-2 rounded-xl text-[11px] font-semibold transition-all bg-blue-50 text-primary border border-primary hover:bg-blue-100 text-center">
+                🏢 HOLDING ($12)
+            </button>
+        </div>
+    </div>
+
+    <!-- NAVBAR PRINCIPAL -->
+    <nav class="bg-primary text-white shadow-xl sticky top-0 z-40" aria-label="Navegación principal">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="#/inicio" class="font-heading font-bold text-xl sm:text-2xl tracking-tight flex items-center gap-1" aria-label="AlquilaPTY, ir al inicio">
+                        <i class="fas fa-city text-secondary"></i>Alquila<span class="text-accent">PTY</span></a>
+                </div>
+                
+                <!-- Desktop Navigation Tabs -->
+                <div class="hidden lg:flex space-x-1 items-center">
+                    <button onclick="App.openTab('inicio')" class="nav-btn px-3 py-2 rounded-xl text-xs font-medium hover:bg-white/10 transition-colors flex items-center gap-1.5" data-target="inicio"><i class="fas fa-search text-secondary"></i> Inicio</button>
+                    <button onclick="App.openTab('roommates')" class="nav-btn px-3 py-2 rounded-xl text-xs font-medium bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 transition-colors flex items-center gap-1.5" data-target="roommates"><i class="fas fa-user-friends text-accent animate-bounce"></i> Roommates</button>
+                    <button onclick="App.openTab('subastas')" class="nav-btn px-3 py-2 rounded-xl text-xs font-medium hover:bg-white/10 transition-colors flex items-center gap-1.5" data-target="subastas"><i class="fas fa-chart-line text-amber-400"></i> Subastas</button>
+                    <button onclick="App.openTab('roi')" class="nav-btn px-3 py-2 rounded-xl text-xs font-medium hover:bg-white/10 transition-colors flex items-center gap-1.5" data-target="roi"><i class="fas fa-calculator text-emerald-400"></i> ROI & Inversión</button>
+                    <button onclick="App.openTab('mapa')" class="nav-btn px-3 py-2 rounded-xl text-xs font-medium hover:bg-white/10 transition-colors flex items-center gap-1.5" data-target="mapa"><i class="fas fa-map-marked-alt text-sky-400"></i> Mapa 3D</button>
+                    <button onclick="App.openTab('comparador')" class="nav-btn px-3 py-2 rounded-xl text-xs font-medium hover:bg-white/10 transition-colors flex items-center gap-1.5" data-target="comparador"><i class="fas fa-balance-scale text-indigo-300"></i> Comparar</button>
+                    <button onclick="App.openTab('ia')" class="nav-btn px-3 py-2 rounded-xl text-xs font-medium hover:bg-white/10 transition-colors flex items-center gap-1.5 text-secondary" data-target="ia"><i class="fas fa-robot text-accent"></i> Asistente IA</button>
+                    <button onclick="App.openTab('publicar')" class="nav-btn bg-accent hover:bg-red-500 text-white px-3 py-2 rounded-xl text-xs font-bold shadow-md transition-all hover:scale-105 flex items-center gap-1" data-target="publicar"><i class="fas fa-plus-circle"></i> Publicar</button>
+
+                    <!-- Points Pill & Gamification Header -->
+                    <div class="ml-2 flex items-center gap-2 border-l border-white/20 pl-3">
+                        <button onclick="App.openTab('perfil')" class="bg-amber-400/20 border border-amber-300/40 text-amber-300 hover:bg-amber-400/30 px-2.5 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 transition-all">
+                            <i class="fas fa-trophy text-gold"></i>
+                            <span id="user-points-header">1,250 pts</span>
+                        </button>
+                        
+                        <!-- Registered Profile Controls -->
+                        <button onclick="App.openTab('perfil')" class="flex items-center gap-2 hover:bg-white/10 p-1 pr-2.5 rounded-full transition-colors">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" class="nav-avatar show-registered w-7 h-7 rounded-full object-cover border-2 border-white" alt="Usuario" width="28" height="28" decoding="async">
+                            <span class="show-visitor-flex w-7 h-7 rounded-full bg-white/15 border-2 border-white items-center justify-center">
+                                <i class="fas fa-user text-white text-[11px]"></i>
+                            </span>
+                            <span class="font-medium text-xs font-heading hidden xl:inline">Mi Perfil</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Navigation Menu -->
+        <div class="lg:hidden flex overflow-x-auto bg-primary border-t border-white/10 p-2 justify-between text-xs no-scrollbar">
+            <button onclick="App.openTab('inicio')" class="px-2 py-1 text-white/90 hover:text-white flex flex-col items-center shrink-0"><i class="fas fa-search mb-1"></i> Inicio</button>
+            <button onclick="App.openTab('roommates')" class="px-2 py-1 text-rose-300 font-bold flex flex-col items-center shrink-0"><i class="fas fa-user-friends text-accent mb-1"></i> Roommates</button>
+            <button onclick="App.openTab('subastas')" class="px-2 py-1 text-amber-300 flex flex-col items-center shrink-0"><i class="fas fa-chart-line mb-1"></i> Subastas</button>
+            <button onclick="App.openTab('roi')" class="px-2 py-1 text-emerald-300 flex flex-col items-center shrink-0"><i class="fas fa-calculator mb-1"></i> ROI</button>
+            <button onclick="App.openTab('mapa')" class="px-2 py-1 text-sky-300 flex flex-col items-center shrink-0"><i class="fas fa-map-marked-alt mb-1"></i> Mapa</button>
+            <button onclick="App.openTab('ia')" class="px-2 py-1 text-secondary flex flex-col items-center shrink-0"><i class="fas fa-robot mb-1"></i> IA</button>
+            <button onclick="App.openTab('publicar')" class="px-2 py-1 text-accent font-bold flex flex-col items-center shrink-0"><i class="fas fa-plus-circle mb-1"></i> Publicar</button>
+            <button onclick="App.openTab('perfil')" class="px-2 py-1 text-white/90 flex flex-col items-center shrink-0"><i class="fas fa-user mb-1"></i> Perfil</button>
+        </div>
+    </nav>
+
+    <!-- BANNER DE PUBLICIDAD SUPERIOR (SOLO FREE / VISITANTE) -->
+    <div class="ad-container bg-amber-50/80 border-b border-amber-200 py-2 px-4 text-center">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between text-xs text-amber-900 gap-2">
+            <div class="flex items-center gap-2 mx-auto sm:mx-0">
+                <span class="bg-amber-200 text-amber-800 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">Anuncio</span>
+                <span class="font-semibold">🚚 Mudanzas Panamá Express:</span>
+                <span>¡20% de descuento en tu primer traslado reservando hoy!</span>
+            </div>
+            <a href="#contenido" rel="sponsored nofollow" onclick="event.preventDefault(); App.notify('Redirigiendo a patrocinador...')" class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-1 rounded-lg text-[11px] font-bold transition-colors mx-auto sm:mx-0">Ver Oferta</a>
+        </div>
+    </div>
+
+    <main id="contenido" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mb-20" tabindex="-1">
+
+        <!-- ========================================== -->
+        <!-- PESTAÑA 1: INICIO / EXPLORAR               -->
+        <!-- ========================================== -->
+        <div id="tab-inicio" class="tab-content active">
+            <!-- Hero Search Header -->
+            <div class="bg-primary rounded-3xl p-6 md:p-10 text-center text-white shadow-2xl mb-8 relative overflow-hidden">
+                <div class="absolute -top-24 -right-24 w-72 h-72 bg-secondary rounded-full mix-blend-multiply filter blur-3xl opacity-25"></div>
+                <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-accent rounded-full mix-blend-multiply filter blur-3xl opacity-25"></div>
+                
+                <h1 class="text-3xl md:text-5xl font-heading font-extrabold mb-3 relative z-10">Encuentra tu lugar ideal en Panamá</h1>
+                <p class="text-sm md:text-base text-blue-100 mb-6 max-w-2xl mx-auto relative z-10">Alquileres, ventas, subastas inversas y matchmaking inteligente con datos de ROI en tiempo real.</p>
+                
+                <!-- Advanced Filter Controls -->
+                <div class="bg-white rounded-2xl p-4 max-w-5xl mx-auto shadow-xl flex flex-col gap-3 relative z-10 text-gray-800">
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-b pb-3 border-gray-100">
+                        <!-- Transaction Type Buttons -->
+                        <div class="flex bg-gray-100 p-1 rounded-xl w-full sm:w-auto">
+                            <button onclick="App.filterTx('alquiler', this)" class="tx-btn flex-1 sm:flex-none px-4 py-1.5 rounded-lg text-xs font-bold bg-white text-primary shadow-sm">Alquilar</button>
+                            <button onclick="App.filterTx('venta', this)" class="tx-btn flex-1 sm:flex-none px-4 py-1.5 rounded-lg text-xs font-medium text-gray-500 hover:text-primary">Comprar</button>
+                            <button onclick="App.filterTx('ambos', this)" class="tx-btn flex-1 sm:flex-none px-4 py-1.5 rounded-lg text-xs font-medium text-gray-500 hover:text-primary">Todos</button>
+                        </div>
+                        
+                        <!-- Filter Selectors -->
+                        <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                            <select id="filter-zone" aria-label="Filtrar por zona" onchange="App.refreshFeed()" class="bg-gray-50 border border-gray-200 text-xs font-semibold rounded-xl px-3 py-2 text-gray-700 outline-none focus:border-secondary">
+                                <option value="todas">📍 Todas las Zonas</option>
+                                <option value="Costa del Este">Costa del Este</option>
+                                <option value="San Francisco">San Francisco</option>
+                                <option value="Obarrio">Obarrio</option>
+                                <option value="El Cangrejo">El Cangrejo</option>
+                                <option value="Punta Pacífica">Punta Pacífica</option>
+                                <option value="Bettsilla">Bettsilla</option>
+                                <option value="Vía España">Vía España</option>
+                                <option value="Clayton">Clayton</option>
+                                <option value="Albrook">Albrook</option>
+                                <option value="Panamá Viejo">Panamá Viejo</option>
+                            </select>
+
+                            <select id="filter-type" aria-label="Tipo de propiedad" onchange="App.refreshFeed()" class="bg-gray-50 border border-gray-200 text-xs font-semibold rounded-xl px-3 py-2 text-gray-700 outline-none focus:border-secondary">
+                                <option value="todos">🏠 Tipo Propiedad</option>
+                                <option value="Apartamento">Apartamentos</option>
+                                <option value="Casa">Casas</option>
+                                <option value="Habitación">Habitaciones</option>
+                                <option value="Estudio">Estudios</option>
+                                <option value="Oficina">Oficinas</option>
+                                <option value="Local">Locales Comerciales</option>
+                            </select>
+
+                            <select id="filter-bedrooms" aria-label="Número mínimo de habitaciones" onchange="App.refreshFeed()" class="bg-gray-50 border border-gray-200 text-xs font-semibold rounded-xl px-3 py-2 text-gray-700 outline-none focus:border-secondary">
+                                <option value="todos">🛏️ Habitaciones</option>
+                                <option value="1">1+ Habitaciones</option>
+                                <option value="2">2+ Habitaciones</option>
+                                <option value="3">3+ Habitaciones</option>
+                                <option value="4">4+ Habitaciones</option>
+                            </select>
+
+                            <label class="flex items-center gap-1.5 text-xs font-medium bg-gray-50 px-3 py-2 rounded-xl border cursor-pointer hover:bg-gray-100">
+                                <input type="checkbox" id="filter-pets" onchange="App.refreshFeed()" class="rounded text-secondary focus:ring-0">
+                                🐾 Mascotas
+                            </label>
+
+                            <label class="flex items-center gap-1.5 text-xs font-medium bg-amber-50 text-amber-800 px-3 py-2 rounded-xl border border-amber-200 cursor-pointer hover:bg-amber-100">
+                                <input type="checkbox" id="filter-auction" onchange="App.refreshFeed()" class="rounded text-amber-600 focus:ring-0">
+                                📉 Solo Subastas
+                            </label>
+
+                            <button type="button" onclick="App.openTab('roommates')" class="flex items-center gap-1.5 text-xs font-bold bg-rose-50 text-rose-700 px-3 py-2 rounded-xl border border-rose-200 cursor-pointer hover:bg-rose-100 transition-colors">
+                                👥 Buscar Roommates
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Search Input & Price Slider Row -->
+                    <div class="flex flex-col sm:flex-row gap-3 items-center">
+                        <div class="relative flex-1 w-full">
+                            <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                            <input type="text" id="search-keyword" aria-label="Buscar por palabra clave, zona o amenidad" oninput="App.refreshFeedDebounced()" placeholder="Busca por palabra clave, zona o amenidad..." class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-gray-50 border border-transparent focus:bg-white focus:border-secondary outline-none text-xs text-gray-800 font-medium">
+                        </div>
+
+                        <div class="flex items-center gap-2 w-full sm:w-auto bg-gray-50 px-3 py-1.5 rounded-xl border border-gray-200">
+                            <span class="text-[11px] font-bold text-gray-600 whitespace-nowrap">Máx $:</span>
+                            <input type="range" id="filter-price-slider" aria-label="Precio máximo" min="300" max="700000" step="5000" value="700000" oninput="App.updatePriceSliderLabel(this.value); App.refreshFeedDebounced()" class="w-28 accent-primary">
+                            <span id="price-slider-label" class="text-xs font-bold text-primary w-20 text-right">$700,000</span>
+                        </div>
+
+                        <button onclick="App.refreshFeed()" class="w-full sm:w-auto bg-secondary hover:bg-teal-400 text-primary font-bold px-6 py-2.5 rounded-xl text-xs transition-all shrink-0 flex items-center justify-center gap-2 shadow-sm">
+                            <i class="fas fa-filter"></i> Filtrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TOP 5 VECINDARIOS DEL MES -->
+            <div class="mb-10">
+                <div class="flex justify-between items-end mb-4">
+                    <h2 class="text-xl font-heading font-bold text-primary flex items-center gap-2">🔥 Top 5 Vecindarios del Mes</h2>
+                    <span class="text-xs text-gray-400">Basado en propiedades alquiladas/vendidas este mes</span>
+                </div>
+                <div id="top-neighborhoods-list" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                    <!-- Renderizado por JS: renderTopNeighborhoods() -->
+                </div>
+            </div>
+
+            <!-- FEED DE PROPIEDADES (20 PROPIEDADES PANAMÁ) -->
+            <div class="flex justify-between items-end mb-4">
+                <div>
+                    <h2 class="text-xl font-heading font-bold text-primary flex items-center gap-2">
+                        Propiedades Disponibles en Panamá
+                    </h2>
+                    <p class="text-xs text-gray-500">Explora 20 ubicaciones verificadas con análisis ROI, opciones de subasta e insignias de calidad.</p>
+                </div>
+                <span id="properties-count" class="text-xs font-bold bg-blue-50 text-primary px-3 py-1 rounded-full border border-blue-100">20 Propiedades</span>
+            </div>
+
+            <!-- Grid Container -->
+            <div id="properties-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                <!-- Se renderiza dinámicamente con JS renderFeed() -->
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- PESTAÑA 2: ROOMMATE MATCHING (COMPATIBLE DE HABITACIÓN) -->
+        <!-- ========================================== -->
+        <div id="tab-roommates" class="tab-content">
+            <div class="show-visitor max-w-lg mx-auto bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center space-y-4 mt-10">
+                <span class="text-5xl block">👥</span>
+                <h2 class="text-xl font-heading font-bold text-primary">Crea una cuenta para usar Roommate Matching</h2>
+                <p class="text-xs text-gray-500">La búsqueda de compañeros de habitación compatibles está disponible solo para usuarios registrados.</p>
+                <button onclick="App.openTab('perfil')" class="bg-accent hover:bg-red-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition-colors">✨ Crear Cuenta Gratis</button>
+            </div>
+
+            <div class="show-registered max-w-4xl mx-auto">
+                <div class="text-center mb-6">
+                    <span class="bg-rose-100 text-rose-700 text-xs font-bold px-3 py-1 rounded-full border border-rose-200 inline-block mb-2">👥 Roommate Matching</span>
+                    <h2 class="text-2xl font-heading font-bold text-primary">Compatible de Habitación</h2>
+                    <p class="text-xs text-gray-500">Crea tu perfil de roommate y encuentra compañeros de habitación compatibles contigo.</p>
+                </div>
+
+                <!-- Sub-navigation: Mi Perfil de Roommate / Buscar Roommates -->
+                <div class="flex bg-gray-100 p-1 rounded-xl max-w-md mx-auto mb-8 text-xs">
+                    <button id="rm-tab-btn-search" onclick="App.toggleRoommateView('search')" class="flex-1 px-4 py-2 rounded-lg font-bold bg-white text-primary shadow-sm transition-all">🔍 Buscar Roommates</button>
+                    <button id="rm-tab-btn-profile" onclick="App.toggleRoommateView('profile')" class="flex-1 px-4 py-2 rounded-lg font-medium text-gray-500 hover:text-primary transition-all">📝 Mi Perfil de Roommate</button>
+                </div>
+
+                <!-- ===================== VISTA: BUSCAR ROOMMATES ===================== -->
+                <div id="rm-view-search" class="rm-view">
+                    <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-200 mb-6">
+                        <h3 class="font-bold text-gray-800 text-xs mb-3 flex items-center gap-2"><i class="fas fa-sliders-h text-accent"></i> Filtros de Búsqueda</h3>
+                        <div class="flex flex-wrap items-center gap-2 text-xs">
+                            <select id="rm-filter-gender" aria-label="Género" onchange="App.renderRoommateResults()" class="bg-gray-50 border border-gray-200 text-xs font-semibold rounded-xl px-3 py-2 text-gray-700 outline-none focus:border-secondary">
+                                <option value="cualquiera">⚧ Cualquier género</option>
+                                <option value="M">Masculino</option>
+                                <option value="F">Femenino</option>
+                            </select>
+
+                            <select id="rm-filter-age" aria-label="Rango de edad" onchange="App.renderRoommateResults()" class="bg-gray-50 border border-gray-200 text-xs font-semibold rounded-xl px-3 py-2 text-gray-700 outline-none focus:border-secondary">
+                                <option value="todas">🎂 Cualquier edad</option>
+                                <option value="18-25">18-25</option>
+                                <option value="26-35">26-35</option>
+                                <option value="36+">36+</option>
+                            </select>
+
+                            <select id="rm-filter-occupation" aria-label="Ocupación" onchange="App.renderRoommateResults()" class="bg-gray-50 border border-gray-200 text-xs font-semibold rounded-xl px-3 py-2 text-gray-700 outline-none focus:border-secondary">
+                                <option value="todas">💼 Cualquier ocupación</option>
+                                <option value="Estudiante">Estudiante</option>
+                                <option value="Profesional">Profesional</option>
+                            </select>
+
+                            <select id="rm-filter-schedule" aria-label="Horario" onchange="App.renderRoommateResults()" class="bg-gray-50 border border-gray-200 text-xs font-semibold rounded-xl px-3 py-2 text-gray-700 outline-none focus:border-secondary">
+                                <option value="todos">🕐 Cualquier horario</option>
+                                <option value="Madrugador">Madrugador</option>
+                                <option value="Normal">Normal</option>
+                                <option value="Nocturno">Nocturno</option>
+                            </select>
+
+                            <label class="flex items-center gap-1.5 font-medium bg-gray-50 px-3 py-2 rounded-xl border cursor-pointer hover:bg-gray-100">
+                                <input type="checkbox" id="rm-filter-pets" onchange="App.renderRoommateResults()" class="rounded text-secondary focus:ring-0">
+                                🐾 Acepta mascotas
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between mb-4">
+                        <span id="rm-results-count" class="text-xs font-bold text-gray-600"></span>
+                        <span class="text-[11px] text-gray-400">Ordenado por % de compatibilidad</span>
+                    </div>
+
+                    <div id="rm-results-list" class="space-y-4">
+                        <!-- Renderizado por JS: renderRoommateResults() -->
+                    </div>
+                </div>
+
+                <!-- ===================== VISTA: MI PERFIL DE ROOMMATE ===================== -->
+                <div id="rm-view-profile" class="rm-view hidden max-w-xl mx-auto">
+                    <form id="roommate-profile-form" onsubmit="App.saveRoommateProfile(event)" class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 space-y-5 text-xs">
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1.5">📝 Sobre mí</label>
+                            <textarea id="rm-about" aria-label="Sobre mí" rows="3" placeholder="Soy estudiante de ingeniería, tranquilo, ordenado. Me gusta cocinar y ver películas." class="w-full border border-gray-200 rounded-xl p-3 outline-none focus:border-secondary"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1.5">🕐 Horario</label>
+                            <div class="flex flex-wrap gap-3">
+                                <label class="flex items-center gap-1.5"><input type="radio" name="rm-schedule" value="Madrugador" class="text-secondary focus:ring-0"> Madrugador (antes 7AM)</label>
+                                <label class="flex items-center gap-1.5"><input type="radio" name="rm-schedule" value="Normal" checked class="text-secondary focus:ring-0"> Normal (7AM-10PM)</label>
+                                <label class="flex items-center gap-1.5"><input type="radio" name="rm-schedule" value="Nocturno" class="text-secondary focus:ring-0"> Nocturno (después 10PM)</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1.5">🧹 Limpieza</label>
+                            <div class="flex flex-wrap gap-3">
+                                <label class="flex items-center gap-1.5"><input type="radio" name="rm-clean" value="Muy ordenado" class="text-secondary focus:ring-0"> Muy ordenado</label>
+                                <label class="flex items-center gap-1.5"><input type="radio" name="rm-clean" value="Ordenado" checked class="text-secondary focus:ring-0"> Ordenado</label>
+                                <label class="flex items-center gap-1.5"><input type="radio" name="rm-clean" value="Relajado" class="text-secondary focus:ring-0"> Relajado</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1.5">🎉 Vida social</label>
+                            <div class="flex flex-wrap gap-3">
+                                <label class="flex items-center gap-1.5"><input type="radio" name="rm-social" value="Tranquilo" checked class="text-secondary focus:ring-0"> Tranquilo</label>
+                                <label class="flex items-center gap-1.5"><input type="radio" name="rm-social" value="Social" class="text-secondary focus:ring-0"> Social</label>
+                                <label class="flex items-center gap-1.5"><input type="radio" name="rm-social" value="Fiestero" class="text-secondary focus:ring-0"> Fiestero</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1.5">🐾 Mascotas</label>
+                            <div class="flex flex-wrap gap-3">
+                                <label class="flex items-center gap-1.5"><input type="checkbox" id="rm-pet-dog" class="rounded text-secondary focus:ring-0"> Tengo perro pequeño</label>
+                                <label class="flex items-center gap-1.5"><input type="checkbox" id="rm-pet-cat" class="rounded text-secondary focus:ring-0"> Tengo gato</label>
+                                <label class="flex items-center gap-1.5"><input type="checkbox" id="rm-pet-accept" checked class="rounded text-secondary focus:ring-0"> Acepto mascotas</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1.5">🚬 Fumador</label>
+                            <div class="flex flex-wrap gap-3">
+                                <label class="flex items-center gap-1.5"><input type="radio" name="rm-smoker" value="No fumador" checked class="text-secondary focus:ring-0"> No fumador</label>
+                                <label class="flex items-center gap-1.5"><input type="radio" name="rm-smoker" value="Fumador afuera" class="text-secondary focus:ring-0"> Fumador (solo afuera)</label>
+                                <label class="flex items-center gap-1.5"><input type="radio" name="rm-smoker" value="Fumador" class="text-secondary focus:ring-0"> Fumador (dentro y afuera)</label>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block font-bold text-gray-700 mb-1.5">💰 Presupuesto máx./mes</label>
+                                <input type="number" id="rm-budget" aria-label="Presupuesto mensual en dólares" placeholder="400" class="w-full border border-gray-200 rounded-xl p-2.5 outline-none focus:border-secondary">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-gray-700 mb-1.5">📅 Fecha de mudanza</label>
+                                <input type="date" id="rm-movedate" aria-label="Fecha de mudanza" class="w-full border border-gray-200 rounded-xl p-2.5 outline-none focus:border-secondary">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1.5">📍 Zonas preferidas</label>
+                            <div class="flex flex-wrap gap-3">
+                                <label class="flex items-center gap-1.5"><input type="checkbox" checked class="rounded text-secondary focus:ring-0"> Cerca de universidad</label>
+                                <label class="flex items-center gap-1.5"><input type="checkbox" checked class="rounded text-secondary focus:ring-0"> San Francisco</label>
+                                <label class="flex items-center gap-1.5"><input type="checkbox" checked class="rounded text-secondary focus:ring-0"> Costa del Este</label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full bg-secondary hover:bg-teal-400 text-primary font-bold py-2.5 rounded-xl transition-colors">💾 Guardar Perfil</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- PESTAÑA 3: SUBASTAS INVERSAS              -->
+        <!-- ========================================== -->
+        <div id="tab-subastas" class="tab-content">
+            <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100 mb-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b pb-4">
+                    <div>
+                        <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full border border-amber-200 inline-block mb-1">🔥 Ofertas que Bajan</span>
+                        <h2 class="text-2xl font-heading font-bold text-primary flex items-center gap-2">
+                            <i class="fas fa-chart-line text-amber-500"></i> Sistema de Subastas Inversas
+                        </h2>
+                        <p class="text-xs text-gray-500">Propiedades cuyo precio disminuye semanalmente hasta encontrar comprador o alcanzar el precio mínimo.</p>
+                    </div>
+
+                    <div class="bg-amber-50 p-3 rounded-2xl border border-amber-200 text-xs text-amber-900 flex items-center gap-3">
+                        <i class="fas fa-lightbulb text-amber-600 text-2xl"></i>
+                        <div>
+                            <span class="font-bold">¿Cómo funciona?</span>
+                            <p class="text-[11px]">Puedes comprar al precio actual o arriesgarte a esperar la reducción de la siguiente semana.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Auctions List -->
+                <div id="auction-properties-list" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Loaded dynamically via renderAuctions() -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- PESTAÑA 4: ANÁLISIS DE INVERSIÓN Y ROI    -->
+        <!-- ========================================== -->
+        <div id="tab-roi" class="tab-content">
+            <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100 mb-8">
+                <div class="mb-6">
+                    <h2 class="text-2xl font-heading font-bold text-primary flex items-center gap-2">
+                        <i class="fas fa-calculator text-emerald-500"></i> Análisis de Inversión, Plusvalía y ROI
+                    </h2>
+                    <p class="text-xs text-gray-500">Calcula proyecciones de retorno a 5, 10 y 15 años y simula cuotas hipotecarias para propiedades en Panamá.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <!-- Property Selector for ROI -->
+                    <div class="bg-gray-50 p-5 rounded-2xl border border-gray-200">
+                        <label class="block text-xs font-bold text-gray-700 mb-2">Selecciona Propiedad en Venta:</label>
+                        <select id="roi-property-select" aria-label="Propiedad en venta" onchange="App.calculateROIAnalysis()" class="w-full bg-white border border-gray-300 rounded-xl px-3 py-2.5 text-xs font-medium outline-none focus:border-secondary mb-4">
+                            <!-- Populated via JS -->
+                        </select>
+
+                        <div id="roi-selected-summary" class="bg-white p-4 rounded-xl border border-gray-200 space-y-2 text-xs">
+                            <!-- Selected property preview -->
+                        </div>
+                    </div>
+
+                    <!-- ROI Projections Output -->
+                    <div class="lg:col-span-2 bg-gradient-to-br from-slate-900 to-primary text-white p-6 rounded-2xl shadow-lg flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-xs font-bold text-secondary bg-white/10 px-3 py-1 rounded-full border border-white/20">🎯 Proyección Estimada de Plusvalía</span>
+                                <span class="text-[11px] text-teal-200">Tasa Histórica Promedio: 3.4% / año</span>
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-3 text-center mb-6">
+                                <div class="bg-white/10 backdrop-blur p-3 rounded-xl border border-white/10">
+                                    <span class="text-[10px] text-gray-300 uppercase font-bold block">5 Años (+18%)</span>
+                                    <span id="roi-val-5yr" class="text-base sm:text-xl font-extrabold text-secondary">$336,300</span>
+                                </div>
+                                <div class="bg-white/10 backdrop-blur p-3 rounded-xl border border-white/10">
+                                    <span class="text-[10px] text-gray-300 uppercase font-bold block">10 Años (+42%)</span>
+                                    <span id="roi-val-10yr" class="text-base sm:text-xl font-extrabold text-emerald-400">$404,700</span>
+                                </div>
+                                <div class="bg-white/10 backdrop-blur p-3 rounded-xl border border-white/10">
+                                    <span class="text-[10px] text-gray-300 uppercase font-bold block">15 Años (+68%)</span>
+                                    <span id="roi-val-15yr" class="text-base sm:text-xl font-extrabold text-gold">$478,000</span>
+                                </div>
+                            </div>
+
+                            <!-- AI Recommendation snippet -->
+                            <div class="bg-white/10 p-3 rounded-xl text-xs text-blue-100 flex items-start gap-2 border border-white/10">
+                                <i class="fas fa-robot text-secondary text-base mt-0.5"></i>
+                                <div>
+                                    <span class="font-bold text-white block">Recomendación IA:</span>
+                                    <p id="roi-ai-advice" class="text-[11px] leading-relaxed">Excelente oportunidad de inversión con ROI superior al promedio de la ciudad.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-t border-white/10 text-[10px] text-gray-400 flex justify-between">
+                            <span>Basado en el historial de precios de los últimos 5 años</span>
+                            <span>Confianza: 🟢 Alta</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Price Trend Chart & Mortgage Calculator -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Price Trend Line Chart -->
+                    <div class="bg-gray-50 p-5 rounded-2xl border border-gray-200">
+                        <h3 class="font-heading font-bold text-gray-800 text-sm mb-3 flex items-center gap-2">
+                            <i class="fas fa-chart-line text-primary"></i> Tendencia Histórica de Precios (5 Años)
+                        </h3>
+                        <div class="h-64 w-full">
+                            <canvas id="roiTrendChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Mortgage Calculator -->
+                    <div class="bg-blue-50/50 p-5 rounded-2xl border border-blue-100 flex flex-col justify-between">
+                        <div>
+                            <h4 class="font-heading font-bold text-primary text-sm mb-3 flex items-center gap-2">
+                                <i class="fas fa-university text-secondary"></i> Simulación Hipotecaria Rápida
+                            </h4>
+                            
+                            <div class="grid grid-cols-2 gap-3 text-xs mb-4">
+                                <div>
+                                    <label class="block font-bold text-gray-700 mb-1">Abono Inicial (%)</label>
+                                    <select id="mortgage-downpay" aria-label="Porcentaje de inicial" onchange="App.updateMortgageCalc()" class="w-full bg-white border border-gray-300 rounded-xl p-2 outline-none">
+                                        <option value="0.10">10% de Inicial</option>
+                                        <option value="0.20" selected>20% de Inicial</option>
+                                        <option value="0.30">30% de Inicial</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-gray-700 mb-1">Plazo Hipoteca</label>
+                                    <select id="mortgage-years" aria-label="Plazo de la hipoteca" onchange="App.updateMortgageCalc()" class="w-full bg-white border border-gray-300 rounded-xl p-2 outline-none">
+                                        <option value="15">15 Años</option>
+                                        <option value="20">20 Años</option>
+                                        <option value="30" selected>30 Años</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="bg-white p-4 rounded-xl border border-blue-200 text-center space-y-1">
+                                <span class="text-[11px] text-gray-500 font-bold uppercase block">Pago Mensual Estimado</span>
+                                <span id="mortgage-monthly-payment" class="text-2xl font-extrabold text-primary">$1,280 / mes</span>
+                                <p class="text-[10px] text-gray-400">Tasa de interés estimada: 5.75% anual</p>
+                            </div>
+                        </div>
+
+                        <button onclick="App.notify('Solicitud enviada a bancos afiliados. Un asesor te contactará.')" class="mt-4 bg-primary hover:bg-blue-900 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition-colors w-full">
+                            📩 Solicitar Pre-Aprobación Bancaria
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- PESTAÑA 5: MAPA INTELIGENTE 3D             -->
+        <!-- ========================================== -->
+        <div id="tab-mapa" class="tab-content">
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 mb-6">
+                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-4">
+                    <div>
+                        <h2 class="text-2xl font-heading font-bold text-primary flex items-center gap-2">
+                            <i class="fas fa-map-marked-alt text-amber-500"></i> Mapa Interactivo de Propiedades
+                        </h2>
+                        <p class="text-xs text-gray-500">Visualiza la ubicación geográfica de las 20 propiedades y capas de interés (Metro, Escuelas, Malls).</p>
+                    </div>
+
+                    <!-- Layer Controls -->
+                    <div class="flex flex-wrap items-center gap-2 text-xs">
+                        <label class="flex items-center gap-1.5 bg-gray-100 px-3 py-1.5 rounded-xl cursor-pointer hover:bg-gray-200">
+                            <input type="checkbox" id="layer-metro" checked onchange="App.drawMapCanvas()" class="rounded text-primary"> 🚇 Metro
+                        </label>
+                        <label class="flex items-center gap-1.5 bg-gray-100 px-3 py-1.5 rounded-xl cursor-pointer hover:bg-gray-200">
+                            <input type="checkbox" id="layer-buses" onchange="App.drawMapCanvas()" class="rounded text-primary"> 🚌 Buses
+                        </label>
+                        <label class="flex items-center gap-1.5 bg-gray-100 px-3 py-1.5 rounded-xl cursor-pointer hover:bg-gray-200">
+                            <input type="checkbox" id="layer-schools" checked onchange="App.drawMapCanvas()" class="rounded text-primary"> 🏫 Escuelas
+                        </label>
+                        <label class="flex items-center gap-1.5 bg-gray-100 px-3 py-1.5 rounded-xl cursor-pointer hover:bg-gray-200">
+                            <input type="checkbox" id="layer-supers" checked onchange="App.drawMapCanvas()" class="rounded text-primary"> 🛒 Supermercados
+                        </label>
+                        <label class="flex items-center gap-1.5 bg-gray-100 px-3 py-1.5 rounded-xl cursor-pointer hover:bg-gray-200">
+                            <input type="checkbox" id="layer-malls" onchange="App.drawMapCanvas()" class="rounded text-primary"> 🏬 Malls
+                        </label>
+                        <label class="flex items-center gap-1.5 bg-gray-100 px-3 py-1.5 rounded-xl cursor-pointer hover:bg-gray-200">
+                            <input type="checkbox" id="layer-restaurants" onchange="App.drawMapCanvas()" class="rounded text-primary"> 🍽️ Restaurantes
+                        </label>
+                        <label class="flex items-center gap-1.5 bg-gray-100 px-3 py-1.5 rounded-xl cursor-pointer hover:bg-gray-200">
+                            <input type="checkbox" id="layer-salons" onchange="App.drawMapCanvas()" class="rounded text-primary"> 💇 Salones
+                        </label>
+                        <button onclick="App.locateNearMe()" class="bg-blue-50 text-primary border border-blue-200 px-3 py-1.5 rounded-xl font-bold hover:bg-blue-100 transition-colors">
+                            <i class="fas fa-location-crosshairs mr-1"></i> Cercanos a mí
+                        </button>
+                        <button onclick="App.drawMapCanvas()" class="bg-primary text-white px-3 py-1.5 rounded-xl font-bold hover:bg-blue-900 transition-colors">
+                            <i class="fas fa-sync-alt mr-1"></i> Resetear Mapa
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Map Filters -->
+                <div class="flex flex-wrap items-center gap-2 mb-4 text-xs">
+                    <select id="map-filter-type" aria-label="Tipo de propiedad en el mapa" onchange="App.refreshMap()" class="bg-gray-50 border border-gray-200 font-semibold rounded-xl px-3 py-2 text-gray-700 outline-none">
+                        <option value="todos">🏠 Todos los Tipos</option>
+                        <option value="Apartamento">Apartamentos</option>
+                        <option value="Casa">Casas</option>
+                        <option value="Habitación">Habitaciones</option>
+                        <option value="Estudio">Estudios</option>
+                        <option value="Oficina">Oficinas</option>
+                        <option value="Local">Locales</option>
+                    </select>
+                    <select id="map-filter-bedrooms" aria-label="Habitaciones mínimas en el mapa" onchange="App.refreshMap()" class="bg-gray-50 border border-gray-200 font-semibold rounded-xl px-3 py-2 text-gray-700 outline-none">
+                        <option value="todos">🛏️ Cualquier Habitación</option>
+                        <option value="1">1+ Habitaciones</option>
+                        <option value="2">2+ Habitaciones</option>
+                        <option value="3">3+ Habitaciones</option>
+                    </select>
+                    <div class="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-xl border border-gray-200">
+                        <span class="text-[11px] font-bold text-gray-600 whitespace-nowrap">Máx $:</span>
+                        <input type="range" id="map-filter-price" aria-label="Precio máximo en el mapa" min="300" max="700000" step="5000" value="700000" oninput="App.updateMapPriceLabel(this.value); App.refreshMapDebounced()" class="w-28 accent-primary">
+                        <span id="map-price-label" class="text-xs font-bold text-primary w-20 text-right">$700,000</span>
+                    </div>
+                </div>
+
+                <!-- CANVAS MAP CONTAINER -->
+                <div class="relative w-full h-[520px] bg-slate-900 rounded-2xl overflow-hidden shadow-inner border border-slate-700">
+                    <canvas id="mapCanvas" class="w-full h-full cursor-grab active:cursor-grabbing" onclick="App.handleMapClick(event)"></canvas>
+
+                    <!-- Popup de propiedad seleccionada -->
+                    <div id="map-popup" class="hidden absolute bg-white rounded-2xl shadow-2xl border border-gray-200 p-3 w-56 z-20 text-xs">
+                        <!-- Renderizado por JS -->
+                    </div>
+                    
+                    <!-- Map Legend -->
+                    <div class="absolute bottom-4 left-4 bg-white/90 backdrop-blur p-3 rounded-xl shadow-lg border border-gray-200 text-[11px] space-y-1 z-10">
+                        <div class="font-bold text-gray-800 mb-1">Leyenda del Mapa</div>
+                        <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-secondary inline-block"></span> Propiedad en Alquiler</div>
+                        <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-accent inline-block"></span> Propiedad en Venta</div>
+                        <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-purple-500 inline-block"></span> Propiedad en Subasta</div>
+                        <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-red-500 inline-block"></span> 🚇 Metro / 🚌 Buses</div>
+                        <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span> 🛒🏬🍽️💇 Amenidades</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- PESTAÑA 6: COMPARADOR                     -->
+        <!-- ========================================== -->
+        <div id="tab-comparador" class="tab-content">
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 mb-8">
+                <div class="mb-6">
+                    <h2 class="text-2xl font-heading font-bold text-primary flex items-center gap-2">
+                        <i class="fas fa-balance-scale text-emerald-500"></i> Comparador Multidimensional
+                    </h2>
+                    <p class="text-xs text-gray-500">Selecciona hasta 3 propiedades para contrastar amenidades, costos y calificaciones.</p>
+                </div>
+
+                <!-- Selectors -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                    <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200">
+                        <label class="block text-xs font-bold text-gray-700 mb-2">Propiedad 1</label>
+                        <select id="compare-select-1" aria-label="Propiedad 1" onchange="App.updateComparison()" class="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-xs font-medium outline-none focus:border-secondary">
+                        </select>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200">
+                        <label class="block text-xs font-bold text-gray-700 mb-2">Propiedad 2</label>
+                        <select id="compare-select-2" aria-label="Propiedad 2" onchange="App.updateComparison()" class="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-xs font-medium outline-none focus:border-secondary">
+                        </select>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200">
+                        <label class="block text-xs font-bold text-gray-700 mb-2">Propiedad 3 (Opcional)</label>
+                        <select id="compare-select-3" aria-label="Propiedad 3 (opcional)" onchange="App.updateComparison()" class="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-xs font-medium outline-none focus:border-secondary">
+                            <option value="">-- Ninguna --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="comparison-table-container" class="overflow-x-auto mb-8">
+                    <!-- Tabla comparativa: la renderiza js/modules/comparison.js -->
+                </div>
+
+                <section aria-labelledby="radar-title" class="bg-gray-50 rounded-2xl border border-gray-100 p-4">
+                    <h3 id="radar-title" class="font-heading font-bold text-primary text-sm mb-3">Comparación visual</h3>
+                    <div class="relative h-72">
+                        <canvas id="radarChart" role="img" aria-label="Gráfico radar que compara las propiedades seleccionadas"></canvas>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- PESTAÑA 7: ASISTENTE IA EN VIVO            -->
+        <!-- ========================================== -->
+        <div id="tab-ia" class="tab-content">
+            <div class="show-visitor max-w-lg mx-auto bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center space-y-4 mt-10">
+                <span class="text-5xl block">🤖</span>
+                <h2 class="text-xl font-heading font-bold text-primary">Crea una cuenta para hablar con la IA</h2>
+                <p class="text-xs text-gray-500">El asistente inmobiliario inteligente está disponible solo para usuarios registrados.</p>
+                <button onclick="App.openTab('perfil')" class="bg-accent hover:bg-red-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition-colors">✨ Crear Cuenta Gratis</button>
+            </div>
+            <div class="show-registered max-w-4xl mx-auto bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden flex flex-col h-[580px]">
+                <div class="bg-primary p-4 text-white flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-secondary text-primary flex items-center justify-center text-lg font-bold shadow-md">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-heading font-bold text-sm">Asistente Inmobiliario AlquilaPTY</h3>
+                            <p class="text-[10px] text-teal-200 flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Respuesta instantánea en tiempo real</p>
+                        </div>
+                    </div>
+                    <span class="text-xs bg-white/10 px-3 py-1 rounded-full border border-white/20">Modelo Panamá 2026</span>
+                </div>
+
+                <div id="ai-chat-body" class="flex-1 p-6 bg-gray-50 overflow-y-auto space-y-4">
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-xs shrink-0 mt-1"><i class="fas fa-robot"></i></div>
+                        <div class="bg-white p-4 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 max-w-[85%] text-xs text-gray-800 space-y-2">
+                            <p class="font-bold text-primary">¡Hola! Soy tu asesor virtual en Panamá. 👋</p>
+                            <p>Puedo aconsejarte sobre las 20 propiedades, zonas como Costa del Este o San Francisco, ROI de inversión y procesos de alquiler.</p>
+                            <div class="pt-2 flex flex-wrap gap-1.5">
+                                <button onclick="App.sendQuickPrompt('¿Cuáles son los mejores apartamentos en alquiler por menos de $1000?')" class="bg-blue-50 text-primary hover:bg-primary hover:text-white transition-colors px-2.5 py-1 rounded-lg text-[11px] font-medium border border-blue-100">
+                                    "Alquileres < $1000/mes"
+                                </button>
+                                <button onclick="App.sendQuickPrompt('¿Cómo funciona el sistema de subasta inversa?')" class="bg-blue-50 text-primary hover:bg-primary hover:text-white transition-colors px-2.5 py-1 rounded-lg text-[11px] font-medium border border-blue-100">
+                                    "Explicar Subastas Inversas"
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-white border-t border-gray-100 flex gap-2 items-center">
+                    <input type="text" id="ai-user-input" aria-label="Escribe tu consulta inmobiliaria" onkeypress="if(event.key==='Enter') App.sendChatMessage()" placeholder="Escribe tu consulta inmobiliaria..." class="flex-1 bg-gray-100 rounded-2xl px-5 py-3 outline-none focus:ring-2 focus:ring-secondary/50 text-xs text-gray-800 font-medium">
+                    <button type="button" aria-label="Enviar mensaje" onclick="App.sendChatMessage()" class="w-11 h-11 bg-secondary text-primary rounded-2xl flex items-center justify-center hover:bg-teal-400 transition-colors shrink-0 shadow-md">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- PESTAÑA 8: PUBLICAR PROPIEDAD             -->
+        <!-- ========================================== -->
+        <div id="tab-publicar" class="tab-content">
+            <div class="show-visitor max-w-lg mx-auto bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center space-y-4 mt-10">
+                <span class="text-5xl block">🚀</span>
+                <h2 class="text-xl font-heading font-bold text-primary">Crea una cuenta para publicar</h2>
+                <p class="text-xs text-gray-500">Necesitas una cuenta registrada para publicar propiedades en AlquilaPTY.</p>
+                <button onclick="App.openTab('perfil')" class="bg-accent hover:bg-red-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition-colors">✨ Crear Cuenta Gratis</button>
+            </div>
+            <div class="show-registered bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100 max-w-3xl mx-auto">
+                <div class="mb-6 border-b pb-4 border-gray-100">
+                    <h2 class="text-2xl font-heading font-bold text-primary flex items-center gap-2">
+                        <i class="fas fa-plus-circle text-accent"></i> Publicar Nueva Propiedad
+                    </h2>
+                    <p class="text-xs text-gray-500">Publica tu inmueble y configura opcionalmente una Subasta Inversa para vender más rápido.</p>
+                </div>
+
+                <form id="publish-form" onsubmit="App.handlePublishSubmit(event)" class="space-y-4 text-xs">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">Título de la Publicación *</label>
+                            <input type="text" name="title" aria-label="Título de la publicación" maxlength="120" required placeholder="Ej. Apartamento Moderno en San Francisco" class="w-full bg-gray-50 border rounded-xl p-2.5 outline-none focus:border-secondary">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">Zona / Ubicación *</label>
+                            <select name="zone" aria-label="Zona de la propiedad" required class="w-full bg-gray-50 border rounded-xl p-2.5 outline-none focus:border-secondary">
+                                <option value="San Francisco">San Francisco</option>
+                                <option value="Costa del Este">Costa del Este</option>
+                                <option value="Obarrio">Obarrio</option>
+                                <option value="Punta Pacífica">Punta Pacífica</option>
+                                <option value="Clayton">Clayton</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">Tipo de Transacción *</label>
+                            <select id="pub-tx-type" aria-label="Tipo de transacción" name="txType" onchange="App.toggleAuctionPublishFields()" class="w-full bg-gray-50 border rounded-xl p-2.5 outline-none focus:border-secondary">
+                                <option value="Alquiler">Alquiler</option>
+                                <option value="Venta">Venta</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">Precio ($) *</label>
+                            <input type="number" name="price" aria-label="Precio en dólares" min="1" required placeholder="850" class="w-full bg-gray-50 border rounded-xl p-2.5 outline-none focus:border-secondary">
+                        </div>
+                    </div>
+
+                    <!-- Reverse Auction Toggle Options for Sale -->
+                    <div id="pub-auction-box" class="bg-amber-50 p-4 rounded-2xl border border-amber-200 space-y-3 hidden">
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="pub-enable-auction" name="auctionEnabled" class="rounded text-amber-600">
+                            <label for="pub-enable-auction" class="font-bold text-amber-900">📉 Activar Subasta Inversa para esta venta</label>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 pt-1">
+                            <div>
+                                <label class="block text-[10px] text-gray-600 font-bold">Precio Mínimo ($)</label>
+                                <input type="number" name="auctionMinPrice" aria-label="Precio mínimo de la subasta en dólares" min="1" placeholder="Ej. 120000" class="w-full bg-white border rounded-lg p-1.5 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-gray-600 font-bold">Baja Semanal ($)</label>
+                                <input type="number" name="auctionStep" aria-label="Baja semanal en dólares" min="1" placeholder="Ej. 500" class="w-full bg-white border rounded-lg p-1.5 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-gray-600 font-bold">Semanas Máx.</label>
+                                <input type="number" name="auctionWeeks" aria-label="Semanas máximas de subasta" min="1" placeholder="6" class="w-full bg-white border rounded-lg p-1.5 text-xs">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-accent hover:bg-red-500 text-white font-bold py-3 rounded-xl shadow-md transition-all">
+                        🚀 Publicar Propiedad (+30 Puntos)
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- PESTAÑA 9: MI PERFIL / GAMIFICACIÓN & PLANES-->
+        <!-- ========================================== -->
+        <div id="tab-perfil" class="tab-content">
+            <!-- CTA PARA VISITANTES SIN CUENTA -->
+            <div class="show-visitor">
+                <div class="max-w-lg mx-auto bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center space-y-4 mt-10">
+                    <span class="text-5xl block">🔒</span>
+                    <h2 class="text-xl font-heading font-bold text-primary">Necesitas una cuenta para ver tu perfil</h2>
+                    <p class="text-xs text-gray-500">Crea una cuenta gratuita para guardar favoritos, usar el Match, hablar con la IA y publicar tus propiedades.</p>
+                    <div class="flex flex-col sm:flex-row gap-2 justify-center pt-2">
+                        <button onclick="App.changePlan('free'); App.notify('¡Cuenta creada con éxito! Bienvenido, Juan Morales.')" class="bg-accent hover:bg-red-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition-colors">✨ Crear Cuenta Gratis</button>
+                        <button onclick="App.notify('Redirigiendo a inicio de sesión...')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold px-5 py-2.5 rounded-xl text-xs transition-colors">Ya tengo cuenta</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="show-registered space-y-8">
+                <!-- User Profile Header with Points & Level -->
+                <div class="bg-gradient-to-r from-primary to-slate-800 text-white p-6 md:p-8 rounded-3xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="flex items-center gap-4 text-center md:text-left">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" class="profile-avatar w-20 h-20 rounded-full border-4 border-secondary object-cover shadow-lg" width="80" height="80" loading="lazy" decoding="async" alt="Usuario">
+                        <div>
+                            <div class="flex items-center justify-center md:justify-start gap-2">
+                                <h2 class="profile-name text-2xl font-heading font-bold">Juan Morales</h2>
+                                <span class="bg-gold text-primary font-bold text-[10px] px-2.5 py-0.5 rounded-full uppercase">Nivel Plata</span>
+                            </div>
+                            <p class="profile-role text-xs text-secondary font-bold mt-1">Usuario Free</p>
+                            <p class="profile-membersince text-xs text-blue-200 mt-0.5">Miembro desde Marzo 2025 • Panamá City</p>
+                            <div class="mt-2 flex flex-wrap gap-2 justify-center md:justify-start">
+                                <span class="bg-white/10 text-xs px-3 py-1 rounded-full border border-white/20">🏆 1,250 Puntos Acumulados</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Level Progress Bar -->
+                    <div class="bg-white/10 backdrop-blur p-4 rounded-2xl border border-white/20 w-full md:w-80">
+                        <div class="flex justify-between items-center text-xs font-bold mb-1">
+                            <span>Siguiente Nivel: ORO 🥇</span>
+                            <span>62%</span>
+                        </div>
+                        <div class="w-full bg-gray-700 h-2.5 rounded-full overflow-hidden mb-2">
+                            <div class="bg-secondary h-full rounded-full" style="width: 62%"></div>
+                        </div>
+                        <p class="text-[11px] text-gray-300 text-center">Faltan 750 pts para obtener 10% desc. en comisiones y 1 destacada gratis/mes.</p>
+                    </div>
+                </div>
+
+                <!-- GAMIFICATION: BADGES & POINT REDEMPTION CATALOG -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Badges Unlocked -->
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
+                        <h3 class="font-heading font-bold text-primary text-base mb-4 flex items-center justify-between">
+                            <span>🏅 Mis Badges Desbloqueados (8/20)</span>
+                            <span class="text-xs text-secondary font-semibold">Ver Todos</span>
+                        </h3>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            <div class="bg-amber-50 p-2.5 rounded-2xl border border-amber-200 text-center">
+                                <span class="text-2xl block mb-1">🏆</span>
+                                <span class="font-bold text-[11px] text-gray-800 block">Top Propietario</span>
+                            </div>
+                            <div class="bg-blue-50 p-2.5 rounded-2xl border border-blue-200 text-center">
+                                <span class="text-2xl block mb-1">🔍</span>
+                                <span class="font-bold text-[11px] text-gray-800 block">Explorador</span>
+                            </div>
+                            <div class="bg-teal-50 p-2.5 rounded-2xl border border-teal-200 text-center">
+                                <span class="text-2xl block mb-1">💬</span>
+                                <span class="font-bold text-[11px] text-gray-800 block">Super Com.</span>
+                            </div>
+                            <div class="bg-purple-50 p-2.5 rounded-2xl border border-purple-200 text-center">
+                                <span class="text-2xl block mb-1">🚀</span>
+                                <span class="font-bold text-[11px] text-gray-800 block">Early Adopter</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Redeem Catalog -->
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
+                        <h3 class="font-heading font-bold text-primary text-base mb-4 flex items-center justify-between">
+                            <span>🎁 Canje de Puntos</span>
+                            <span class="text-xs text-primary font-bold">Saldo: 1,250 pts</span>
+                        </h3>
+                        <div class="grid grid-cols-2 gap-3 text-xs">
+                            <div class="border rounded-2xl p-3 flex flex-col justify-between bg-gray-50">
+                                <div>
+                                    <span class="font-bold text-gray-800 block">⭐ Destacar 1 Semana</span>
+                                    <span class="text-primary font-bold">200 pts</span>
+                                </div>
+                                <button onclick="App.redeemPoints('Destacar 1 semana', 200)" class="mt-2 bg-secondary text-primary font-bold py-1 rounded-xl text-[11px]">Canjear</button>
+                            </div>
+                            <div class="border rounded-2xl p-3 flex flex-col justify-between bg-gray-50">
+                                <div>
+                                    <span class="font-bold text-gray-800 block">💰 5% Desc. Comisión</span>
+                                    <span class="text-primary font-bold">300 pts</span>
+                                </div>
+                                <button onclick="App.redeemPoints('5% Desc. Comisión', 300)" class="mt-2 bg-secondary text-primary font-bold py-1 rounded-xl text-[11px]">Canjear</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACTUALIZACIÓN DE PLANES Y COMISIONES -->
+                <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-gray-100">
+                    <div class="text-center max-w-2xl mx-auto mb-8">
+                        <span class="bg-blue-50 text-primary text-xs font-bold px-3 py-1 rounded-full border border-blue-200 inline-block mb-2">💰 Planes de Suscripción & Comisiones</span>
+                        <h3 class="text-2xl font-heading font-bold text-primary">Elige el Plan que se Adapte a Ti</h3>
+                        <p class="text-xs text-gray-500">Transparencia total en costos fijos y comisiones reducidas por transacciones.</p>
+                    </div>
+
+                    <!-- Subscription Plans Comparison Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                        <!-- FREE -->
+                        <div class="border border-gray-200 rounded-3xl p-6 hover:shadow-md transition-all flex flex-col justify-between relative bg-white">
+                            <div>
+                                <span class="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-1">🆓 FREE</span>
+                                <div class="text-3xl font-extrabold text-gray-800 mb-1">$0 <span class="text-xs text-gray-400 font-normal">/ mes</span></div>
+                                <p class="text-[11px] text-gray-500 mb-4">Para usuarios ocasionales</p>
+
+                                <ul class="space-y-2 text-xs text-gray-600 mb-6 border-t pt-4">
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-500"></i> Hasta 3 propiedades máximas</li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-500"></i> Destacar propiedad: $3 c/u</li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-info-circle text-amber-500"></i> Publicidad no intrusiva</li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-500"></i> Dashboard estándar</li>
+                                </ul>
+                            </div>
+                            <button onclick="App.changePlan('free')" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-2.5 rounded-xl text-xs transition-colors">Plan Actual</button>
+                        </div>
+
+                        <!-- PREMIUM -->
+                        <div class="border-2 border-gold rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all flex flex-col justify-between relative bg-amber-50/20">
+                            <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-gold text-primary font-extrabold text-[10px] px-3 py-1 rounded-full uppercase shadow">Más Popular</span>
+                            <div>
+                                <span class="text-xs font-bold text-amber-700 uppercase tracking-wider block mb-1">⭐ PREMIUM</span>
+                                <div class="text-3xl font-extrabold text-primary mb-1">$3 <span class="text-xs text-gray-500 font-normal">/ mes</span></div>
+                                <p class="text-[11px] text-gray-500 mb-4">Personas individuales</p>
+
+                                <ul class="space-y-2 text-xs text-gray-700 mb-6 border-t pt-4">
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-500"></i> Hasta 10 propiedades máximas</li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-500 font-bold"></i> Destacar propiedad INCLUIDO</li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-500 font-bold"></i> SIN publicidad</li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-500"></i> Dashboard estándar</li>
+                                </ul>
+                            </div>
+                            <button onclick="App.changePlan('premium')" class="w-full bg-gold hover:bg-yellow-400 text-primary font-bold py-2.5 rounded-xl text-xs transition-colors shadow">Mejorar a Premium</button>
+                        </div>
+
+                        <!-- HOLDING -->
+                        <div class="border border-primary rounded-3xl p-6 hover:shadow-md transition-all flex flex-col justify-between relative bg-blue-50/20">
+                            <div>
+                                <span class="text-xs font-bold text-primary uppercase tracking-wider block mb-1">🏢 HOLDING</span>
+                                <div class="text-3xl font-extrabold text-primary mb-1">$12 <span class="text-xs text-gray-500 font-normal">/ mes</span></div>
+                                <p class="text-[11px] text-gray-500 mb-4">Inmobiliarias y agentes</p>
+
+                                <ul class="space-y-2 text-xs text-gray-700 mb-6 border-t pt-4">
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-500 font-bold"></i> ∞ Propiedades ilimitadas</li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-500 font-bold"></i> Destacar propiedades INCLUIDO</li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-500 font-bold"></i> SIN publicidad</li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-500 font-bold"></i> Dashboard Avanzado con Métricas</li>
+                                </ul>
+                            </div>
+                            <button onclick="App.changePlan('holding')" class="w-full bg-primary hover:bg-blue-900 text-white font-bold py-2.5 rounded-xl text-xs transition-colors">Plan Holding</button>
+                        </div>
+                    </div>
+
+                    <!-- Commissions Structure Tables -->
+                    <div class="border-t border-gray-100 pt-8">
+                        <h4 class="font-heading font-bold text-primary text-base mb-4 text-center">💸 Sistema de Comisiones Actualizado</h4>
+                        
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 text-xs">
+                            <!-- Sales Commissions -->
+                            <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200">
+                                <h5 class="font-bold text-gray-800 mb-2 flex items-center gap-2"><i class="fas fa-tag text-accent"></i> Comisiones para VENTAS</h5>
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="border-b text-gray-500 text-[11px]">
+                                            <th class="py-2">Plan</th>
+                                            <th class="py-2">Comisión</th>
+                                            <th class="py-2">Ejemplo Venta ($150,000)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200 font-medium text-gray-700">
+                                        <tr><td class="py-2">🆓 FREE</td><td class="py-2 font-bold">12%</td><td class="py-2 text-accent font-bold">$18,000</td></tr>
+                                        <tr><td class="py-2">⭐ PREMIUM</td><td class="py-2 font-bold">8%</td><td class="py-2 text-primary font-bold">$12,000</td></tr>
+                                        <tr><td class="py-2">🏢 HOLDING</td><td class="py-2 font-bold">6%</td><td class="py-2 text-emerald-600 font-bold">$9,000</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Rental Commissions -->
+                            <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200">
+                                <h5 class="font-bold text-gray-800 mb-2 flex items-center gap-2"><i class="fas fa-key text-secondary"></i> Comisiones para ALQUILERES (Mensual Recurrente)</h5>
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="border-b text-gray-500 text-[11px]">
+                                            <th class="py-2">Plan</th>
+                                            <th class="py-2">Comisión / mes</th>
+                                            <th class="py-2">Ejemplo ($800/mes x 12m)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200 font-medium text-gray-700">
+                                        <tr><td class="py-2">🆓 FREE</td><td class="py-2 font-bold">5% mensual</td><td class="py-2 text-accent font-bold">$40/mes ($480 tot)</td></tr>
+                                        <tr><td class="py-2">⭐ PREMIUM</td><td class="py-2 font-bold">3% mensual</td><td class="py-2 text-primary font-bold">$24/mes ($288 tot)</td></tr>
+                                        <tr><td class="py-2">🏢 HOLDING</td><td class="py-2 font-bold">2% mensual</td><td class="py-2 text-emerald-600 font-bold">$16/mes ($192 tot)</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- PANEL INMOBILIARIA (SOLO PLAN HOLDING)     -->
+            <!-- ========================================== -->
+            <div class="show-holding mt-8">
+                <div class="bg-gradient-to-br from-slate-900 via-primary to-slate-900 text-white rounded-3xl p-6 md:p-8 shadow-2xl border border-white/10">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-white/10 pb-4 mb-6">
+                        <h2 class="text-xl font-heading font-bold flex items-center gap-2"><i class="fas fa-building text-secondary"></i> Panel Inmobiliaria</h2>
+                        <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[11px] font-bold px-3 py-1 rounded-full">✅ Empresa verificada</span>
+                    </div>
+
+                    <!-- Company Header -->
+                    <div class="bg-white/5 border border-white/10 rounded-2xl p-5 flex flex-col sm:flex-row items-center gap-5 mb-6">
+                        <div class="w-20 h-20 rounded-2xl bg-secondary/20 border border-secondary/40 flex items-center justify-center text-3xl shrink-0">🏢</div>
+                        <div class="flex-1 text-center sm:text-left">
+                            <h3 class="font-heading font-bold text-lg">Inmobiliaria Panacasas S.A.</h3>
+                            <p class="text-[11px] text-blue-200">📧 info@panacasas.com &nbsp;•&nbsp; 📱 +507 6222-2222</p>
+                            <p class="text-[11px] text-blue-200 mt-1">👥 Equipo: <span id="agency-team-count">3</span>/5 usuarios</p>
+                        </div>
+                        <div class="text-center sm:text-right text-[11px] text-blue-200 space-y-2">
+                            <p>📅 Suscripción activa hasta: <strong class="text-white">15 Sept 2027</strong></p>
+                            <div class="flex gap-2 justify-center sm:justify-end">
+                                <button onclick="App.notify('Abriendo gestión de suscripción...')" class="bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-1.5 rounded-lg font-bold">Gestionar suscripción</button>
+                                <button onclick="App.inviteHoldingUser()" class="bg-secondary text-primary px-3 py-1.5 rounded-lg font-bold">+ Añadir usuario</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KPI Dashboard -->
+                    <h4 class="font-heading font-bold text-sm mb-3 flex items-center gap-2"><i class="fas fa-chart-pie text-secondary"></i> Dashboard Avanzado</h4>
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+                        <div class="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
+                            <span class="text-xl">👁️</span>
+                            <div class="text-xl font-extrabold">24.5K</div>
+                            <div class="text-[10px] text-blue-200">Vistas</div>
+                            <div class="text-emerald-400 text-[10px] font-bold">📈 +28%</div>
+                        </div>
+                        <div class="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
+                            <span class="text-xl">💬</span>
+                            <div class="text-xl font-extrabold">342</div>
+                            <div class="text-[10px] text-blue-200">Consultas</div>
+                            <div class="text-emerald-400 text-[10px] font-bold">📈 +15%</div>
+                        </div>
+                        <div class="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
+                            <span class="text-xl">🏠</span>
+                            <div class="text-xl font-extrabold">47</div>
+                            <div class="text-[10px] text-blue-200">Activas</div>
+                            <div class="text-emerald-400 text-[10px] font-bold">📈 +5</div>
+                        </div>
+                        <div class="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
+                            <span class="text-xl">💰</span>
+                            <div class="text-xl font-extrabold">$12.4K</div>
+                            <div class="text-[10px] text-blue-200">Ingresos</div>
+                            <div class="text-emerald-400 text-[10px] font-bold">📈 +22%</div>
+                        </div>
+                    </div>
+
+                    <!-- Monthly Performance Chart -->
+                    <div class="bg-white/5 border border-white/10 rounded-2xl p-4 mb-6">
+                        <h5 class="font-bold text-xs mb-2 text-blue-100">📈 Rendimiento Mensual: Vistas vs Consultas</h5>
+                        <div class="h-52"><canvas id="agencyChart"></canvas></div>
+                    </div>
+
+                    <!-- Advanced Metrics -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6 text-center text-[11px]">
+                        <div class="bg-white/5 border border-white/10 rounded-xl p-3"><span class="block text-blue-200">Tasa conversión</span><strong class="text-secondary text-sm">8.3%</strong></div>
+                        <div class="bg-white/5 border border-white/10 rounded-xl p-3"><span class="block text-blue-200">Tiempo prom. alquiler</span><strong class="text-secondary text-sm">18 días</strong></div>
+                        <div class="bg-white/5 border border-white/10 rounded-xl p-3"><span class="block text-blue-200">Precio prom./m²</span><strong class="text-secondary text-sm">$12.45</strong></div>
+                        <div class="bg-white/5 border border-white/10 rounded-xl p-3"><span class="block text-blue-200">ROI destacadas</span><strong class="text-secondary text-sm">+340%</strong></div>
+                    </div>
+
+                    <!-- Team -->
+                    <h4 class="font-heading font-bold text-sm mb-3 flex items-center gap-2"><i class="fas fa-users text-secondary"></i> Mi Equipo (<span id="agency-team-count-2">3</span>/5)</h4>
+                    <div id="agency-team-list" class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
+                        <!-- Renderizado por JS: renderHoldingTeam() -->
+                    </div>
+                    <p class="text-[10px] text-blue-200 mb-6">🔐 Para cambiar de cuenta activa dentro del holding se solicitará la contraseña del usuario seleccionado.</p>
+
+                    <!-- Reports -->
+                    <h4 class="font-heading font-bold text-sm mb-3 flex items-center gap-2"><i class="fas fa-file-alt text-secondary"></i> Reportes</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="App.notify('Generando reporte mensual en PDF...')" class="bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-2 rounded-xl text-[11px] font-bold">📄 Reporte mensual PDF</button>
+                        <button onclick="App.notify('Cargando análisis de mercado...')" class="bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-2 rounded-xl text-[11px] font-bold">📊 Análisis mercado</button>
+                        <button onclick="App.notify('Calculando proyección de ventas...')" class="bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-2 rounded-xl text-[11px] font-bold">📈 Proyección ventas</button>
+                        <button onclick="App.notify('Cargando rendimiento del equipo...')" class="bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-2 rounded-xl text-[11px] font-bold">🎯 Rendimiento equipo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="bg-primary text-blue-100 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 grid gap-8 md:grid-cols-3 text-xs">
+            <div>
+                <p class="font-heading font-bold text-white text-lg">Alquila<span class="text-accent">PTY</span></p>
+                <p class="mt-2 leading-relaxed">Plataforma inmobiliaria de Panamá: alquiler y venta de apartamentos, casas y oficinas, subastas inversas, búsqueda de roommates y análisis de inversión con datos de ROI.</p>
+            </div>
+            <nav aria-label="Secciones del sitio">
+                <p class="font-heading font-bold text-white mb-2">Explora</p>
+                <ul class="space-y-1.5">
+                    <li><a class="hover:text-secondary" href="#/inicio">Buscar propiedades</a></li>
+                    <li><a class="hover:text-secondary" href="#/roommates">Roommates</a></li>
+                    <li><a class="hover:text-secondary" href="#/subastas">Subastas inversas</a></li>
+                    <li><a class="hover:text-secondary" href="#/roi">Calculadora de ROI e hipoteca</a></li>
+                    <li><a class="hover:text-secondary" href="#/mapa">Mapa de propiedades</a></li>
+                    <li><a class="hover:text-secondary" href="#/comparador">Comparador</a></li>
+                </ul>
+            </nav>
+            <nav aria-label="Zonas populares">
+                <p class="font-heading font-bold text-white mb-2">Zonas populares</p>
+                <ul class="space-y-1.5">
+                    <li><a class="hover:text-secondary" href="#/zona/Costa%20del%20Este">Propiedades en Costa del Este</a></li>
+                    <li><a class="hover:text-secondary" href="#/zona/San%20Francisco">Propiedades en San Francisco</a></li>
+                    <li><a class="hover:text-secondary" href="#/zona/Obarrio">Propiedades en Obarrio</a></li>
+                    <li><a class="hover:text-secondary" href="#/zona/Punta%20Pac%C3%ADfica">Propiedades en Punta Pacífica</a></li>
+                    <li><a class="hover:text-secondary" href="#/zona/Clayton">Propiedades en Clayton</a></li>
+                </ul>
+            </nav>
+        </div>
+        <p class="border-t border-white/10 text-center text-[11px] text-blue-200 py-4 px-4">AlquilaPTY · Proyecto de demostración: los anuncios y precios son de ejemplo.</p>
+    </footer>
+
+    <!-- MODAL: DETALLES DE PROPIEDAD -->
+    <div id="modal-property" role="dialog" aria-modal="true" aria-label="Detalle de la propiedad" class="fixed inset-0 bg-slate-900/60 modal-blur z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-100 p-6 relative">
+            <button onclick="App.closeModal('modal-property')" type="button" aria-label="Cerrar" class="absolute top-4 right-4 bg-gray-100 hover:bg-gray-200 text-gray-700 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold z-10">✕</button>
+            <div id="modal-property-content">
+                <!-- Content inserted dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: OFERTA SUBASTA INVERSA -->
+    <div id="modal-offer" role="dialog" aria-modal="true" aria-label="Hacer oferta en subasta" class="fixed inset-0 bg-slate-900/60 modal-blur z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl p-6 relative">
+            <button onclick="App.closeModal('modal-offer')" type="button" aria-label="Cerrar" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 font-bold">✕</button>
+            <h3 class="font-heading font-bold text-primary text-lg mb-1 flex items-center gap-2">💰 Hacer Oferta en Subasta</h3>
+            <p class="text-xs text-gray-500 mb-4">El propietario recibirá tu propuesta de forma confidencial.</p>
+            
+            <form onsubmit="App.submitAuctionOffer(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">Monto de tu Oferta ($)</label>
+                    <input type="number" id="offer-amount-input" aria-label="Monto de la oferta en dólares" required class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5 font-bold text-primary text-sm">
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">Condición de Pago</label>
+                    <select id="offer-terms" aria-label="Condición de pago" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2 font-medium">
+                        <option>Pago de Contado / Inmediato</option>
+                        <option>Financiamiento Bancario Pre-aprobado</option>
+                        <option>Sujeto a visita previa</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">Mensaje al Vendedor</label>
+                    <textarea id="offer-message" aria-label="Mensaje al vendedor" maxlength="500" placeholder="Ej. Estoy listo para firmar esta misma semana." class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2 text-xs" rows="2"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 rounded-xl shadow transition-colors">
+                    Enviar Oferta Confidencial
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: VER PERFIL DE ROOMMATE -->
+    <div id="modal-roommate-profile" role="dialog" aria-modal="true" aria-label="Perfil de roommate" class="fixed inset-0 bg-slate-900/60 modal-blur z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-sm w-full shadow-2xl p-6 relative text-xs">
+            <button onclick="App.closeModal('modal-roommate-profile')" type="button" aria-label="Cerrar" class="absolute top-4 right-4 text-gray-400 font-bold">✕</button>
+            <div id="modal-roommate-profile-content" class="space-y-3">
+                <!-- Renderizado por JS: viewRoommateProfile() -->
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: CAMBIAR DE CUENTA ADMINISTRADA (HOLDING) -->
+    <div id="modal-switch-account" role="dialog" aria-modal="true" aria-label="Confirmar cambio de cuenta" class="fixed inset-0 bg-slate-900/60 modal-blur z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-sm w-full shadow-2xl p-6 relative text-xs">
+            <button onclick="App.closeModal('modal-switch-account')" type="button" aria-label="Cerrar" class="absolute top-4 right-4 text-gray-400 font-bold">✕</button>
+            <h3 class="font-heading font-bold text-primary text-base mb-1">🔐 Confirmar Cambio de Cuenta</h3>
+            <p id="switch-account-target-name" class="text-gray-500 mb-4">Ingresa la contraseña para administrar como este usuario.</p>
+            <form onsubmit="App.confirmSwitchAccount(event)" class="space-y-3">
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">Contraseña</label>
+                    <input type="password" id="switch-password" aria-label="Contraseña" autocomplete="current-password" required placeholder="••••••••" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5">
+                </div>
+                <button type="submit" class="w-full bg-primary hover:bg-blue-900 text-white font-bold py-2.5 rounded-xl transition-colors">Ingresar a esta cuenta</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript de la aplicación (módulos ES): punto de entrada = js/main.js -->
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

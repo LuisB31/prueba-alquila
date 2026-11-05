@@ -1,0 +1,584 @@
+[
+  {
+    "id": 1,
+    "title": "Apartamento de Lujo - Costa del Este",
+    "txType": "Venta",
+    "price": 285000,
+    "zone": "Costa del Este",
+    "type": "Apartamento",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "sqm": 120,
+    "amenities": [
+      "Piscina",
+      "Gimnasio",
+      "Seguridad 24/7",
+      "2 Parqueos"
+    ],
+    "furnished": "Amueblado",
+    "pets": true,
+    "ownerRating": 4.9,
+    "reviewsCount": 45,
+    "posted": "Hace 2 días",
+    "img": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=600&q=80",
+    "auction": {
+      "active": true,
+      "initialPrice": 295000,
+      "minPrice": 270000,
+      "step": 2500,
+      "currentStep": 3,
+      "daysLeft": 2
+    },
+    "coords": {
+      "x": 380,
+      "y": 180
+    }
+  },
+  {
+    "id": 2,
+    "title": "Oficina Ejecutiva - Costa del Este",
+    "txType": "Alquiler",
+    "price": 1800,
+    "zone": "Costa del Este",
+    "type": "Oficina",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "sqm": 80,
+    "amenities": [
+      "Aire Acondicionado",
+      "Internet",
+      "Recepción",
+      "1 Parqueo"
+    ],
+    "furnished": "Sin amueblar",
+    "pets": false,
+    "ownerRating": 4.7,
+    "reviewsCount": 28,
+    "posted": "Hace 5 días",
+    "img": "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80",
+    "auction": null,
+    "coords": {
+      "x": 395,
+      "y": 195
+    }
+  },
+  {
+    "id": 3,
+    "title": "Casa Familiar - San Francisco",
+    "txType": "Venta",
+    "price": 195000,
+    "zone": "San Francisco",
+    "type": "Casa",
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "sqm": 180,
+    "amenities": [
+      "Jardín",
+      "Parqueo techado",
+      "Área de lavandería"
+    ],
+    "furnished": "Sin amueblar",
+    "pets": true,
+    "ownerRating": 4.8,
+    "reviewsCount": 32,
+    "posted": "Hace 1 semana",
+    "img": "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=600&q=80",
+    "auction": {
+      "active": true,
+      "initialPrice": 205000,
+      "minPrice": 185000,
+      "step": 2000,
+      "currentStep": 2,
+      "daysLeft": 4
+    },
+    "coords": {
+      "x": 260,
+      "y": 220
+    }
+  },
+  {
+    "id": 4,
+    "title": "Estudio Moderno - San Francisco",
+    "txType": "Alquiler",
+    "price": 650,
+    "zone": "San Francisco",
+    "type": "Estudio",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "sqm": 35,
+    "amenities": [
+      "Internet incluido",
+      "Amueblado",
+      "Lavandería común"
+    ],
+    "furnished": "Amueblado",
+    "pets": false,
+    "ownerRating": 4.6,
+    "reviewsCount": 19,
+    "posted": "Hace 3 días",
+    "img": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=600&q=80",
+    "auction": null,
+    "coords": {
+      "x": 275,
+      "y": 235
+    }
+  },
+  {
+    "id": 5,
+    "title": "Apartamento Joven - San Francisco",
+    "txType": "Alquiler",
+    "price": 900,
+    "zone": "San Francisco",
+    "type": "Apartamento",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "sqm": 75,
+    "amenities": [
+      "Piscina",
+      "Gimnasio",
+      "Mascota-friendly",
+      "1 Parqueo"
+    ],
+    "furnished": "Sin amueblar",
+    "pets": true,
+    "ownerRating": 4.9,
+    "reviewsCount": 51,
+    "posted": "Hace 1 día",
+    "img": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80",
+    "auction": null,
+    "coords": {
+      "x": 250,
+      "y": 210
+    }
+  },
+  {
+    "id": 6,
+    "title": "PH de Lujo - Obarrio",
+    "txType": "Venta",
+    "price": 450000,
+    "zone": "Obarrio",
+    "type": "Apartamento",
+    "bedrooms": 4,
+    "bathrooms": 4,
+    "sqm": 200,
+    "amenities": [
+      "Piscina infinity",
+      "Spa",
+      "Vista al mar",
+      "3 Parqueos"
+    ],
+    "furnished": "Amueblado",
+    "pets": true,
+    "ownerRating": 5,
+    "reviewsCount": 67,
+    "posted": "Hace 4 días",
+    "img": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80",
+    "auction": {
+      "active": true,
+      "initialPrice": 475000,
+      "minPrice": 430000,
+      "step": 5000,
+      "currentStep": 4,
+      "daysLeft": 1
+    },
+    "coords": {
+      "x": 210,
+      "y": 260
+    }
+  },
+  {
+    "id": 7,
+    "title": "Oficina Premium - Obarrio",
+    "txType": "Alquiler",
+    "price": 2500,
+    "zone": "Obarrio",
+    "type": "Oficina",
+    "bedrooms": 1,
+    "bathrooms": 2,
+    "sqm": 120,
+    "amenities": [
+      "Vista panorámica",
+      "Sala de juntas",
+      "2 Parqueos"
+    ],
+    "furnished": "Sin amueblar",
+    "pets": false,
+    "ownerRating": 4.8,
+    "reviewsCount": 23,
+    "posted": "Hace 6 días",
+    "img": "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=600&q=80",
+    "auction": null,
+    "coords": {
+      "x": 220,
+      "y": 275
+    }
+  },
+  {
+    "id": 8,
+    "title": "Casa con Piscina - El Cangrejo",
+    "txType": "Venta",
+    "price": 320000,
+    "zone": "El Cangrejo",
+    "type": "Casa",
+    "bedrooms": 5,
+    "bathrooms": 4,
+    "sqm": 250,
+    "amenities": [
+      "Piscina",
+      "Jardín",
+      "BBQ",
+      "3 Parqueos"
+    ],
+    "furnished": "Sin amueblar",
+    "pets": true,
+    "ownerRating": 4.7,
+    "reviewsCount": 41,
+    "posted": "Hace 2 semanas",
+    "img": "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=600&q=80",
+    "auction": null,
+    "coords": {
+      "x": 190,
+      "y": 240
+    }
+  },
+  {
+    "id": 9,
+    "title": "Apartamento Familiar - El Cangrejo",
+    "txType": "Alquiler",
+    "price": 1200,
+    "zone": "El Cangrejo",
+    "type": "Apartamento",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "sqm": 95,
+    "amenities": [
+      "Cerca de colegios",
+      "Área social",
+      "1 Parqueo"
+    ],
+    "furnished": "Amueblado",
+    "pets": true,
+    "ownerRating": 4.9,
+    "reviewsCount": 38,
+    "posted": "Hace 3 días",
+    "img": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=600&q=80",
+    "auction": null,
+    "coords": {
+      "x": 200,
+      "y": 250
+    }
+  },
+  {
+    "id": 10,
+    "title": "Penthouse - Punta Pacífica",
+    "txType": "Venta",
+    "price": 680000,
+    "zone": "Punta Pacífica",
+    "type": "Apartamento",
+    "bedrooms": 5,
+    "bathrooms": 5,
+    "sqm": 300,
+    "amenities": [
+      "Jacuzzi",
+      "Vista 360°",
+      "4 Parqueos",
+      "Bodega"
+    ],
+    "furnished": "Amueblado",
+    "pets": true,
+    "ownerRating": 5,
+    "reviewsCount": 89,
+    "posted": "Hace 1 semana",
+    "img": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80",
+    "auction": {
+      "active": true,
+      "initialPrice": 720000,
+      "minPrice": 650000,
+      "step": 10000,
+      "currentStep": 3,
+      "daysLeft": 5
+    },
+    "coords": {
+      "x": 310,
+      "y": 290
+    }
+  },
+  {
+    "id": 11,
+    "title": "Apartamento Vista al Mar - Punta Pacífica",
+    "txType": "Alquiler",
+    "price": 2200,
+    "zone": "Punta Pacífica",
+    "type": "Apartamento",
+    "bedrooms": 3,
+    "bathrooms": 3,
+    "sqm": 150,
+    "amenities": [
+      "Vista al mar",
+      "Piscina",
+      "Gimnasio",
+      "2 Parqueos"
+    ],
+    "furnished": "Amueblado",
+    "pets": false,
+    "ownerRating": 4.8,
+    "reviewsCount": 56,
+    "posted": "Hace 5 días",
+    "img": "https://images.unsplash.com/photo-1567496898669-ee935f5f647a?auto=format&fit=crop&w=600&q=80",
+    "auction": null,
+    "coords": {
+      "x": 325,
+      "y": 305
+    }
+  },
+  {
+    "id": 12,
+    "title": "Casa Económica - Bettsilla",
+    "txType": "Venta",
+    "price": 85000,
+    "zone": "Bettsilla",
+    "type": "Casa",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "sqm": 100,
+    "amenities": [
+      "Parqueo",
+      "Patio trasero",
+      "Cerca de transporte"
+    ],
+    "furnished": "Sin amueblar",
+    "pets": true,
+    "ownerRating": 4.5,
+    "reviewsCount": 15,
+    "posted": "Hace 1 mes",
+    "img": "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=600&q=80",
+    "auction": null,
+    "coords": {
+      "x": 140,
+      "y": 150
+    }
+  },
+  {
+    "id": 13,
+    "title": "Habitación para Estudiante - Bettsilla",
+    "txType": "Alquiler",
+    "price": 350,
+    "zone": "Bettsilla",
+    "type": "Habitación",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "sqm": 20,
+    "amenities": [
+      "Internet",
+      "Lavandería",
+      "Cerca de universidad"
+    ],
+    "furnished": "Amueblado",
+    "pets": false,
+    "ownerRating": 4.6,
+    "reviewsCount": 22,
+    "posted": "Hace 2 días",
+    "img": "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=600&q=80",
+    "auction": null,
+    "coords": {
+      "x": 150,
+      "y": 160
+    }
+  },
+  {
+    "id": 14,
+    "title": "Apartamento Céntrico - Vía España",
+    "txType": "Alquiler",
+    "price": 750,
+    "zone": "Vía España",
+    "type": "Apartamento",
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "sqm": 65,
+    "amenities": [
+      "Cerca de metro",
+      "Supermercados",
+      "1 Parqueo"
+    ],
+    "furnished": "Sin amueblar",
+    "pets": true,
+    "ownerRating": 4.7,
+    "reviewsCount": 34,
+    "posted": "Hace 4 días",
+    "img": "https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=600&q=80",
+    "auction": null,
+    "coords": {
+      "x": 230,
+      "y": 190
+    }
+  },
+  {
+    "id": 15,
+    "title": "Local Comercial - Vía España",
+    "txType": "Alquiler",
+    "price": 1500,
+    "zone": "Vía España",
+    "type": "Local",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "sqm": 80,
+    "amenities": [
+      "Vitrina",
+      "Alto tráfico",
+      "Aire acondicionado"
+    ],
+    "furnished": "Sin amueblar",
+    "pets": false,
+    "ownerRating": 4.8,
+    "reviewsCount": 18,
+    "posted": "Hace 1 semana",
+    "img": "https://images.unsplash.com/photo-1582037928769-181f2644ecb7?auto=format&fit=crop&w=600&q=80",
+    "auction": null,
+    "coords": {
+      "x": 240,
+      "y": 200
+    }
+  },
+  {
+    "id": 16,
+    "title": "Casa de Lujo - Clayton",
+    "txType": "Venta",
+    "price": 520000,
+    "zone": "Clayton",
+    "type": "Casa",
+    "bedrooms": 6,
+    "bathrooms": 5,
+    "sqm": 350,
+    "amenities": [
+      "Piscina",
+      "Jardín grande",
+      "Vista al canal",
+      "4 Parqueos"
+    ],
+    "furnished": "Amueblado",
+    "pets": true,
+    "ownerRating": 5,
+    "reviewsCount": 73,
+    "posted": "Hace 3 semanas",
+    "img": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80",
+    "auction": {
+      "active": true,
+      "initialPrice": 550000,
+      "minPrice": 500000,
+      "step": 5000,
+      "currentStep": 2,
+      "daysLeft": 3
+    },
+    "coords": {
+      "x": 110,
+      "y": 110
+    }
+  },
+  {
+    "id": 17,
+    "title": "Apartamento Ejecutivo - Clayton",
+    "txType": "Alquiler",
+    "price": 1800,
+    "zone": "Clayton",
+    "type": "Apartamento",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "sqm": 110,
+    "amenities": [
+      "Cerca de embajadas",
+      "Seguridad 24/7",
+      "2 Parqueos"
+    ],
+    "furnished": "Amueblado",
+    "pets": true,
+    "ownerRating": 4.9,
+    "reviewsCount": 47,
+    "posted": "Hace 6 días",
+    "img": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=600&q=80",
+    "auction": null,
+    "coords": {
+      "x": 120,
+      "y": 125
+    }
+  },
+  {
+    "id": 18,
+    "title": "Estudio para Soltero - Albrook",
+    "txType": "Alquiler",
+    "price": 550,
+    "zone": "Albrook",
+    "type": "Estudio",
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "sqm": 30,
+    "amenities": [
+      "Cerca de mall y metro",
+      "Amueblado"
+    ],
+    "furnished": "Amueblado",
+    "pets": false,
+    "ownerRating": 4.6,
+    "reviewsCount": 29,
+    "posted": "Hace 2 días",
+    "img": "https://images.unsplash.com/photo-1536376072261-38c75010e6c9?auto=format&fit=crop&w=600&q=80",
+    "auction": null,
+    "coords": {
+      "x": 130,
+      "y": 180
+    }
+  },
+  {
+    "id": 19,
+    "title": "Casa con Terreno - Albrook",
+    "txType": "Venta",
+    "price": 165000,
+    "zone": "Albrook",
+    "type": "Casa",
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "sqm": 200,
+    "amenities": [
+      "Jardín grande",
+      "2 Parqueos",
+      "Potencial de ampliación"
+    ],
+    "furnished": "Sin amueblar",
+    "pets": true,
+    "ownerRating": 4.7,
+    "reviewsCount": 26,
+    "posted": "Hace 2 semanas",
+    "img": "https://images.unsplash.com/photo-1598228723793-52759bba239c?auto=format&fit=crop&w=600&q=80",
+    "auction": null,
+    "coords": {
+      "x": 140,
+      "y": 195
+    }
+  },
+  {
+    "id": 20,
+    "title": "Loft Histórico - Panamá Viejo",
+    "txType": "Alquiler",
+    "price": 950,
+    "zone": "Panamá Viejo",
+    "type": "Apartamento",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "sqm": 85,
+    "amenities": [
+      "Vista al mar",
+      "Estilo industrial",
+      "1 Parqueo"
+    ],
+    "furnished": "Amueblado",
+    "pets": true,
+    "ownerRating": 4.8,
+    "reviewsCount": 31,
+    "posted": "Hace 5 días",
+    "img": "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=600&q=80",
+    "auction": null,
+    "coords": {
+      "x": 350,
+      "y": 150
+    }
+  }
+]

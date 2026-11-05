@@ -1,0 +1,110 @@
+/* ==========================================================================
+   AlquilaPTY — estilos propios
+   (Las utilidades de Tailwind viven en tailwind.css; aquí solo lo que
+   Tailwind no cubre. Este archivo se carga DESPUÉS de tailwind.css.)
+   ========================================================================== */
+
+/* ---- Base ---------------------------------------------------------------- */
+body {
+  background-color: #F8F9FA;
+  color: #2D3436;
+  overflow-x: hidden;
+}
+
+/* Enlace "saltar al contenido": solo visible al enfocarlo con el teclado (accesibilidad) */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: #1E3A5F;
+  color: #fff;
+  padding: 0.75rem 1rem;
+  border-radius: 0 0 0.75rem 0;
+  font-weight: 700;
+}
+.skip-link:focus { left: 0; }
+
+/* Foco visible para quien navega con teclado */
+:focus-visible { outline: 2px solid #40E0D0; outline-offset: 2px; }
+
+/* ---- Barras de desplazamiento ------------------------------------------- */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #1E3A5F; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #FF6B6B; }
+
+/* Oculta la barra en el menú móvil con scroll horizontal */
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* ---- Pestañas ------------------------------------------------------------ */
+.tab-content { display: none; animation: fadeIn 0.3s ease-in-out; }
+.tab-content.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Efectos ------------------------------------------------------------- */
+.premium-shimmer {
+  background: linear-gradient(90deg, rgba(255,215,0,0.15) 0%, rgba(255,255,255,0.9) 50%, rgba(255,215,0,0.15) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.modal-blur { backdrop-filter: blur(6px); }
+
+/* Simulación de vista 3D rotativa en los popups del mapa */
+.map-3d-rotate { animation: rotate3d 6s ease-in-out infinite; transform-style: preserve-3d; }
+@keyframes rotate3d {
+  0%, 100% { transform: scale(1.0) rotateY(0deg); }
+  50%      { transform: scale(1.08) rotateY(6deg); }
+}
+
+/* ---- Visibilidad según el plan de suscripción ----------------------------
+   <body data-plan="visitor|free|premium|holding"> decide qué bloques se ven.
+   Clases: .show-<plan> (display:block) y .show-<plan>-flex (display:flex).     */
+.show-visitor, .show-free, .show-premium, .show-holding,
+.show-visitor-flex, .show-free-flex, .show-premium-flex, .show-holding-flex { display: none; }
+
+body[data-plan="visitor"] .show-visitor      { display: block; }
+body[data-plan="visitor"] .show-visitor-flex { display: flex; }
+body[data-plan="free"] .show-free            { display: block; }
+body[data-plan="free"] .show-free-flex       { display: flex; }
+body[data-plan="premium"] .show-premium      { display: block; }
+body[data-plan="premium"] .show-premium-flex { display: flex; }
+body[data-plan="holding"] .show-holding      { display: block; }
+body[data-plan="holding"] .show-holding-flex { display: flex; }
+
+/* Contenido solo para usuarios con cuenta (cualquier plan menos visitante) */
+body[data-plan="visitor"] .show-registered { display: none !important; }
+body[data-plan="free"] .show-registered,
+body[data-plan="premium"] .show-registered,
+body[data-plan="holding"] .show-registered { display: block; }
+
+/* Publicidad: solo para usuarios Free y visitantes.
+   Usa un contenedor SIN clases de display propias; el diseño interno va en un hijo. */
+.ad-container { display: none; }
+body[data-plan="free"] .ad-container,
+body[data-plan="visitor"] .ad-container { display: block; }
+
+/* ---- Tarjetas "swipe" (matchmaking) -------------------------------------- */
+.swipe-card { transition: transform 0.3s ease, opacity 0.3s ease; }
+.swipe-left  { transform: translateX(-120%) rotate(-15deg) !important; opacity: 0 !important; }
+.swipe-right { transform: translateX(120%) rotate(15deg) !important;  opacity: 0 !important; }
+
+/* ---- Accesibilidad: respeta "reducir movimiento" ------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

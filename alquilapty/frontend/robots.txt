@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gianmontilla1607.github.io/Alquiler/sitemap.xml
