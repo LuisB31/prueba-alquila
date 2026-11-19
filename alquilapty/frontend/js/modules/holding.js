@@ -6,6 +6,7 @@ import { byId, html, setHtml, setText, valueOf } from '../core/dom.js';
 import { api } from '../core/api.js';
 import { notify, openModal, closeModal, showError } from '../core/ui.js';
 import { showAgency } from './charts.js';
+import { isHolding } from './plans.js';
 
 let pendingUser = null;
 
@@ -36,7 +37,8 @@ function renderTeam({ members, limit }) {
 /** Carga equipo y estadísticas (solo hace falta al entrar al panel Holding). */
 export async function loadHolding() {
   const container = byId('agency-team-list');
-  if (!container) return;
+  // El panel (y su API) es exclusivo del plan Holding: con otro plan no se pide nada
+  if (!container || !isHolding()) return;
   try {
     const [team, stats] = await Promise.all([api.holdingTeam(), api.holdingStats()]);
     renderTeam(team);
@@ -47,6 +49,7 @@ export async function loadHolding() {
 }
 
 export function openSwitchAccount(name) {
+  if (!isHolding()) return;
   pendingUser = name;
   setText('switch-account-target-name', `Ingresa la contraseña de ${name} para administrar como este usuario.`);
   openModal('modal-switch-account');
@@ -68,6 +71,7 @@ export async function confirmSwitchAccount(event) {
 }
 
 export async function inviteHoldingUser() {
+  if (!isHolding()) return;
   try {
     notify((await api.inviteHoldingUser()).message, 'success');
   } catch (error) {

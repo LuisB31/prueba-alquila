@@ -12,9 +12,10 @@ import { state, emit } from '../core/state.js';
 import { notify, openModal, closeModal, showLoading, showError } from '../core/ui.js';
 import { setListingSchema, setPageMeta } from './seo.js';
 import { restoreTabMeta, getCurrentTab } from './navigation.js';
-import { setPoints } from './plans.js';
+import { setPoints, requireAccount } from './plans.js';
 
-/** Tipo de operación elegido en los botones Alquilar / Comprar / Todos. */
+/** Tipo de operación elegido en los botones Alquilar / Comprar / Todos
+ *  (debe coincidir con el botón resaltado de inicio en index.html: "Todos"). */
 let currentTx = 'ambos';
 
 /** Propiedad abierta en el modal y foto actual de su galería. */
@@ -36,6 +37,10 @@ function readFilters() {
   const zone = valueOf('filter-zone');
   const type = valueOf('filter-type');
   const bedrooms = valueOf('filter-bedrooms');
+  // Con el deslizador al máximo no se limita el precio. (Con min=300 y step=5000 el
+  // navegador nunca llega a 700,000: se queda en 695,300 y ocultaba propiedades caras.)
+  const slider = byId('filter-price-slider');
+  const atMax = slider && Number(slider.value) + Number(slider.step || 1) > Number(slider.max);
   return {
     tx: currentTx,
     zone: zone !== 'todas' ? zone : undefined,
@@ -43,7 +48,7 @@ function readFilters() {
     bedrooms: bedrooms !== 'todos' ? bedrooms : undefined,
     pets: isChecked('filter-pets'),
     auction: isChecked('filter-auction'),
-    maxPrice: valueOf('filter-price-slider'),
+    maxPrice: atMax ? undefined : valueOf('filter-price-slider'),
     q: valueOf('search-keyword').trim(),
   };
 }
@@ -127,15 +132,34 @@ export async function refreshFeed() {
 /** Igual que `refreshFeed`, pero espera a que el usuario deje de escribir/arrastrar. */
 export const refreshFeedDebounced = debounce(refreshFeed, DEBOUNCE_MS);
 
+/** Busca ya (Enter o botón Filtrar) y baja hasta los resultados. */
+export async function searchNow() {
+  await refreshFeed();
+  byId('properties-grid')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/** Enter en la barra de búsqueda: busca sin esperar el debounce. Escape la limpia. */
+export function onSearchKey(event) {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    searchNow();
+  } else if (event.key === 'Escape' && event.target.value) {
+    event.target.value = '';
+    refreshFeed();
+  }
+}
+
 /** Botones Alquilar / Comprar / Todos. */
 export function filterTx(type, button) {
   currentTx = type;
   $$('.tx-btn').forEach((b) => {
     b.classList.remove('bg-white', 'text-primary', 'font-bold', 'shadow-sm');
     b.classList.add('text-gray-500', 'font-medium');
+    b.setAttribute('aria-pressed', 'false');
   });
   button.classList.add('bg-white', 'text-primary', 'font-bold', 'shadow-sm');
-  button.classList.remove('text-gray-500');
+  button.classList.remove('text-gray-500', 'font-medium');
+  button.setAttribute('aria-pressed', 'true');
   refreshFeed();
 }
 
@@ -343,6 +367,10 @@ export async function updateModalCommute() {
 
 /** Contacta al publicador: el backend suma los puntos. */
 export async function contactOwner(id) {
+  if (!requireAccount('contactar al propietario')) {
+    closeModal('modal-property');
+    return;
+  }
   try {
     const result = await api.contactOwner(id);
     setPoints(result.points);

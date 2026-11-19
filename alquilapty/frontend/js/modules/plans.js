@@ -3,19 +3,38 @@
  *
  * El simulador flotante permite probar los 4 planes (visitante, free, premium,
  * holding). El plan activo se guarda en `state.plan` y se envía al backend en
- * cada petición; el backend es quien guarda el saldo de puntos.
+ * cada petición; el backend es quien guarda el saldo de puntos y quien decide
+ * qué puede hacer cada rol (aquí solo se adapta la interfaz).
  */
 import { $$, byId, setText } from '../core/dom.js';
 import { api } from '../core/api.js';
 import { state, emit } from '../core/state.js';
 import { notify } from '../core/ui.js';
+import { openTab } from './navigation.js';
 
 const PLAN_IDS = ['visitor', 'free', 'premium', 'holding'];
 
-/** Muestra el saldo de puntos en la barra superior. */
+/** ¿El usuario tiene cuenta? (cualquier plan menos visitante) */
+export const isRegistered = () => state.plan !== 'visitor';
+export const isHolding = () => state.plan === 'holding';
+
+/**
+ * Para acciones que exigen cuenta (contactar, ofertar…): si es visitante,
+ * avisa y lo lleva al perfil para crear la cuenta. Devuelve si puede seguir.
+ */
+export function requireAccount(action = 'usar esta función') {
+  if (isRegistered()) return true;
+  notify(`🔒 Crea una cuenta gratis para ${action}.`, 'error');
+  openTab('perfil');
+  return false;
+}
+
+/** Muestra el saldo de puntos en la barra superior y en el perfil. */
 export function setPoints(points) {
   state.points = points;
-  setText('user-points-header', `${points.toLocaleString('en-US')} pts`);
+  const label = `${points.toLocaleString('en-US')} pts`;
+  setText('user-points-header', label);
+  $$('.user-points-text').forEach((el) => { el.textContent = label; });
   emit('points:change', { points });
 }
 
@@ -25,6 +44,18 @@ function renderProfile(account) {
   $$('.profile-role').forEach((el) => { el.textContent = account.role; });
   $$('.profile-membersince').forEach((el) => { el.textContent = account.memberSince; });
   $$('.profile-avatar, .nav-avatar').forEach((el) => { el.src = account.avatar; });
+}
+
+/** Botones de la tabla de planes: el del plan activo dice "Plan Actual" y se desactiva. */
+function renderPlanButtons(plan) {
+  $$('[data-plan-cta]').forEach((btn) => {
+    btn.dataset.label ??= btn.textContent.trim();
+    const current = btn.dataset.planCta === plan;
+    btn.textContent = current ? '✅ Plan Actual' : btn.dataset.label;
+    btn.disabled = current;
+    btn.classList.toggle('opacity-60', current);
+    btn.classList.toggle('cursor-default', current);
+  });
 }
 
 /** Pide al backend la cuenta del plan activo (perfil + puntos). */
@@ -49,6 +80,7 @@ export async function changePlan(plan) {
     byId(`btn-plan-${id}`)?.classList.toggle('bg-primary', id === plan);
     byId(`btn-plan-${id}`)?.classList.toggle('text-white', id === plan);
   });
+  renderPlanButtons(plan);
 
   await loadProfile();
   emit('plan:change', { plan });
@@ -56,6 +88,7 @@ export async function changePlan(plan) {
 
 /** Canjea puntos por un beneficio (el backend valida el saldo). */
 export async function redeemPoints(item, cost) {
+  if (!requireAccount('canjear puntos')) return;
   try {
     const result = await api.redeem(item, cost);
     setPoints(result.points);
@@ -64,3 +97,6 @@ export async function redeemPoints(item, cost) {
     notify(error.message, 'error');
   }
 }
+
+// Estado inicial de los botones de la tabla de planes
+renderPlanButtons(state.plan);

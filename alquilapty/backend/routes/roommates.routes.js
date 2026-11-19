@@ -5,6 +5,8 @@ const { Router } = require('express');
 const roommates = require('../services/roommates.service');
 const { requireRegistered } = require('../middleware/demoPlan');
 const { requireId, asBool, optionalText, optionalNumber } = require('../middleware/validate');
+const { asyncHandler } = require('../middleware/errors');
+const db = require('../services/db');
 
 const router = Router();
 
@@ -21,9 +23,9 @@ router.get('/', (req, res) => {
  * POST /api/roommates/profile — guarda el perfil del usuario (solo registrados)
  * Va ANTES de "/:id" para que "profile" no se interprete como un id.
  */
-router.post('/profile', requireRegistered, (req, res) => {
+router.post('/profile', requireRegistered, asyncHandler(async (req, res) => {
   const b = req.body || {};
-  roommates.saveProfile(req.plan, {
+  const record = roommates.saveProfile(req.plan, {
     about: optionalText(b.about, { max: 500 }),
     schedule: optionalText(b.schedule, { max: 30 }),
     clean: optionalText(b.clean, { max: 30 }),
@@ -33,8 +35,9 @@ router.post('/profile', requireRegistered, (req, res) => {
     budget: optionalNumber(b.budget, { min: 0, max: 100000, label: 'budget' }),
     moveDate: optionalText(b.moveDate, { max: 20 }),
   });
+  await db.saveRoommateProfile(record);
   res.status(201).json({ message: '✅ ¡Tu perfil de roommate se ha guardado correctamente! Ahora otros usuarios podrán encontrarte.' });
-});
+}));
 
 /** GET /api/roommates/:id */
 router.get('/:id', (req, res) => {
@@ -42,9 +45,10 @@ router.get('/:id', (req, res) => {
 });
 
 /** POST /api/roommates/:id/messages — envía un mensaje al roommate */
-router.post('/:id/messages', requireRegistered, (req, res) => {
-  const { roommate } = roommates.sendMessage(requireId(req.params.id), req.plan, optionalText(req.body?.text, { max: 500 }));
+router.post('/:id/messages', requireRegistered, asyncHandler(async (req, res) => {
+  const { roommate, message } = roommates.sendMessage(requireId(req.params.id), req.plan, optionalText(req.body?.text, { max: 500 }));
+  await db.saveMessage(roommate.id, message);
   res.status(201).json({ message: `💬 Mensaje enviado a ${roommate.name}. Te avisaremos cuando responda.` });
-});
+}));
 
 module.exports = router;

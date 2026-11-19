@@ -14,7 +14,12 @@ module.exports = {
   CORS_ORIGIN: process.env.CORS_ORIGIN || '*',
 
   // URL pública del sitio (la usan robots.txt y sitemap.xml).
-  SITE_URL: (process.env.SITE_URL || 'https://gianmontilla1607.github.io/Alquiler').replace(/\/$/, ''),
+  // En Railway, si no defines SITE_URL se usa el dominio público que asigna Railway.
+  SITE_URL: (
+    process.env.SITE_URL ||
+    (process.env.RAILWAY_PUBLIC_DOMAIN && `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`) ||
+    'https://gianmontilla1607.github.io/Alquiler'
+  ).replace(/\/$/, ''),
 
   // ---- Rutas de archivos --------------------------------------------------
   FRONTEND_DIR: path.join(__dirname, '..', 'frontend'),
@@ -34,5 +39,8 @@ module.exports = {
   },
 
   HOLDING_TEAM_LIMIT: 5,        // máximo de administradores en una cuenta Holding
+
+  // Máximo de propiedades publicadas por plan (Infinity = ilimitado). Ver tabla de planes en el perfil.
+  PUBLISH_LIMITS: { visitor: 0, free: 3, premium: 10, holding: Infinity },
   PLANS: ['visitor', 'free', 'premium', 'holding'],
 };

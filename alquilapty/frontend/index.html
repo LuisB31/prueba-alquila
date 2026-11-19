@@ -205,9 +205,9 @@
                     <div class="flex flex-wrap items-center justify-between gap-2 border-b pb-3 border-gray-100">
                         <!-- Transaction Type Buttons -->
                         <div class="flex bg-gray-100 p-1 rounded-xl w-full sm:w-auto">
-                            <button onclick="App.filterTx('alquiler', this)" class="tx-btn flex-1 sm:flex-none px-4 py-1.5 rounded-lg text-xs font-bold bg-white text-primary shadow-sm">Alquilar</button>
-                            <button onclick="App.filterTx('venta', this)" class="tx-btn flex-1 sm:flex-none px-4 py-1.5 rounded-lg text-xs font-medium text-gray-500 hover:text-primary">Comprar</button>
-                            <button onclick="App.filterTx('ambos', this)" class="tx-btn flex-1 sm:flex-none px-4 py-1.5 rounded-lg text-xs font-medium text-gray-500 hover:text-primary">Todos</button>
+                            <button type="button" aria-pressed="false" onclick="App.filterTx('alquiler', this)" class="tx-btn flex-1 sm:flex-none px-4 py-1.5 rounded-lg text-xs font-medium text-gray-500 hover:text-primary">Alquilar</button>
+                            <button type="button" aria-pressed="false" onclick="App.filterTx('venta', this)" class="tx-btn flex-1 sm:flex-none px-4 py-1.5 rounded-lg text-xs font-medium text-gray-500 hover:text-primary">Comprar</button>
+                            <button type="button" aria-pressed="true" onclick="App.filterTx('ambos', this)" class="tx-btn flex-1 sm:flex-none px-4 py-1.5 rounded-lg text-xs font-bold bg-white text-primary shadow-sm hover:text-primary">Todos</button>
                         </div>
                         
                         <!-- Filter Selectors -->
@@ -264,7 +264,7 @@
                     <div class="flex flex-col sm:flex-row gap-3 items-center">
                         <div class="relative flex-1 w-full">
                             <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-                            <input type="text" id="search-keyword" aria-label="Buscar por palabra clave, zona o amenidad" oninput="App.refreshFeedDebounced()" placeholder="Busca por palabra clave, zona o amenidad..." class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-gray-50 border border-transparent focus:bg-white focus:border-secondary outline-none text-xs text-gray-800 font-medium">
+                            <input type="search" id="search-keyword" enterkeyhint="search" aria-label="Buscar por palabra clave, zona o amenidad" oninput="App.refreshFeedDebounced()" onkeydown="App.onSearchKey(event)" placeholder="Busca por palabra clave, zona o amenidad..." class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-gray-50 border border-transparent focus:bg-white focus:border-secondary outline-none text-xs text-gray-800 font-medium">
                         </div>
 
                         <div class="flex items-center gap-2 w-full sm:w-auto bg-gray-50 px-3 py-1.5 rounded-xl border border-gray-200">
@@ -273,7 +273,7 @@
                             <span id="price-slider-label" class="text-xs font-bold text-primary w-20 text-right">$700,000</span>
                         </div>
 
-                        <button onclick="App.refreshFeed()" class="w-full sm:w-auto bg-secondary hover:bg-teal-400 text-primary font-bold px-6 py-2.5 rounded-xl text-xs transition-all shrink-0 flex items-center justify-center gap-2 shadow-sm">
+                        <button type="button" onclick="App.searchNow()" class="w-full sm:w-auto bg-secondary hover:bg-teal-400 text-primary font-bold px-6 py-2.5 rounded-xl text-xs transition-all shrink-0 flex items-center justify-center gap-2 shadow-sm">
                             <i class="fas fa-filter"></i> Filtrar
                         </button>
                     </div>
@@ -902,7 +902,7 @@
                             <p class="profile-role text-xs text-secondary font-bold mt-1">Usuario Free</p>
                             <p class="profile-membersince text-xs text-blue-200 mt-0.5">Miembro desde Marzo 2025 • Panamá City</p>
                             <div class="mt-2 flex flex-wrap gap-2 justify-center md:justify-start">
-                                <span class="bg-white/10 text-xs px-3 py-1 rounded-full border border-white/20">🏆 1,250 Puntos Acumulados</span>
+                                <span class="bg-white/10 text-xs px-3 py-1 rounded-full border border-white/20">🏆 <span class="user-points-text">1,250 pts</span> acumulados</span>
                             </div>
                         </div>
                     </div>
@@ -952,7 +952,7 @@
                     <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
                         <h3 class="font-heading font-bold text-primary text-base mb-4 flex items-center justify-between">
                             <span>🎁 Canje de Puntos</span>
-                            <span class="text-xs text-primary font-bold">Saldo: 1,250 pts</span>
+                            <span class="text-xs text-primary font-bold">Saldo: <span class="user-points-text">1,250 pts</span></span>
                         </h3>
                         <div class="grid grid-cols-2 gap-3 text-xs">
                             <div class="border rounded-2xl p-3 flex flex-col justify-between bg-gray-50">
@@ -997,7 +997,7 @@
                                     <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-500"></i> Dashboard estándar</li>
                                 </ul>
                             </div>
-                            <button onclick="App.changePlan('free')" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-2.5 rounded-xl text-xs transition-colors">Plan Actual</button>
+                            <button type="button" data-plan-cta="free" onclick="App.changePlan('free')" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-2.5 rounded-xl text-xs transition-colors">Cambiar a Free</button>
                         </div>
 
                         <!-- PREMIUM -->
@@ -1015,7 +1015,7 @@
                                     <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-500"></i> Dashboard estándar</li>
                                 </ul>
                             </div>
-                            <button onclick="App.changePlan('premium')" class="w-full bg-gold hover:bg-yellow-400 text-primary font-bold py-2.5 rounded-xl text-xs transition-colors shadow">Mejorar a Premium</button>
+                            <button type="button" data-plan-cta="premium" onclick="App.changePlan('premium')" class="w-full bg-gold hover:bg-yellow-400 text-primary font-bold py-2.5 rounded-xl text-xs transition-colors shadow">Mejorar a Premium</button>
                         </div>
 
                         <!-- HOLDING -->
@@ -1032,7 +1032,7 @@
                                     <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-500 font-bold"></i> Dashboard Avanzado con Métricas</li>
                                 </ul>
                             </div>
-                            <button onclick="App.changePlan('holding')" class="w-full bg-primary hover:bg-blue-900 text-white font-bold py-2.5 rounded-xl text-xs transition-colors">Plan Holding</button>
+                            <button type="button" data-plan-cta="holding" onclick="App.changePlan('holding')" class="w-full bg-primary hover:bg-blue-900 text-white font-bold py-2.5 rounded-xl text-xs transition-colors">Mejorar a Holding</button>
                         </div>
                     </div>
 

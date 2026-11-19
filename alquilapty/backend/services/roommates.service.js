@@ -46,7 +46,8 @@ function saveProfile(plan, profile) {
 /** Registra un mensaje dirigido a un roommate. */
 function sendMessage(roommateId, fromPlan, text) {
   const roommate = findById(roommateId);
-  const message = { id: store.messages.length + 1, to: roommate.name, fromPlan, text, sentAt: new Date().toISOString() };
+  const id = Math.max(0, ...store.messages.map((m) => m.id)) + 1;
+  const message = { id, to: roommate.name, fromPlan, text, sentAt: new Date().toISOString() };
   store.messages.push(message);
   return { roommate, message };
 }

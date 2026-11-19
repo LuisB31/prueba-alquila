@@ -14,7 +14,7 @@ Navegador ──(fetch JSON)──▶  /api/*  ──▶ routes ──▶ servic
 ```bash
 npm install
 npm start            # http://localhost:3000  (sirve el frontend y la API)
-npm test             # 22 pruebas de la API
+npm test             # 27 pruebas (API + persistencia en BD)
 ```
 
 `npm run dev` reinicia el servidor al guardar cambios.
@@ -99,7 +99,24 @@ npm run set-url -- https://www.tudominio.com   # canonical, Open Graph, JSON-LD,
 SITE_URL=https://www.tudominio.com npm start    # el backend usa el mismo valor
 ```
 
-## Despliegue
+## Base de datos (PostgreSQL)
+
+Con la variable `DATABASE_URL` definida, el servidor se conecta a PostgreSQL al arrancar, crea las tablas que falten y guarda todo lo que crean los usuarios (propiedades publicadas, ofertas, mensajes, perfil de roommate, puntos y cuenta activa del Holding). Sin `DATABASE_URL` todo queda en memoria, como en local y en las pruebas.
+
+- Código: `backend/services/db.js`. Las lecturas salen de memoria y cada cambio se escribe en la BD, así que la app debe correr en **una sola instancia**.
+- Los datos de ejemplo (`backend/data/*.json`) se siguen cargando desde los archivos; la BD guarda solo lo nuevo.
+- `GET /api/health` indica `"database": "postgres"` o `"memoria"`.
+- `npm test` incluye `db.test.js`, que simula un reinicio con PostgreSQL en memoria (`pg-mem`).
+
+## Despliegue en Railway
+
+1. Sube el repositorio a GitHub y en Railway crea un proyecto **Deploy from GitHub repo**.
+2. En el servicio de la app, **Settings → Root Directory** = `alquilapty` (el `railway.json` de esa carpeta define arranque y healthcheck).
+3. Añade una base de datos: **+ New → Database → PostgreSQL**.
+4. En **Variables** del servicio de la app añade `DATABASE_URL = ${{Postgres.DATABASE_URL}}`.
+5. **Settings → Networking → Generate Domain**. `SITE_URL` toma ese dominio automáticamente (o defínela tú).
+
+## Otros despliegues
 
 El backend necesita un servidor Node (Render, Railway, Fly.io, un VPS…): **GitHub Pages no puede ejecutarlo**.
 
@@ -108,7 +125,7 @@ El backend necesita un servidor Node (Render, Railway, Fly.io, un VPS…): **Git
   1. en `frontend/index.html` cambia `<meta name="api-base" content="https://tu-api.com/api">`;
   2. en el backend define `CORS_ORIGIN=https://tu-frontend.com`.
 
-Variables de entorno: `PORT`, `CORS_ORIGIN`, `SITE_URL`.
+Variables de entorno: `PORT`, `CORS_ORIGIN`, `SITE_URL`, `DATABASE_URL` (opcional), `PGSSL` (`true`/`false` para forzar SSL).
 
 ## Si editas el diseño
 
@@ -122,7 +139,7 @@ Escribe las clases completas (`bg-red-500`), no las construyas con variables (`b
 
 ## Limitaciones conocidas (es una demo)
 
-- **Los datos viven en memoria**: lo que se publique, ofrezca o guarde se pierde al reiniciar. Sustituye `backend/services/store.js` por una base de datos real (PostgreSQL, MongoDB…) manteniendo su interfaz.
+- **Sin `DATABASE_URL` los datos viven en memoria** y se pierden al reiniciar (ver "Base de datos").
 - **No hay autenticación**: el “plan” sale de un simulador y viaja en la cabecera `X-Demo-Plan`, que cualquiera puede falsificar. En producción debe venir de una sesión autenticada (JWT / cookie), y la contraseña del cambio de cuenta Holding debe verificarse de verdad.
 - **El asistente funciona con reglas**, no con un modelo de lenguaje. El punto de conexión está aislado en `backend/services/assistant.service.js`.
 - Los anuncios, precios y reseñas son de ejemplo.

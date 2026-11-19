@@ -68,12 +68,27 @@ function findById(id) {
   return property;
 }
 
+/** Minúsculas y sin tildes: "Pacífica" → "pacifica", "Habitación" → "habitacion". */
+const normalize = (text) => String(text ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+
+/**
+ * Texto en el que busca la palabra clave (título, zona, tipo, operación, amenidades…).
+ * No incluye `description`: se genera con una plantilla (enrich.js) que repite
+ * palabras como "habitaciones" en todas las propiedades y ensuciaba los resultados.
+ */
+const searchText = (p) => normalize([
+  p.title, p.zone, p.type, p.txType, p.furnished, ...(p.amenities || []),
+  p.pets ? 'mascotas pet friendly' : '', p.auction ? 'subasta' : '',
+].join(' '));
+
 /**
  * Filtra el catálogo.
+ * La palabra clave ignora mayúsculas y tildes, y con varias palabras exige
+ * que estén TODAS ("piscina costa" → propiedades con piscina en Costa del Este).
  * @param {object} f  { tx, zone, type, bedrooms, pets, auction, maxPrice, q }
  */
 function search(f = {}) {
-  const keyword = (f.q || '').toLowerCase();
+  const words = normalize(f.q).split(/\s+/).filter(Boolean);
 
   return store.properties.filter((p) => {
     if (f.tx && f.tx !== 'ambos' && p.txType.toLowerCase() !== f.tx) return false;
@@ -83,9 +98,9 @@ function search(f = {}) {
     if (f.pets && !p.pets) return false;
     if (f.auction && !p.auction) return false;
     if (f.maxPrice !== undefined && p.price > f.maxPrice) return false;
-    if (keyword) {
-      const haystack = `${p.title} ${p.zone} ${p.amenities.join(' ')}`.toLowerCase();
-      if (!haystack.includes(keyword)) return false;
+    if (words.length) {
+      const haystack = searchText(p);
+      if (!words.every((w) => haystack.includes(w))) return false;
     }
     return true;
   });
@@ -185,7 +200,7 @@ function listAuctions() {
  * Reglas: la propiedad debe tener subasta, el monto debe ser positivo,
  * no puede superar el precio actual ni estar por debajo del mínimo del vendedor.
  */
-function submitOffer(propertyId, { amount, paymentTerms, message }) {
+function submitOffer(propertyId, { amount, paymentTerms, message, plan }) {
   const p = findById(propertyId);
   if (!p.auction) throw new HttpError(400, 'Esta propiedad no tiene una subasta activa.');
   if (!Number.isFinite(amount) || amount <= 0) throw new HttpError(400, 'El monto de la oferta debe ser un número mayor a 0.');
@@ -194,7 +209,8 @@ function submitOffer(propertyId, { amount, paymentTerms, message }) {
     throw new HttpError(400, `La oferta no puede ser menor al precio mínimo del vendedor ($${p.auction.minPrice.toLocaleString('en-US')}).`);
   }
 
-  const offer = { id: store.offers.length + 1, propertyId, amount, paymentTerms, message, createdAt: new Date().toISOString() };
+  const id = Math.max(0, ...store.offers.map((o) => o.id)) + 1;
+  const offer = { id, propertyId, plan, amount, paymentTerms, message, createdAt: new Date().toISOString() };
   store.offers.push(offer);
   return offer;
 }

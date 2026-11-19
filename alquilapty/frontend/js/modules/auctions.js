@@ -6,6 +6,7 @@ import { api } from '../core/api.js';
 import { usd } from '../core/format.js';
 import { notify, openModal, closeModal, showError } from '../core/ui.js';
 import { getModalProperty } from './properties.js';
+import { requireAccount } from './plans.js';
 
 /** Propiedad a la que se le está haciendo la oferta. */
 let offerTarget = null;
@@ -57,6 +58,7 @@ export async function renderAuctions() {
 
 /** Abre el formulario de oferta con una sugerencia ($1,000 bajo el precio actual). */
 export function openOfferModal(property) {
+  if (!requireAccount('hacer ofertas en subastas')) return;
   offerTarget = property;
   const input = byId('offer-amount-input');
   input.value = Math.max(property.auction.minPrice, property.price - 1000);

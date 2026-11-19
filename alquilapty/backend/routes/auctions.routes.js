@@ -4,7 +4,9 @@
 const { Router } = require('express');
 const properties = require('../services/properties.service');
 const { requireId, optionalNumber, optionalText } = require('../middleware/validate');
-const { HttpError } = require('../middleware/errors');
+const { HttpError, asyncHandler } = require('../middleware/errors');
+const { requireRegistered } = require('../middleware/demoPlan');
+const db = require('../services/db');
 
 const router = Router();
 
@@ -17,7 +19,7 @@ router.get('/', (req, res) => {
  * POST /api/auctions/:id/offers
  * Body: { amount, paymentTerms?, message? }
  */
-router.post('/:id/offers', (req, res) => {
+router.post('/:id/offers', requireRegistered, asyncHandler(async (req, res) => {
   const id = requireId(req.params.id);
   const b = req.body || {};
   const amount = optionalNumber(b.amount, { min: 1, label: 'amount' });
@@ -27,8 +29,10 @@ router.post('/:id/offers', (req, res) => {
     amount,
     paymentTerms: optionalText(b.paymentTerms, { max: 100 }),
     message: optionalText(b.message, { max: 500 }),
+    plan: req.plan,
   });
+  await db.saveOffer(offer);
   res.status(201).json({ offer, message: '¡Oferta enviada con éxito! El vendedor revisará tu propuesta.' });
-});
+}));
 
 module.exports = router;

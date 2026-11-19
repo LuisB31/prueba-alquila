@@ -192,14 +192,72 @@ test('publicar: visitantes reciben 403 y datos inválidos 400', async () => {
 });
 
 test('holding: cambia de usuario, exige contraseña y respeta el límite del equipo', async () => {
-  const team = await call('/api/holding/team');
+  const plan = 'holding';
+  const team = await call('/api/holding/team', { plan });
   assert.equal(team.body.members.length, 3);
 
-  assert.equal((await call('/api/holding/switch', { method: 'POST', body: { name: 'Juan Pérez', password: '' } })).status, 400);
-  assert.equal((await call('/api/holding/switch', { method: 'POST', body: { name: 'Nadie', password: 'x' } })).status, 404);
-  const ok = await call('/api/holding/switch', { method: 'POST', body: { name: 'Juan Pérez', password: 'x' } });
+  assert.equal((await call('/api/holding/switch', { method: 'POST', plan, body: { name: 'Juan Pérez', password: '' } })).status, 400);
+  assert.equal((await call('/api/holding/switch', { method: 'POST', plan, body: { name: 'Nadie', password: 'x' } })).status, 404);
+  const ok = await call('/api/holding/switch', { method: 'POST', plan, body: { name: 'Juan Pérez', password: 'x' } });
   assert.equal(ok.body.members.find((m) => m.isCurrent).name, 'Juan Pérez');
-  assert.equal((await call('/api/holding/stats')).body.views.length, 9);
+  assert.equal((await call('/api/holding/stats', { plan })).body.views.length, 9);
+});
+
+test('roles: el panel Holding es exclusivo del plan Holding', async () => {
+  for (const plan of ['visitor', 'free', 'premium']) {
+    assert.equal((await call('/api/holding/team', { plan })).status, 403, `team con ${plan}`);
+    assert.equal((await call('/api/holding/stats', { plan })).status, 403, `stats con ${plan}`);
+    assert.equal((await call('/api/holding/invite', { method: 'POST', plan })).status, 403, `invite con ${plan}`);
+    assert.equal((await call('/api/holding/switch', { method: 'POST', plan, body: { name: 'Juan Pérez', password: 'x' } })).status, 403);
+  }
+});
+
+test('roles: el visitante solo mira (no contacta, no oferta, no canjea)', async () => {
+  const plan = 'visitor';
+  assert.equal((await call('/api/properties', { plan })).status, 200);
+  assert.equal((await call('/api/properties/1', { plan })).status, 200);
+  assert.equal((await call('/api/auctions', { plan })).status, 200);
+
+  assert.equal((await call('/api/properties/1/contact', { method: 'POST', plan })).status, 403);
+  const a = (await call('/api/auctions')).body[0];
+  assert.equal((await call(`/api/auctions/${a.id}/offers`, { method: 'POST', plan, body: { amount: a.auction.minPrice + 100 } })).status, 403);
+  assert.equal((await call('/api/rewards/redeem', { method: 'POST', plan, body: { item: 'X', cost: 1 } })).status, 403);
+});
+
+test('búsqueda: ignora tildes y mayúsculas, y combina varias palabras', async () => {
+  const q = async (text) => (await call(`/api/properties?q=${encodeURIComponent(text)}`)).body.items;
+
+  const pacifica = await q('pacifica');
+  assert.ok(pacifica.length >= 2 && pacifica.every((p) => p.zone === 'Punta Pacífica'));
+
+  assert.deepEqual((await q('PUNTA PACÍFICA')).map((p) => p.id), pacifica.map((p) => p.id));
+
+  // varias palabras: todas deben aparecer (no hace falta que estén juntas)
+  const casaClayton = await q('casa clayton');
+  assert.ok(casaClayton.some((p) => p.id === 16)); // "Casa de Lujo - Clayton"
+  assert.ok(casaClayton.every((p) => p.zone === 'Clayton'));
+
+  // también busca por tipo de propiedad y de operación
+  const rooms = await q('habitacion');
+  assert.ok(rooms.length < 5 && rooms.some((p) => p.type === 'Habitación'));
+  assert.ok((await q('oficina alquiler')).every((p) => p.type === 'Oficina' && p.txType === 'Alquiler'));
+
+  assert.equal((await q('zzz-no-existe')).length, 0);
+  assert.equal((await q('   ')).length, (await call('/api/properties')).body.total);
+});
+
+test('publicar: el plan Free tiene un máximo de 3 propiedades', async () => {
+  const body = { title: 'Depto prueba', zone: 'Obarrio', txType: 'Alquiler', price: 800 };
+  for (let i = 0; i < 3; i++) {
+    assert.equal((await call('/api/properties', { method: 'POST', plan: 'free', body })).status, 201);
+  }
+  const blocked = await call('/api/properties', { method: 'POST', plan: 'free', body });
+  assert.equal(blocked.status, 409);
+
+  const me = (await call('/api/accounts/me', { plan: 'free' })).body;
+  assert.equal(me.published, 3);
+  assert.equal(me.publishLimit, 3);
+  assert.equal((await call('/api/accounts/me', { plan: 'holding' })).body.publishLimit, null);
 });
 
 test('plan inválido en la cabecera da 400', async () => {

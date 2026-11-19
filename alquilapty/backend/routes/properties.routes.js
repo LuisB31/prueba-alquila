@@ -9,7 +9,8 @@ const properties = require('../services/properties.service');
 const account = require('../services/account.service');
 const { POINTS } = require('../config');
 const { requireRegistered } = require('../middleware/demoPlan');
-const { HttpError } = require('../middleware/errors');
+const { HttpError, asyncHandler } = require('../middleware/errors');
+const db = require('../services/db');
 const { requireId, optionalNumber, asBool, requireText, optionalText, oneOf } = require('../middleware/validate');
 
 const router = Router();
@@ -57,21 +58,22 @@ router.get('/:id/commute', (req, res) => {
 });
 
 /** POST /api/properties/:id/contact — contacta al publicador y suma puntos */
-router.post('/:id/contact', (req, res) => {
+router.post('/:id/contact', requireRegistered, asyncHandler(async (req, res) => {
   const property = properties.findById(requireId(req.params.id));
   const points = account.addPoints(req.plan, POINTS.contactOwner);
+  await db.saveAccount(account.rawAccount(req.plan));
   res.json({
     message: `💬 Iniciando chat directo con ${property.owner.name}... (+${POINTS.contactOwner} pts)`,
     pointsAwarded: POINTS.contactOwner,
     points,
   });
-});
+}));
 
 /**
  * POST /api/properties — publicar una propiedad (solo cuentas registradas)
  * Body: { title, zone, txType, price, auction?: { enabled, minPrice, step } }
  */
-router.post('/', requireRegistered, (req, res) => {
+router.post('/', requireRegistered, asyncHandler(async (req, res) => {
   const b = req.body || {};
   const txType = oneOf(b.txType, ['Alquiler', 'Venta'], 'txType');
   const price = optionalNumber(b.price, { min: 1, max: 100_000_000, label: 'price' });
@@ -88,22 +90,29 @@ router.post('/', requireRegistered, (req, res) => {
     auction = { active: true, initialPrice: price, minPrice, step, currentStep: 0, daysLeft: 7 };
   }
 
-  const property = properties.createProperty({
+  const data = {
     title: requireText(b.title, 'title', { max: 120 }),
     zone: requireText(b.zone, 'zone', { max: 60 }),
     type: optionalText(b.type, { max: 40 }) || undefined,
     txType,
     price,
     auction,
-  });
+  };
+
+  // Límite de publicaciones según el plan (Free 3, Premium 10, Holding ilimitado)
+  account.assertCanPublish(req.plan);
+  const property = properties.createProperty(data);
+  account.registerPublication(req.plan);
 
   const points = account.addPoints(req.plan, POINTS.publishProperty);
+  await db.saveProperty(property, req.plan);
+  await db.saveAccount(account.rawAccount(req.plan));
   res.status(201).json({
     property: properties.toSummary(property),
     message: `¡Propiedad publicada con éxito! Ganaste +${POINTS.publishProperty} Puntos.`,
     pointsAwarded: POINTS.publishProperty,
     points,
   });
-});
+}));
 
 module.exports = router;

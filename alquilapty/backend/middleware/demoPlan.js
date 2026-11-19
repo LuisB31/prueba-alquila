@@ -1,8 +1,13 @@
 /**
- * Identifica el plan de la cuenta demo que hace la petición.
+ * Identifica el plan de la cuenta demo que hace la petición y protege rutas por rol.
  *
  * El frontend envía `X-Demo-Plan: visitor | free | premium | holding`.
  * Si falta, se asume "free". El valor queda disponible en `req.plan`.
+ *
+ * Roles:
+ *   visitor  → solo puede mirar (listado, detalle, mapa, subastas, ROI, comparador).
+ *   free / premium / holding → cuentas registradas: contactar, ofertar, publicar, IA, puntos.
+ *   holding  → además, el panel de inmobiliaria (equipo, cambio de cuenta, estadísticas).
  *
  * ⚠️ Esto SOLO sirve para la demo con el simulador de planes. En producción
  * el plan debe salir de una sesión autenticada (JWT, cookie de sesión…),
@@ -24,4 +29,10 @@ function requireRegistered(req, res, next) {
   return next();
 }
 
-module.exports = { demoPlan, requireRegistered };
+/** Solo cuentas Holding (inmobiliarias). */
+function requireHolding(req, res, next) {
+  if (req.plan !== 'holding') return next(new HttpError(403, 'El panel de inmobiliaria es exclusivo del plan Holding.'));
+  return next();
+}
+
+module.exports = { demoPlan, requireRegistered, requireHolding };
