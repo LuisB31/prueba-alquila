@@ -2,6 +2,7 @@
  * Router de la API: agrupa todos los recursos bajo /api.
  *
  *   /api/health
+ *   /api/auth            registro, inicio y cierre de sesión
  *   /api/properties      listado, detalle, vecindarios, traslado, contacto, publicar
  *   /api/auctions        subastas inversas y ofertas
  *   /api/roommates       búsqueda de compañeros de cuarto
@@ -21,6 +22,7 @@ router.get('/health', (req, res) => res.json({
   time: new Date().toISOString(),
 }));
 
+router.use('/auth', require('./auth.routes'));
 router.use('/properties', require('./properties.routes'));
 router.use('/auctions', require('./auctions.routes'));
 router.use('/roommates', require('./roommates.routes'));

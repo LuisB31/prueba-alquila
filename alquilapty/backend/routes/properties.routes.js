@@ -60,8 +60,8 @@ router.get('/:id/commute', (req, res) => {
 /** POST /api/properties/:id/contact — contacta al publicador y suma puntos */
 router.post('/:id/contact', requireRegistered, asyncHandler(async (req, res) => {
   const property = properties.findById(requireId(req.params.id));
-  const points = account.addPoints(req.plan, POINTS.contactOwner);
-  await db.saveAccount(account.rawAccount(req.plan));
+  const points = account.addPoints(req.user, POINTS.contactOwner);
+  await db.saveUser(req.user);
   res.json({
     message: `💬 Iniciando chat directo con ${property.owner.name}... (+${POINTS.contactOwner} pts)`,
     pointsAwarded: POINTS.contactOwner,
@@ -100,19 +100,31 @@ router.post('/', requireRegistered, asyncHandler(async (req, res) => {
   };
 
   // Límite de publicaciones según el plan (Free 3, Premium 10, Holding ilimitado)
-  account.assertCanPublish(req.plan);
+  account.assertCanPublish(req.user);
   const property = properties.createProperty(data);
-  account.registerPublication(req.plan);
+  account.assignOwner(property, req.user);
 
-  const points = account.addPoints(req.plan, POINTS.publishProperty);
+  const points = account.addPoints(req.user, POINTS.publishProperty);
   await db.saveProperty(property, req.plan);
-  await db.saveAccount(account.rawAccount(req.plan));
+  await db.saveUser(req.user);
   res.status(201).json({
     property: properties.toSummary(property),
     message: `¡Propiedad publicada con éxito! Ganaste +${POINTS.publishProperty} Puntos.`,
     pointsAwarded: POINTS.publishProperty,
     points,
   });
+}));
+
+/**
+ * POST /api/properties/:id/acquire — alquilar o comprar (simulado).
+ * Queda en el historial del usuario y como ingreso del dueño.
+ */
+router.post('/:id/acquire', requireRegistered, asyncHandler(async (req, res) => {
+  const property = properties.findById(requireId(req.params.id));
+  const tx = account.acquire(req.user, property);
+  await db.saveTransaction(tx);
+  const verb = tx.kind === 'Compra' ? 'Compraste' : 'Alquilaste';
+  res.status(201).json({ transaction: account.txView(tx), message: `🏠 ${verb} "${property.title}". Ya aparece en tu historial.` });
 }));
 
 module.exports = router;

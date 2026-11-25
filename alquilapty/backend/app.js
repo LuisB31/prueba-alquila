@@ -38,7 +38,7 @@ function createApp() {
   // 3) API
   app.use(
     '/api',
-    cors({ origin: CORS_ORIGIN, allowedHeaders: ['Content-Type', 'X-Demo-Plan'] }),
+    cors({ origin: CORS_ORIGIN, allowedHeaders: ['Content-Type', 'X-Demo-Plan', 'Authorization'] }),
     express.json({ limit: '50kb' }),
     (req, res, next) => { res.set('Cache-Control', 'no-cache'); next(); },
     demoPlan,

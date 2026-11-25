@@ -14,7 +14,7 @@ Navegador ──(fetch JSON)──▶  /api/*  ──▶ routes ──▶ servic
 ```bash
 npm install
 npm start            # http://localhost:3000  (sirve el frontend y la API)
-npm test             # 27 pruebas (API + persistencia en BD)
+npm test             # 34 pruebas (API, cuentas, Holding y persistencia en BD)
 ```
 
 `npm run dev` reinicia el servidor al guardar cambios.
@@ -77,9 +77,29 @@ Los errores del backend siempre tienen la misma forma: `{ "error": { "status": 4
 | GET | `/api/comparison?ids=1,2,3` | Tabla y radar de comparación |
 | GET | `/api/map/pins` · `/api/map/pois` | Pines y capas del mapa |
 | POST | `/api/assistant/chat` | Chat con el asistente |
+| POST | `/api/auth/register` | Registro: `{ plan, firstName, lastName, email, password, companyName?, payment? }` |
+| POST | `/api/auth/login` · `/api/auth/logout` · GET `/api/auth/session` | Inicio y cierre de sesión |
 | GET | `/api/accounts/me` · POST `/api/rewards/redeem` | Perfil y puntos |
-| GET/POST | `/api/holding/team`, `/switch`, `/invite`, `/stats` | Panel de inmobiliaria |
+| GET | `/api/accounts/me/activity` | Mis propiedades (venta / alquiler) e historial |
+| POST | `/api/properties/:id/acquire` | Alquilar o comprar (simulado) |
+| GET | `/api/holding/team`, `/api/holding/stats` | Empresa, código, agentes, propiedades e ingresos |
+| POST | `/api/holding/agents`, `/api/holding/switch` | Agregar agente (con código) y cambiar de agente |
 | GET | `/api/health` | Comprobación de estado |
+
+## Cuentas, planes y empresas
+
+- **Registro:** primero se elige el plan.
+  - **Free:** nombre, apellido, correo y contraseña.
+  - **Premium:** lo mismo más un pago **simulado** ($3).
+  - **Holding:** nombre de la empresa, primer agente y pago simulado ($12). Al pagar se genera un **código de 4 dígitos único por empresa**.
+- **Agentes Holding:** cada empresa admite hasta **5 agentes**. Para agregar uno se pide el código de esa empresa; el código de otra empresa no sirve.
+- **Perfil:** muestra las propiedades del usuario en venta y en alquiler, y el historial de lo que ha alquilado o comprado (botón "Alquilar/Comprar" en el detalle).
+- **Panel Holding:** conteos de propiedades en venta y alquiler, lista con el agente de cada una, e ingresos de los últimos 6 meses en una gráfica (ventas en barras, alquileres en línea).
+- **Seguridad:**
+  - Las contraseñas se guardan con hash `scrypt` y la sesión usa un token `Authorization: Bearer`.
+  - Del pago solo se guardan los 4 últimos dígitos de la tarjeta; nunca se cobra nada.
+  - Para probar, usa la tarjeta 4242 4242 4242 4242.
+- **Simulador de planes:** sigue disponible sin iniciar sesión y usa cuentas demo (`juan@demo.pa`, `ricardo@demo.pa` y `sara@panacasas.pa`, contraseña `demo1234`). Con una sesión iniciada se oculta.
 
 ## SEO
 
@@ -140,6 +160,7 @@ Escribe las clases completas (`bg-red-500`), no las construyas con variables (`b
 ## Limitaciones conocidas (es una demo)
 
 - **Sin `DATABASE_URL` los datos viven en memoria** y se pierden al reiniciar (ver "Base de datos").
-- **No hay autenticación**: el “plan” sale de un simulador y viaja en la cabecera `X-Demo-Plan`, que cualquiera puede falsificar. En producción debe venir de una sesión autenticada (JWT / cookie), y la contraseña del cambio de cuenta Holding debe verificarse de verdad.
+- **El simulador de planes** (cabecera `X-Demo-Plan`, sin sesión) sigue activo para la demo y cualquiera puede usarlo con las cuentas demo. En producción habría que desactivarlo y exigir sesión.
+- **Los pagos son simulados**: no hay pasarela real (Stripe, etc.).
 - **El asistente funciona con reglas**, no con un modelo de lenguaje. El punto de conexión está aislado en `backend/services/assistant.service.js`.
 - Los anuncios, precios y reseñas son de ejemplo.

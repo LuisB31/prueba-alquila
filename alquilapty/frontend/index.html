@@ -96,14 +96,14 @@
     <noscript><p style="padding:1rem;background:#fef3c7;text-align:center">AlquilaPTY necesita JavaScript para mostrar propiedades y herramientas.</p></noscript>
 
     <!-- SIMULADOR DE PLANES Y ESTADO DE REGISTRO (WIDGET FLOTANTE) -->
-    <div class="fixed bottom-4 right-4 z-50 bg-white/95 backdrop-blur rounded-2xl shadow-2xl border-2 border-primary p-3.5 w-72 transition-all hover:scale-102">
+    <div id="plan-simulator" class="fixed bottom-4 right-4 z-40 bg-white/95 backdrop-blur rounded-2xl shadow-2xl border-2 border-primary p-3.5 w-72 transition-all hover:scale-102">
         <div class="flex items-center justify-between border-b pb-2 mb-2">
             <p class="font-heading font-bold text-primary text-xs flex items-center gap-1.5">
                 <i class="fas fa-sliders-h text-secondary"></i> Simulador de Suscripción
             </p>
             <span id="current-plan-badge" class="bg-gray-100 text-gray-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Plan Free</span>
         </div>
-        <p class="text-[10px] text-gray-500 mb-2">Cambia de plan para probar funcionalidades exclusivas y comportamiento publicitario.</p>
+        <p class="text-[10px] text-gray-500 mb-2">Cambia de plan para probar con cuentas demo, o <button type="button" onclick="App.openAuth('login')" class="text-primary font-bold underline">inicia sesión</button> / <button type="button" onclick="App.openAuth('register')" class="text-primary font-bold underline">regístrate</button>.</p>
         <div class="grid grid-cols-2 gap-1.5">
             <button onclick="App.changePlan('visitor')" id="btn-plan-visitor" class="py-1.5 px-2 rounded-xl text-[11px] font-semibold transition-all bg-gray-100 text-gray-700 hover:bg-gray-200 text-center">
                 👁️ Visitante
@@ -154,8 +154,10 @@
                             <span class="show-visitor-flex w-7 h-7 rounded-full bg-white/15 border-2 border-white items-center justify-center">
                                 <i class="fas fa-user text-white text-[11px]"></i>
                             </span>
-                            <span class="font-medium text-xs font-heading hidden xl:inline">Mi Perfil</span>
+                            <span id="nav-user-name" class="font-medium text-xs font-heading hidden xl:inline">Mi Perfil</span>
                         </button>
+                        <button type="button" data-auth="out" onclick="App.openAuth('login')" class="bg-white text-primary hover:bg-gray-100 px-3 py-1.5 rounded-xl text-xs font-bold transition-colors flex items-center gap-1"><i class="fas fa-sign-in-alt"></i> Entrar</button>
+                        <button type="button" data-auth="in" onclick="App.logout()" class="hidden bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-1.5 rounded-xl text-xs font-bold transition-colors flex items-center gap-1"><i class="fas fa-sign-out-alt"></i> Salir</button>
                     </div>
                 </div>
             </div>
@@ -171,6 +173,8 @@
             <button onclick="App.openTab('ia')" class="px-2 py-1 text-secondary flex flex-col items-center shrink-0"><i class="fas fa-robot mb-1"></i> IA</button>
             <button onclick="App.openTab('publicar')" class="px-2 py-1 text-accent font-bold flex flex-col items-center shrink-0"><i class="fas fa-plus-circle mb-1"></i> Publicar</button>
             <button onclick="App.openTab('perfil')" class="px-2 py-1 text-white/90 flex flex-col items-center shrink-0"><i class="fas fa-user mb-1"></i> Perfil</button>
+            <button type="button" data-auth="out" onclick="App.openAuth('login')" class="px-2 py-1 text-white font-bold flex flex-col items-center shrink-0"><i class="fas fa-sign-in-alt mb-1"></i> Entrar</button>
+            <button type="button" data-auth="in" onclick="App.logout()" class="hidden px-2 py-1 text-white/90 flex flex-col items-center shrink-0"><i class="fas fa-sign-out-alt mb-1"></i> Salir</button>
         </div>
     </nav>
 
@@ -316,7 +320,7 @@
                 <span class="text-5xl block">👥</span>
                 <h2 class="text-xl font-heading font-bold text-primary">Crea una cuenta para usar Roommate Matching</h2>
                 <p class="text-xs text-gray-500">La búsqueda de compañeros de habitación compatibles está disponible solo para usuarios registrados.</p>
-                <button onclick="App.openTab('perfil')" class="bg-accent hover:bg-red-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition-colors">✨ Crear Cuenta Gratis</button>
+                <button onclick="App.openAuth('register')" class="bg-accent hover:bg-red-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition-colors">✨ Crear Cuenta Gratis</button>
             </div>
 
             <div class="show-registered max-w-4xl mx-auto">
@@ -753,7 +757,7 @@
                 <span class="text-5xl block">🤖</span>
                 <h2 class="text-xl font-heading font-bold text-primary">Crea una cuenta para hablar con la IA</h2>
                 <p class="text-xs text-gray-500">El asistente inmobiliario inteligente está disponible solo para usuarios registrados.</p>
-                <button onclick="App.openTab('perfil')" class="bg-accent hover:bg-red-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition-colors">✨ Crear Cuenta Gratis</button>
+                <button onclick="App.openAuth('register')" class="bg-accent hover:bg-red-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition-colors">✨ Crear Cuenta Gratis</button>
             </div>
             <div class="show-registered max-w-4xl mx-auto bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden flex flex-col h-[580px]">
                 <div class="bg-primary p-4 text-white flex items-center justify-between">
@@ -804,7 +808,7 @@
                 <span class="text-5xl block">🚀</span>
                 <h2 class="text-xl font-heading font-bold text-primary">Crea una cuenta para publicar</h2>
                 <p class="text-xs text-gray-500">Necesitas una cuenta registrada para publicar propiedades en AlquilaPTY.</p>
-                <button onclick="App.openTab('perfil')" class="bg-accent hover:bg-red-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition-colors">✨ Crear Cuenta Gratis</button>
+                <button onclick="App.openAuth('register')" class="bg-accent hover:bg-red-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition-colors">✨ Crear Cuenta Gratis</button>
             </div>
             <div class="show-registered bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100 max-w-3xl mx-auto">
                 <div class="mb-6 border-b pb-4 border-gray-100">
@@ -883,8 +887,8 @@
                     <h2 class="text-xl font-heading font-bold text-primary">Necesitas una cuenta para ver tu perfil</h2>
                     <p class="text-xs text-gray-500">Crea una cuenta gratuita para guardar favoritos, usar el Match, hablar con la IA y publicar tus propiedades.</p>
                     <div class="flex flex-col sm:flex-row gap-2 justify-center pt-2">
-                        <button onclick="App.changePlan('free'); App.notify('¡Cuenta creada con éxito! Bienvenido, Juan Morales.')" class="bg-accent hover:bg-red-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition-colors">✨ Crear Cuenta Gratis</button>
-                        <button onclick="App.notify('Redirigiendo a inicio de sesión...')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold px-5 py-2.5 rounded-xl text-xs transition-colors">Ya tengo cuenta</button>
+                        <button onclick="App.openAuth('register')" class="bg-accent hover:bg-red-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition-colors">✨ Crear Cuenta</button>
+                        <button onclick="App.openAuth('login')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold px-5 py-2.5 rounded-xl text-xs transition-colors">Ya tengo cuenta</button>
                     </div>
                 </div>
             </div>
@@ -900,9 +904,12 @@
                                 <span class="bg-gold text-primary font-bold text-[10px] px-2.5 py-0.5 rounded-full uppercase">Nivel Plata</span>
                             </div>
                             <p class="profile-role text-xs text-secondary font-bold mt-1">Usuario Free</p>
-                            <p class="profile-membersince text-xs text-blue-200 mt-0.5">Miembro desde Marzo 2025 • Panamá City</p>
+                            <p class="profile-membersince text-xs text-blue-200 mt-0.5">Miembro desde Marzo 2025</p>
+                            <p class="profile-email text-[11px] text-blue-200"></p>
                             <div class="mt-2 flex flex-wrap gap-2 justify-center md:justify-start">
                                 <span class="bg-white/10 text-xs px-3 py-1 rounded-full border border-white/20">🏆 <span class="user-points-text">1,250 pts</span> acumulados</span>
+                                <button type="button" data-auth="in" onclick="App.logout()" class="hidden bg-white/10 hover:bg-white/20 text-xs px-3 py-1 rounded-full border border-white/20 font-bold"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</button>
+                                <span data-auth="out" class="bg-amber-400/20 text-amber-200 text-[11px] px-3 py-1 rounded-full border border-amber-300/40">🧪 Cuenta demo del simulador — <button type="button" onclick="App.openAuth('login')" class="underline font-bold">inicia sesión</button> o <button type="button" onclick="App.openAuth('register')" class="underline font-bold">regístrate</button></span>
                             </div>
                         </div>
                     </div>
@@ -917,6 +924,31 @@
                             <div class="bg-secondary h-full rounded-full" style="width: 62%"></div>
                         </div>
                         <p class="text-[11px] text-gray-300 text-center">Faltan 750 pts para obtener 10% desc. en comisiones y 1 destacada gratis/mes.</p>
+                    </div>
+                </div>
+
+                <!-- MIS PROPIEDADES (VENTA / ALQUILER) E HISTORIAL -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 lg:col-span-2">
+                        <h3 class="font-heading font-bold text-primary text-base mb-4 flex items-center justify-between gap-2">
+                            <span>🏠 Mis Propiedades Publicadas</span>
+                            <button type="button" onclick="App.openTab('publicar')" class="text-xs bg-accent hover:bg-red-500 text-white font-bold px-3 py-1.5 rounded-xl transition-colors">+ Publicar</button>
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="text-xs font-bold text-amber-700 mb-2 flex items-center gap-1.5"><i class="fas fa-tag"></i> En venta (<span id="profile-count-venta">0</span>)</h4>
+                                <ul id="profile-props-venta" class="space-y-1"></ul>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-teal-700 mb-2 flex items-center gap-1.5"><i class="fas fa-key"></i> En alquiler (<span id="profile-count-alquiler">0</span>)</h4>
+                                <ul id="profile-props-alquiler" class="space-y-1"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
+                        <h3 class="font-heading font-bold text-primary text-base mb-1">🕘 Historial (<span id="profile-count-history">0</span>)</h3>
+                        <p class="text-[11px] text-gray-500 mb-3">Propiedades que has alquilado o comprado alguna vez.</p>
+                        <ul id="profile-history" class="space-y-2 max-h-80 overflow-y-auto pr-1"></ul>
                     </div>
                 </div>
 
@@ -997,7 +1029,7 @@
                                     <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-500"></i> Dashboard estándar</li>
                                 </ul>
                             </div>
-                            <button type="button" data-plan-cta="free" onclick="App.changePlan('free')" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-2.5 rounded-xl text-xs transition-colors">Cambiar a Free</button>
+                            <button type="button" data-plan-cta="free" onclick="App.choosePlan('free')" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-2.5 rounded-xl text-xs transition-colors">Cambiar a Free</button>
                         </div>
 
                         <!-- PREMIUM -->
@@ -1015,7 +1047,7 @@
                                     <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-500"></i> Dashboard estándar</li>
                                 </ul>
                             </div>
-                            <button type="button" data-plan-cta="premium" onclick="App.changePlan('premium')" class="w-full bg-gold hover:bg-yellow-400 text-primary font-bold py-2.5 rounded-xl text-xs transition-colors shadow">Mejorar a Premium</button>
+                            <button type="button" data-plan-cta="premium" onclick="App.choosePlan('premium')" class="w-full bg-gold hover:bg-yellow-400 text-primary font-bold py-2.5 rounded-xl text-xs transition-colors shadow">Mejorar a Premium</button>
                         </div>
 
                         <!-- HOLDING -->
@@ -1032,7 +1064,7 @@
                                     <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-500 font-bold"></i> Dashboard Avanzado con Métricas</li>
                                 </ul>
                             </div>
-                            <button type="button" data-plan-cta="holding" onclick="App.changePlan('holding')" class="w-full bg-primary hover:bg-blue-900 text-white font-bold py-2.5 rounded-xl text-xs transition-colors">Mejorar a Holding</button>
+                            <button type="button" data-plan-cta="holding" onclick="App.choosePlan('holding')" class="w-full bg-primary hover:bg-blue-900 text-white font-bold py-2.5 rounded-xl text-xs transition-colors">Mejorar a Holding</button>
                         </div>
                     </div>
 
@@ -1093,72 +1125,114 @@
                         <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[11px] font-bold px-3 py-1 rounded-full">✅ Empresa verificada</span>
                     </div>
 
-                    <!-- Company Header -->
+                    <!-- Company Header (datos de GET /api/holding/team) -->
                     <div class="bg-white/5 border border-white/10 rounded-2xl p-5 flex flex-col sm:flex-row items-center gap-5 mb-6">
                         <div class="w-20 h-20 rounded-2xl bg-secondary/20 border border-secondary/40 flex items-center justify-center text-3xl shrink-0">🏢</div>
                         <div class="flex-1 text-center sm:text-left">
-                            <h3 class="font-heading font-bold text-lg">Inmobiliaria Panacasas S.A.</h3>
-                            <p class="text-[11px] text-blue-200">📧 info@panacasas.com &nbsp;•&nbsp; 📱 +507 6222-2222</p>
-                            <p class="text-[11px] text-blue-200 mt-1">👥 Equipo: <span id="agency-team-count">3</span>/5 usuarios</p>
+                            <h3 id="agency-company-name" class="font-heading font-bold text-lg">—</h3>
+                            <p class="text-[11px] text-blue-200">📧 <span id="agency-company-email">—</span></p>
+                            <p class="text-[11px] text-blue-200 mt-1">👥 Equipo: <span id="agency-team-count">0</span>/5 agentes</p>
+                            <p class="text-[11px] text-blue-200 mt-1">📅 Suscripción activa hasta: <strong id="agency-paid-until" class="text-white">—</strong></p>
                         </div>
-                        <div class="text-center sm:text-right text-[11px] text-blue-200 space-y-2">
-                            <p>📅 Suscripción activa hasta: <strong class="text-white">15 Sept 2027</strong></p>
-                            <div class="flex gap-2 justify-center sm:justify-end">
-                                <button onclick="App.notify('Abriendo gestión de suscripción...')" class="bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-1.5 rounded-lg font-bold">Gestionar suscripción</button>
-                                <button onclick="App.inviteHoldingUser()" class="bg-secondary text-primary px-3 py-1.5 rounded-lg font-bold">+ Añadir usuario</button>
-                            </div>
+                        <div class="bg-white/10 border border-secondary/40 rounded-2xl px-5 py-3 text-center">
+                            <p class="text-[10px] text-blue-200 uppercase tracking-wider font-bold">🔑 Código de empresa</p>
+                            <p id="agency-company-code" class="font-heading font-extrabold text-3xl tracking-[0.3em] text-secondary">····</p>
+                            <p class="text-[10px] text-blue-200 max-w-[180px]">Se pide al agregar un agente nuevo. Es único de tu empresa.</p>
                         </div>
                     </div>
 
-                    <!-- KPI Dashboard -->
-                    <h4 class="font-heading font-bold text-sm mb-3 flex items-center gap-2"><i class="fas fa-chart-pie text-secondary"></i> Dashboard Avanzado</h4>
-                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+                    <!-- KPIs de propiedades e ingresos (GET /api/holding/stats) -->
+                    <h4 class="font-heading font-bold text-sm mb-3 flex items-center gap-2"><i class="fas fa-chart-pie text-secondary"></i> Propiedades e Ingresos</h4>
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
                         <div class="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
-                            <span class="text-xl">👁️</span>
-                            <div class="text-xl font-extrabold">24.5K</div>
-                            <div class="text-[10px] text-blue-200">Vistas</div>
-                            <div class="text-emerald-400 text-[10px] font-bold">📈 +28%</div>
+                            <span class="text-xl">🏷️</span>
+                            <div id="agency-kpi-venta" class="text-2xl font-extrabold text-gold">0</div>
+                            <div class="text-[10px] text-blue-200">En venta</div>
+                            <div id="agency-value-venta" class="text-[10px] font-bold text-amber-300">—</div>
                         </div>
                         <div class="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
-                            <span class="text-xl">💬</span>
-                            <div class="text-xl font-extrabold">342</div>
-                            <div class="text-[10px] text-blue-200">Consultas</div>
-                            <div class="text-emerald-400 text-[10px] font-bold">📈 +15%</div>
+                            <span class="text-xl">🔑</span>
+                            <div id="agency-kpi-alquiler" class="text-2xl font-extrabold text-secondary">0</div>
+                            <div class="text-[10px] text-blue-200">En alquiler</div>
+                            <div id="agency-value-alquiler" class="text-[10px] font-bold text-teal-300">—</div>
                         </div>
                         <div class="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
                             <span class="text-xl">🏠</span>
-                            <div class="text-xl font-extrabold">47</div>
-                            <div class="text-[10px] text-blue-200">Activas</div>
-                            <div class="text-emerald-400 text-[10px] font-bold">📈 +5</div>
+                            <div id="agency-kpi-total" class="text-2xl font-extrabold">0</div>
+                            <div class="text-[10px] text-blue-200">Total publicadas</div>
+                            <div class="text-[10px] font-bold text-blue-200"><span id="agency-kpi-vendidas">0</span> vendidas • <span id="agency-kpi-subastas">0 en subasta</span></div>
                         </div>
                         <div class="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
                             <span class="text-xl">💰</span>
-                            <div class="text-xl font-extrabold">$12.4K</div>
-                            <div class="text-[10px] text-blue-200">Ingresos</div>
-                            <div class="text-emerald-400 text-[10px] font-bold">📈 +22%</div>
+                            <div id="agency-kpi-income" class="text-2xl font-extrabold text-emerald-400">$0</div>
+                            <div class="text-[10px] text-blue-200">Ingresos (6 meses)</div>
+                            <div id="agency-kpi-income-month" class="text-emerald-400 text-[10px] font-bold">—</div>
                         </div>
                     </div>
 
-                    <!-- Monthly Performance Chart -->
+                    <!-- Proporción venta / alquiler -->
+                    <div class="bg-white/5 border border-white/10 rounded-2xl p-4 mb-6">
+                        <div class="flex justify-between text-[11px] font-bold mb-2">
+                            <span class="text-amber-300">🏷️ Venta</span>
+                            <span id="agency-mix-label" class="text-blue-200">—</span>
+                            <span class="text-teal-300">Alquiler 🔑</span>
+                        </div>
+                        <div class="w-full h-3 rounded-full overflow-hidden flex bg-white/10">
+                            <div id="agency-mix-venta" class="h-full bg-gold transition-all" style="width:0%"></div>
+                            <div id="agency-mix-alquiler" class="h-full bg-secondary transition-all" style="width:0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Gráfica financiera de ingresos -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-white/5 border border-white/10 rounded-2xl p-4 lg:col-span-2">
+                            <h5 class="font-bold text-xs mb-2 text-blue-100">💵 Ingresos Mensuales: Ventas cerradas vs Alquileres cobrados</h5>
+                            <div class="h-64"><canvas id="financeChart" aria-label="Gráfico de ingresos mensuales" role="img"></canvas></div>
+                        </div>
+                        <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
+                            <h5 class="font-bold text-xs mb-2 text-blue-100">🧾 Últimos ingresos</h5>
+                            <ul id="agency-income-list" class="text-[11px] max-h-64 overflow-y-auto pr-1"></ul>
+                        </div>
+                    </div>
+
+                    <!-- Lista de propiedades de la empresa -->
+                    <div class="bg-white/5 border border-white/10 rounded-2xl p-4 mb-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                            <h5 class="font-bold text-xs text-blue-100">📋 Propiedades de la empresa</h5>
+                            <div class="flex gap-1 text-[11px] font-bold">
+                                <button type="button" id="agency-filter-todas" onclick="App.filterAgencyProps('todas')" class="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20">Todas</button>
+                                <button type="button" id="agency-filter-venta" onclick="App.filterAgencyProps('venta')" class="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20">En venta</button>
+                                <button type="button" id="agency-filter-alquiler" onclick="App.filterAgencyProps('alquiler')" class="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20">En alquiler</button>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-[11px] min-w-[560px]">
+                                <thead>
+                                    <tr class="text-blue-300 border-b border-white/10">
+                                        <th class="py-2 pr-2">Propiedad</th><th class="py-2 pr-2">Operación</th><th class="py-2 pr-2">Zona</th><th class="py-2 pr-2">Precio</th><th class="py-2 pr-2">Agente</th><th class="py-2">Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="agency-props-list"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Vistas vs consultas -->
                     <div class="bg-white/5 border border-white/10 rounded-2xl p-4 mb-6">
                         <h5 class="font-bold text-xs mb-2 text-blue-100">📈 Rendimiento Mensual: Vistas vs Consultas</h5>
                         <div class="h-52"><canvas id="agencyChart"></canvas></div>
                     </div>
 
-                    <!-- Advanced Metrics -->
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6 text-center text-[11px]">
-                        <div class="bg-white/5 border border-white/10 rounded-xl p-3"><span class="block text-blue-200">Tasa conversión</span><strong class="text-secondary text-sm">8.3%</strong></div>
-                        <div class="bg-white/5 border border-white/10 rounded-xl p-3"><span class="block text-blue-200">Tiempo prom. alquiler</span><strong class="text-secondary text-sm">18 días</strong></div>
-                        <div class="bg-white/5 border border-white/10 rounded-xl p-3"><span class="block text-blue-200">Precio prom./m²</span><strong class="text-secondary text-sm">$12.45</strong></div>
-                        <div class="bg-white/5 border border-white/10 rounded-xl p-3"><span class="block text-blue-200">ROI destacadas</span><strong class="text-secondary text-sm">+340%</strong></div>
+                    <!-- Team: hasta 5 agentes -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                        <h4 class="font-heading font-bold text-sm flex items-center gap-2"><i class="fas fa-users text-secondary"></i> Agentes de la empresa (<span id="agency-team-count-2">0</span>/5)</h4>
+                        <button type="button" id="agency-add-agent-btn" onclick="App.openAddAgent()" class="bg-secondary text-primary px-3 py-1.5 rounded-lg font-bold text-[11px]">+ Agregar agente</button>
                     </div>
-
-                    <!-- Team -->
-                    <h4 class="font-heading font-bold text-sm mb-3 flex items-center gap-2"><i class="fas fa-users text-secondary"></i> Mi Equipo (<span id="agency-team-count-2">3</span>/5)</h4>
-                    <div id="agency-team-list" class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
-                        <!-- Renderizado por JS: renderHoldingTeam() -->
+                    <div id="agency-team-list" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-2">
+                        <!-- Renderizado por JS: holding.js → renderTeam() -->
                     </div>
-                    <p class="text-[10px] text-blue-200 mb-6">🔐 Para cambiar de cuenta activa dentro del holding se solicitará la contraseña del usuario seleccionado.</p>
+                    <p class="text-[10px] text-blue-200 mb-1">🧑‍💼 <span id="agency-team-limit-note">Una empresa puede tener hasta 5 agentes.</span> Espacios libres: <span id="agency-free-slots">0</span>.</p>
+                    <p class="text-[10px] text-blue-200 mb-6">🔐 Para cambiar al agente activo se pide la contraseña de ese agente.</p>
 
                     <!-- Reports -->
                     <h4 class="font-heading font-bold text-sm mb-3 flex items-center gap-2"><i class="fas fa-file-alt text-secondary"></i> Reportes</h4>
@@ -1269,6 +1343,156 @@
                     <input type="password" id="switch-password" aria-label="Contraseña" autocomplete="current-password" required placeholder="••••••••" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5">
                 </div>
                 <button type="submit" class="w-full bg-primary hover:bg-blue-900 text-white font-bold py-2.5 rounded-xl transition-colors">Ingresar a esta cuenta</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: REGISTRO E INICIO DE SESIÓN (auth.js) -->
+    <div id="modal-auth" role="dialog" aria-modal="true" aria-label="Cuenta de AlquilaPTY" class="fixed inset-0 bg-slate-900/60 modal-blur z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl p-6 relative text-xs max-h-[92vh] overflow-y-auto">
+            <button onclick="App.closeModal('modal-auth')" type="button" aria-label="Cerrar" class="absolute top-4 right-4 text-gray-400 font-bold">✕</button>
+
+            <!-- Iniciar sesión -->
+            <div id="auth-view-login" class="hidden">
+                <h3 class="font-heading font-bold text-primary text-lg mb-1">🔐 Iniciar sesión</h3>
+                <p class="text-gray-500 mb-4">Entra con el correo y la contraseña de tu cuenta.</p>
+                <form onsubmit="App.submitLogin(event)" class="space-y-3">
+                    <div>
+                        <label for="login-email" class="block font-bold text-gray-700 mb-1">Correo</label>
+                        <input id="login-email" name="email" type="email" required autocomplete="email" placeholder="tu@correo.com" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5">
+                    </div>
+                    <div>
+                        <label for="login-password" class="block font-bold text-gray-700 mb-1">Contraseña</label>
+                        <input id="login-password" name="password" type="password" required autocomplete="current-password" placeholder="••••••••" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5">
+                    </div>
+                    <p id="auth-login-error" class="text-red-600 font-semibold min-h-[1em]" role="alert"></p>
+                    <button type="submit" class="w-full bg-primary hover:bg-blue-900 text-white font-bold py-2.5 rounded-xl transition-colors">Entrar</button>
+                </form>
+                <p class="text-center text-gray-500 mt-4">¿No tienes cuenta? <button type="button" onclick="App.authShowRegister()" class="text-accent font-bold underline">Regístrate</button></p>
+                <p class="text-center text-[10px] text-gray-400 mt-2">Cuentas demo: juan@demo.pa, ricardo@demo.pa, sara@panacasas.pa (contraseña demo1234)</p>
+            </div>
+
+            <!-- Paso 1: elegir plan -->
+            <div id="auth-view-choose" class="hidden">
+                <h3 class="font-heading font-bold text-primary text-lg mb-1">✨ Crear cuenta</h3>
+                <p class="text-gray-500 mb-4">¿Para qué la vas a usar? Elige tu plan.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <button type="button" onclick="App.selectAuthPlan('free')" class="border border-gray-200 hover:border-primary rounded-2xl p-4 text-left transition-colors">
+                        <span class="block text-xs font-bold text-gray-500 uppercase">🆓 Free</span>
+                        <span class="block text-2xl font-extrabold text-gray-800">$0</span>
+                        <span class="block text-[11px] text-gray-500">Hasta 3 propiedades. Con publicidad.</span>
+                    </button>
+                    <button type="button" onclick="App.selectAuthPlan('premium')" class="border-2 border-gold hover:bg-amber-50 rounded-2xl p-4 text-left transition-colors">
+                        <span class="block text-xs font-bold text-amber-700 uppercase">⭐ Premium</span>
+                        <span class="block text-2xl font-extrabold text-primary">$3<span class="text-xs text-gray-500 font-normal">/mes</span></span>
+                        <span class="block text-[11px] text-gray-500">Hasta 10 propiedades. Sin publicidad.</span>
+                    </button>
+                    <button type="button" onclick="App.selectAuthPlan('holding')" class="border border-primary hover:bg-blue-50 rounded-2xl p-4 text-left transition-colors">
+                        <span class="block text-xs font-bold text-primary uppercase">🏢 Holding</span>
+                        <span class="block text-2xl font-extrabold text-primary">$12<span class="text-xs text-gray-500 font-normal">/mes</span></span>
+                        <span class="block text-[11px] text-gray-500">Empresas: hasta 5 agentes y propiedades ilimitadas.</span>
+                    </button>
+                </div>
+                <p class="text-center text-gray-500 mt-4">¿Ya tienes cuenta? <button type="button" onclick="App.authShowLogin()" class="text-primary font-bold underline">Inicia sesión</button></p>
+            </div>
+
+            <!-- Paso 2: datos (y pago) -->
+            <div id="auth-view-form" class="hidden">
+                <button type="button" onclick="App.authBackToPlans()" class="text-primary font-bold mb-2">← Cambiar de plan</button>
+                <h3 id="auth-form-title" class="font-heading font-bold text-primary text-lg mb-1">Cuenta</h3>
+                <p id="auth-form-subtitle" class="text-gray-500 mb-4"></p>
+                <form onsubmit="App.submitRegister(event)" class="space-y-3" novalidate>
+                    <fieldset id="auth-company-fields" class="hidden space-y-2 border border-gray-200 rounded-2xl p-3">
+                        <legend class="font-bold text-gray-700 px-1">🏢 Empresa</legend>
+                        <label for="reg-company" class="block font-bold text-gray-700">Nombre de la empresa</label>
+                        <input id="reg-company" name="companyName" type="text" maxlength="80" autocomplete="organization" placeholder="Inmobiliaria Ejemplo S.A." class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5">
+                    </fieldset>
+
+                    <fieldset class="space-y-2 border border-gray-200 rounded-2xl p-3">
+                        <legend id="auth-person-title" class="font-bold text-gray-700 px-1">👤 Tus datos</legend>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label for="reg-first" class="block font-bold text-gray-700 mb-1">Nombre</label>
+                                <input id="reg-first" name="firstName" type="text" maxlength="60" autocomplete="given-name" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5">
+                            </div>
+                            <div>
+                                <label for="reg-last" class="block font-bold text-gray-700 mb-1">Apellido</label>
+                                <input id="reg-last" name="lastName" type="text" maxlength="60" autocomplete="family-name" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5">
+                            </div>
+                        </div>
+                        <label for="reg-email" class="block font-bold text-gray-700">Correo</label>
+                        <input id="reg-email" name="email" type="email" maxlength="120" autocomplete="email" placeholder="tu@correo.com" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5">
+                        <label for="reg-password" class="block font-bold text-gray-700">Contraseña <span class="font-normal text-gray-400">(mínimo 6 caracteres)</span></label>
+                        <input id="reg-password" name="password" type="password" maxlength="200" autocomplete="new-password" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5">
+                    </fieldset>
+
+                    <fieldset id="auth-payment-fields" class="hidden space-y-2 border-2 border-dashed border-amber-300 bg-amber-50/40 rounded-2xl p-3">
+                        <legend class="font-bold text-amber-800 px-1">💳 Pago <span id="auth-pay-amount">$0</span></legend>
+                        <p class="text-[11px] text-amber-800 font-semibold">🧪 Pago SIMULADO: no se cobra nada ni se guarda la tarjeta (solo los 4 últimos dígitos). Prueba con 4242 4242 4242 4242.</p>
+                        <label for="pay-holder" class="block font-bold text-gray-700">Titular</label>
+                        <input id="pay-holder" name="holder" type="text" maxlength="80" autocomplete="off" class="w-full bg-white border border-gray-300 rounded-xl p-2.5">
+                        <label for="pay-number" class="block font-bold text-gray-700">Número de tarjeta</label>
+                        <input id="pay-number" name="cardNumber" type="text" inputmode="numeric" autocomplete="off" placeholder="4242 4242 4242 4242" oninput="App.formatCardInput(event)" class="w-full bg-white border border-gray-300 rounded-xl p-2.5">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label for="pay-expiry" class="block font-bold text-gray-700 mb-1">Vence (MM/AA)</label>
+                                <input id="pay-expiry" name="expiry" type="text" inputmode="numeric" autocomplete="off" placeholder="12/30" oninput="App.formatCardInput(event)" class="w-full bg-white border border-gray-300 rounded-xl p-2.5">
+                            </div>
+                            <div>
+                                <label for="pay-cvc" class="block font-bold text-gray-700 mb-1">CVC</label>
+                                <input id="pay-cvc" name="cvc" type="text" inputmode="numeric" autocomplete="off" placeholder="123" oninput="App.formatCardInput(event)" class="w-full bg-white border border-gray-300 rounded-xl p-2.5">
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <p id="auth-form-error" class="text-red-600 font-semibold min-h-[1em]" role="alert"></p>
+                    <button id="auth-submit" type="submit" class="w-full bg-accent hover:bg-red-500 text-white font-bold py-3 rounded-xl transition-colors disabled:opacity-60">Crear cuenta</button>
+                </form>
+            </div>
+
+            <!-- Paso 3 (Holding): código de la empresa -->
+            <div id="auth-view-done" class="hidden text-center space-y-3">
+                <span class="text-5xl block">🏢</span>
+                <h3 class="font-heading font-bold text-primary text-lg">¡<span id="auth-done-company">Tu empresa</span> está registrada!</h3>
+                <p class="text-gray-500">Este es el código de tu empresa. Lo necesitarás cada vez que agregues un agente nuevo. Solo funciona para tu empresa.</p>
+                <p id="auth-done-code" class="font-heading font-extrabold text-5xl tracking-[0.3em] text-primary bg-blue-50 border-2 border-primary rounded-2xl py-4">0000</p>
+                <p id="auth-done-receipt" class="text-[11px] text-emerald-700 font-semibold"></p>
+                <button type="button" onclick="App.finishAuth()" class="w-full bg-primary hover:bg-blue-900 text-white font-bold py-2.5 rounded-xl transition-colors">Ir a mi panel de empresa</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: AGREGAR AGENTE (HOLDING) -->
+    <div id="modal-add-agent" role="dialog" aria-modal="true" aria-label="Agregar agente" class="fixed inset-0 bg-slate-900/60 modal-blur z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-sm w-full shadow-2xl p-6 relative text-xs max-h-[92vh] overflow-y-auto">
+            <button onclick="App.closeModal('modal-add-agent')" type="button" aria-label="Cerrar" class="absolute top-4 right-4 text-gray-400 font-bold">✕</button>
+            <h3 class="font-heading font-bold text-primary text-base mb-1">🧑‍💼 Agregar agente</h3>
+            <p class="text-gray-500 mb-4">Nuevo agente de <strong id="add-agent-company">tu empresa</strong>. Se pide el código de 4 dígitos de la empresa.</p>
+            <form onsubmit="App.submitAddAgent(event)" class="space-y-3">
+                <div>
+                    <label for="agent-code" class="block font-bold text-gray-700 mb-1">🔑 Código de la empresa</label>
+                    <input id="agent-code" name="code" type="text" inputmode="numeric" maxlength="4" pattern="\d{4}" required autocomplete="off" placeholder="0000" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5 tracking-[0.5em] text-center font-bold text-base">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label for="agent-first" class="block font-bold text-gray-700 mb-1">Nombre</label>
+                        <input id="agent-first" name="firstName" type="text" maxlength="60" required autocomplete="off" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5">
+                    </div>
+                    <div>
+                        <label for="agent-last" class="block font-bold text-gray-700 mb-1">Apellido</label>
+                        <input id="agent-last" name="lastName" type="text" maxlength="60" required autocomplete="off" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5">
+                    </div>
+                </div>
+                <div>
+                    <label for="agent-email" class="block font-bold text-gray-700 mb-1">Correo</label>
+                    <input id="agent-email" name="email" type="email" maxlength="120" required autocomplete="off" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5">
+                </div>
+                <div>
+                    <label for="agent-password" class="block font-bold text-gray-700 mb-1">Contraseña <span class="font-normal text-gray-400">(mínimo 6)</span></label>
+                    <input id="agent-password" name="password" type="password" minlength="6" required autocomplete="new-password" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-2.5">
+                </div>
+                <p id="add-agent-error" class="text-red-600 font-semibold min-h-[1em]" role="alert"></p>
+                <button type="submit" class="w-full bg-primary hover:bg-blue-900 text-white font-bold py-2.5 rounded-xl transition-colors">Agregar agente</button>
             </form>
         </div>
     </div>

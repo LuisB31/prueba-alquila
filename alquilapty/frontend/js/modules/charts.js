@@ -73,6 +73,39 @@ export function showTrend(labels, values) {
   });
 }
 
+/**
+ * Ingresos mensuales de la empresa (panel Holding): barras de ventas cerradas
+ * y línea de alquileres cobrados (en su propio eje, porque son montos mucho menores).
+ */
+export function showFinance({ labels, ventas, alquileres }) {
+  const tick = { color: '#cbd5e1', callback: (v) => (v >= 1000 ? `$${v / 1000}K` : `$${v}`) };
+  const grid = { color: 'rgba(255,255,255,0.05)' };
+  upsert('finance', 'financeChart', {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { type: 'bar', label: 'Ventas cerradas ($)', data: ventas, backgroundColor: 'rgba(255,215,0,0.75)', borderRadius: 6, yAxisID: 'y' },
+        { type: 'line', label: 'Alquileres cobrados ($)', data: alquileres, borderColor: '#40E0D0', backgroundColor: 'rgba(64,224,208,0.2)', tension: 0.35, fill: false, pointRadius: 3, yAxisID: 'y1' },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: '#fff', font: { size: 10 } } },
+        tooltip: { callbacks: { label: (c) => `${c.dataset.label}: $${Number(c.raw).toLocaleString('en-US')}` } },
+      },
+      scales: {
+        x: { ticks: { color: '#cbd5e1' }, grid },
+        // suggestedMax: sin ingresos todavía, el eje muestra $0–$1K en vez de decimales
+        y: { beginAtZero: true, suggestedMax: 1000, position: 'left', ticks: tick, grid, title: { display: true, text: 'Ventas', color: '#FFD700' } },
+        y1: { beginAtZero: true, suggestedMax: 1000, position: 'right', ticks: tick, grid: { drawOnChartArea: false }, title: { display: true, text: 'Alquileres', color: '#40E0D0' } },
+      },
+    },
+  });
+}
+
 /** Vistas vs consultas por mes (panel Holding). */
 export function showAgency({ labels, views, inquiries }) {
   const axis = { ticks: { color: '#cbd5e1' }, grid: { color: 'rgba(255,255,255,0.05)' } };

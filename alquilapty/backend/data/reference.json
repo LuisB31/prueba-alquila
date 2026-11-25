@@ -83,47 +83,48 @@
       "avatar": "https://images.unsplash.com/photo-1633332755192-727a05c4013d?auto=format&fit=crop&w=200&q=80",
       "role": "No registrado",
       "memberSince": "—"
-    },
-    "free": {
-      "name": "Juan Morales",
-      "avatar": "https://images.unsplash.com/photo-1633332755192-727a05c4013d?auto=format&fit=crop&w=200&q=80",
-      "role": "Usuario Free",
-      "memberSince": "Miembro desde Marzo 2025"
-    },
-    "premium": {
-      "name": "Ricardo Rodríguez",
-      "avatar": "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80",
-      "role": "Usuario Premium ⭐",
-      "memberSince": "Miembro desde Enero 2025"
-    },
-    "holding": {
-      "name": "Sara Llanos",
-      "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
-      "role": "Administradora - Inmobiliaria Panacasas S.A. 🏢",
-      "memberSince": "Miembro desde Junio 2024"
     }
   },
-  "holdingTeam": [
-    {
-      "name": "Sara Llanos",
-      "role": "Admin Principal",
-      "props": 17,
-      "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
-      "isCurrent": true
+  "demo": {
+    "_comment": "Cuentas de demostración que usa el simulador de planes (sin iniciar sesión). Contraseña de todas: demo1234",
+    "password": "demo1234",
+    "planUsers": { "free": 1, "premium": 2, "holding": 3 },
+    "users": [
+      {
+        "id": 1, "firstName": "Juan", "lastName": "Morales", "email": "juan@demo.pa", "plan": "free",
+        "avatar": "https://images.unsplash.com/photo-1633332755192-727a05c4013d?auto=format&fit=crop&w=200&q=80",
+        "createdAt": "2025-03-05T12:00:00.000Z"
+      },
+      {
+        "id": 2, "firstName": "Ricardo", "lastName": "Rodríguez", "email": "ricardo@demo.pa", "plan": "premium",
+        "avatar": "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80",
+        "createdAt": "2025-01-12T12:00:00.000Z"
+      },
+      {
+        "id": 3, "firstName": "Sara", "lastName": "Llanos", "email": "sara@panacasas.pa", "plan": "holding",
+        "companyId": 1, "companyRole": "Admin Principal",
+        "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
+        "createdAt": "2024-06-01T12:00:00.000Z"
+      }
+    ],
+    "company": {
+      "id": 1, "name": "Inmobiliaria Panacasas S.A.", "code": "4821", "email": "info@panacasas.pa", "phone": "+507 6222-2222",
+      "createdAt": "2024-06-01T12:00:00.000Z", "paidUntil": "2027-09-15T00:00:00.000Z"
     },
-    {
-      "name": "Juan Pérez",
-      "role": "Agente",
-      "props": 12,
-      "avatar": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80",
-      "isCurrent": false
-    },
-    {
-      "name": "María Torres",
-      "role": "Agente",
-      "props": 18,
-      "avatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80",
-      "isCurrent": false
+    "ownership": { "1": [4], "2": [8, 9], "3": [1, 2, 6, 7, 10, 17, 19] },
+    "history": [
+      { "buyerId": 1, "title": "Habitación para Estudiante - Bettsilla", "zone": "Bettsilla", "kind": "Alquiler", "amount": 350, "monthsAgo": 7 },
+      { "buyerId": 1, "title": "Estudio Céntrico - Calidonia", "zone": "Calidonia", "kind": "Alquiler", "amount": 480, "monthsAgo": 19 },
+      { "buyerId": 2, "title": "Apartamento Vista al Mar - Punta Pacífica", "zone": "Punta Pacífica", "kind": "Alquiler", "amount": 2200, "monthsAgo": 10 },
+      { "buyerId": 2, "title": "Casa Económica - Arraiján", "zone": "Arraiján", "kind": "Compra", "amount": 92000, "monthsAgo": 3 }
+    ],
+    "companyIncome": {
+      "_comment": "Ingresos de la empresa demo: alquileres recurrentes de sus propiedades y ventas ya cerradas.",
+      "rentals": [ { "propertyId": 2, "fromMonthsAgo": 5 }, { "propertyId": 7, "fromMonthsAgo": 5 }, { "propertyId": 17, "fromMonthsAgo": 2 } ],
+      "sales": [
+        { "title": "Apartamento - Condado del Rey", "zone": "Condado del Rey", "amount": 210000, "monthsAgo": 4 },
+        { "title": "Estudio - Bella Vista", "zone": "Bella Vista", "amount": 98000, "monthsAgo": 1 }
+      ]
     }
-  ]
+  }
 }

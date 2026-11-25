@@ -56,7 +56,11 @@ async function request(path, { method = 'GET', query, body, key } = {}) {
   try {
     const response = await fetch(url, {
       method,
-      headers: { 'Content-Type': 'application/json', 'X-Demo-Plan': state.plan },
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Demo-Plan': state.plan,
+        ...(state.token ? { Authorization: `Bearer ${state.token}` } : {}),
+      },
       body: body === undefined ? undefined : JSON.stringify(body),
       signal: controller.signal,
     });
@@ -106,6 +110,7 @@ export const api = {
   topNeighborhoods: () => get('/properties/top-neighborhoods'),
   nearbyProperties: () => get('/properties/nearby'),
   contactOwner: (id) => post(`/properties/${id}/contact`),
+  acquireProperty: (id) => post(`/properties/${id}/acquire`),
   publishProperty: (data) => post('/properties', data),
 
   // ---- Subastas -----------------------------------------------------------
@@ -130,11 +135,18 @@ export const api = {
   // ---- Asistente ----------------------------------------------------------
   chat: (message) => post('/assistant/chat', { message }),
 
+  // ---- Sesión ---------------------------------------------------------------
+  register: (data) => post('/auth/register', data),
+  login: (email, password) => post('/auth/login', { email, password }),
+  logout: () => post('/auth/logout'),
+  session: () => get('/auth/session'),
+
   // ---- Cuenta, puntos y Holding ------------------------------------------
   me: () => get('/accounts/me', undefined, 'me'),
+  activity: () => get('/accounts/me/activity', undefined, 'activity'),
   redeem: (item, cost) => post('/rewards/redeem', { item, cost }),
-  holdingTeam: () => get('/holding/team'),
-  holdingStats: memoize(() => get('/holding/stats')),
-  switchHoldingUser: (name, password) => post('/holding/switch', { name, password }),
-  inviteHoldingUser: () => post('/holding/invite'),
+  holdingTeam: () => get('/holding/team', undefined, 'holding-team'),
+  holdingStats: () => get('/holding/stats', undefined, 'holding-stats'),
+  switchHoldingUser: (userId, password) => post('/holding/switch', { userId, password }),
+  addHoldingAgent: (data) => post('/holding/agents', data),
 };

@@ -303,9 +303,37 @@ function detailTemplate(p, destinations) {
       <button type="button" onclick="App.askAIAboutProperty(${p.id})" class="flex-1 bg-primary text-white font-bold py-2.5 rounded-xl hover:bg-blue-900 transition-colors min-w-[120px]">🤖 Preguntar a la IA</button>
       <button type="button" onclick="App.addPropertyToCompare(${p.id})" class="flex-1 bg-indigo-100 text-indigo-700 font-bold py-2.5 rounded-xl hover:bg-indigo-200 transition-colors min-w-[100px]">⚖️ Comparar</button>
       <button type="button" onclick="App.contactOwner(${p.id})" class="flex-1 bg-secondary text-primary font-bold py-2.5 rounded-xl hover:bg-teal-400 transition-colors min-w-[120px]">💬 Contactar Propietario</button>
-      ${p.auction ? html`<button type="button" onclick="App.openOfferFromDetail(${p.id})" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 rounded-xl transition-colors">💰 Hacer Oferta en Subasta</button>` : ''}
+      ${p.auction && !p.sold ? html`<button type="button" onclick="App.openOfferFromDetail(${p.id})" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 rounded-xl transition-colors">💰 Hacer Oferta en Subasta</button>` : ''}
+      ${acquireButton(p)}
     </div>
   </div>`;
+}
+
+/** Botón "Alquilar / Comprar" (simulado): queda en el historial del perfil. */
+function acquireButton(p) {
+  const base = 'w-full font-bold py-2.5 rounded-xl transition-colors';
+  if (p.sold) return html`<button type="button" disabled class="${base} bg-gray-200 text-gray-500 cursor-default">🔒 Propiedad vendida</button>`;
+  if (p.ownerUserId && p.ownerUserId === state.account?.id) {
+    return html`<button type="button" disabled class="${base} bg-gray-100 text-gray-500 cursor-default">🏷️ Es tu propiedad</button>`;
+  }
+  const label = p.txType === 'Venta' ? `🔑 Comprar por ${usd(p.price)}` : `🏠 Alquilar por ${usd(p.price)}/mes`;
+  return html`<button type="button" onclick="App.acquireProperty(${p.id})" class="${base} bg-emerald-600 hover:bg-emerald-700 text-white">${label} <span class="font-normal text-[10px] opacity-80">(simulado)</span></button>`;
+}
+
+/** Alquila o compra la propiedad abierta (simulado). */
+export async function acquireProperty(id) {
+  if (!requireAccount('alquilar o comprar')) {
+    closeModal('modal-property');
+    return;
+  }
+  try {
+    const result = await api.acquireProperty(id);
+    notify(result.message, 'success');
+    emit('activity:change', {});
+    openPropertyModal(id); // refresca el estado (p. ej. "vendida")
+  } catch (error) {
+    notify(error.message, 'error');
+  }
 }
 
 function renderGalleryDots() {

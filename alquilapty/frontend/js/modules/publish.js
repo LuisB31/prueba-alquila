@@ -4,6 +4,7 @@
 import { byId, valueOf, isChecked } from '../core/dom.js';
 import { api } from '../core/api.js';
 import { notify } from '../core/ui.js';
+import { emit } from '../core/state.js';
 import { setPoints } from './plans.js';
 import { openTab } from './navigation.js';
 import { refreshFeed } from './properties.js';
@@ -36,6 +37,7 @@ export async function handlePublishSubmit(event) {
     toggleAuctionPublishFields();
     openTab('inicio');
     refreshFeed(); // el listado ya incluye la propiedad nueva
+    emit('activity:change', {}); // aparece en "Mis propiedades" y en el panel Holding
   } catch (error) {
     notify(error.message, 'error');
   }

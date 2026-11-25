@@ -1,10 +1,11 @@
 /**
- * Simulador de planes, perfil de usuario y puntos (gamificación).
+ * Plan activo, perfil de usuario y puntos (gamificación).
  *
- * El simulador flotante permite probar los 4 planes (visitante, free, premium,
- * holding). El plan activo se guarda en `state.plan` y se envía al backend en
- * cada petición; el backend es quien guarda el saldo de puntos y quien decide
- * qué puede hacer cada rol (aquí solo se adapta la interfaz).
+ * El plan sale de:
+ *   • la sesión iniciada (auth.js), si la hay; o
+ *   • el simulador flotante (visitante, free, premium, holding), que usa cuentas demo.
+ * El plan activo se guarda en `state.plan` y se envía al backend en cada
+ * petición; el backend decide qué puede hacer cada rol (aquí solo se adapta la interfaz).
  */
 import { $$, byId, setText } from '../core/dom.js';
 import { api } from '../core/api.js';
@@ -13,10 +14,12 @@ import { notify } from '../core/ui.js';
 import { openTab } from './navigation.js';
 
 const PLAN_IDS = ['visitor', 'free', 'premium', 'holding'];
+const PLAN_NAMES = { visitor: 'Visitante', free: 'Free', premium: 'Premium', holding: 'Holding' };
 
 /** ¿El usuario tiene cuenta? (cualquier plan menos visitante) */
 export const isRegistered = () => state.plan !== 'visitor';
 export const isHolding = () => state.plan === 'holding';
+export const hasSession = () => Boolean(state.token);
 
 /**
  * Para acciones que exigen cuenta (contactar, ofertar…): si es visitante,
@@ -43,7 +46,9 @@ function renderProfile(account) {
   $$('.profile-name').forEach((el) => { el.textContent = account.name; });
   $$('.profile-role').forEach((el) => { el.textContent = account.role; });
   $$('.profile-membersince').forEach((el) => { el.textContent = account.memberSince; });
+  $$('.profile-email').forEach((el) => { el.textContent = account.email || ''; });
   $$('.profile-avatar, .nav-avatar').forEach((el) => { el.src = account.avatar; });
+  setText('nav-user-name', account.session ? account.firstName : 'Mi Perfil');
 }
 
 /** Botones de la tabla de planes: el del plan activo dice "Plan Actual" y se desactiva. */
@@ -58,19 +63,25 @@ function renderPlanButtons(plan) {
   });
 }
 
-/** Pide al backend la cuenta del plan activo (perfil + puntos). */
+/** Pide al backend la cuenta actual (perfil + puntos). */
 export async function loadProfile() {
   try {
     const account = await api.me();
+    state.account = account;
     renderProfile(account);
     setPoints(account.points);
+    return account;
   } catch (error) {
     notify(error.message, 'error');
+    return null;
   }
 }
 
-/** Cambia el plan activo y refresca todo lo que depende de él. */
-export async function changePlan(plan) {
+/**
+ * Aplica un plan a la interfaz y recarga lo que depende de él.
+ * La usan el simulador y auth.js (al iniciar o cerrar sesión).
+ */
+export async function applyPlan(plan) {
   if (!PLAN_IDS.includes(plan)) return;
   state.plan = plan;
   document.body.dataset.plan = plan; // el CSS usa data-plan para mostrar/ocultar bloques
@@ -84,6 +95,25 @@ export async function changePlan(plan) {
 
   await loadProfile();
   emit('plan:change', { plan });
+}
+
+/** Botones del simulador flotante. Con una sesión iniciada no se usan. */
+export async function changePlan(plan) {
+  if (hasSession()) {
+    notify('Tienes una sesión iniciada. Cierra sesión para usar el simulador de planes.', 'error');
+    return;
+  }
+  await applyPlan(plan);
+}
+
+/** Botones "Mejorar a…" de la tabla de planes: abren el registro con ese plan. */
+export function choosePlan(plan) {
+  if (plan === state.plan) return;
+  if (hasSession()) {
+    notify(`Para usar el plan ${PLAN_NAMES[plan]}, cierra sesión y crea una cuenta ${PLAN_NAMES[plan]}.`, 'error');
+    return;
+  }
+  emit('auth:open', { view: 'register', plan });
 }
 
 /** Canjea puntos por un beneficio (el backend valida el saldo). */

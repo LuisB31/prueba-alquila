@@ -22,22 +22,31 @@ async function boot() {
   const { createApp } = require('../app');
   const server = await new Promise((resolve) => { const s = createApp().listen(0, () => resolve(s)); });
   const base = `http://127.0.0.1:${server.address().port}`;
-  const call = async (p, { method = 'GET', body, plan = 'free' } = {}) => {
+  const call = async (p, { method = 'GET', body, plan = 'free', token } = {}) => {
     const res = await fetch(base + p, {
       method,
-      headers: { 'Content-Type': 'application/json', 'X-Demo-Plan': plan },
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Demo-Plan': plan,
+        Connection: 'close',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
       body: body ? JSON.stringify(body) : undefined,
     });
     return { status: res.status, body: await res.json().catch(() => null) };
   };
-  return { call, stop: () => new Promise((r) => server.close(r)) };
+  const stop = () => new Promise((r) => { server.closeAllConnections?.(); server.close(r); });
+  return { call, stop };
 }
+
+const CARD = { holder: 'Prueba', cardNumber: '4242424242424242', expiry: '12/30', cvc: '123' };
 
 test('los datos de los usuarios sobreviven a un reinicio', async () => {
   // ---- Primera "vida" del servidor: los usuarios hacen cosas ----
   let app = await boot();
   assert.equal((await app.call('/api/health')).body.database, 'postgres');
 
+  const premiumBefore = (await app.call('/api/accounts/me', { plan: 'premium' })).body.published;
   const published = await app.call('/api/properties', {
     method: 'POST', plan: 'premium',
     body: { title: 'Casa persistente', zone: 'Clayton', txType: 'Venta', price: 150000, auction: { enabled: true, minPrice: 120000, step: 500 } },
@@ -50,7 +59,20 @@ test('los datos de los usuarios sobreviven a un reinicio', async () => {
   assert.equal((await app.call('/api/roommates/1/messages', { method: 'POST', body: { text: 'Hola' } })).status, 201);
   assert.equal((await app.call('/api/roommates/profile', { method: 'POST', body: { about: 'Tranquilo', budget: 400 } })).status, 201);
   assert.equal((await app.call('/api/rewards/redeem', { method: 'POST', body: { item: 'Café', cost: 50 } })).status, 200);
-  assert.equal((await app.call('/api/holding/switch', { method: 'POST', plan: 'holding', body: { name: 'Juan Pérez', password: 'x' } })).status, 200);
+
+  // Empresa Holding nueva + un agente, y una compra
+  const reg = await app.call('/api/auth/register', {
+    method: 'POST',
+    body: { plan: 'holding', companyName: 'Persistente S.A.', firstName: 'Lía', lastName: 'Ríos', email: 'lia@persist.pa', password: 'clave123', payment: CARD },
+  });
+  assert.equal(reg.status, 201);
+  const { token } = reg.body;
+  const code = reg.body.company.code;
+  assert.equal((await app.call('/api/holding/agents', {
+    method: 'POST', token, body: { firstName: 'Teo', lastName: 'Paz', email: 'teo@persist.pa', password: 'clave456', code },
+  })).status, 201);
+  assert.equal((await app.call('/api/properties/5/acquire', { method: 'POST', token })).status, 201);
+  assert.equal((await app.call(`/api/properties/${newId}/acquire`, { method: 'POST', token })).status, 201);
 
   const premiumPoints = (await app.call('/api/accounts/me', { plan: 'premium' })).body.points;
   const freePoints = (await app.call('/api/accounts/me', { plan: 'free' })).body.points;
@@ -63,24 +85,39 @@ test('los datos de los usuarios sobreviven a un reinicio', async () => {
   const restored = (await app.call(`/api/properties/${newId}`)).body;
   assert.equal(restored.title, 'Casa persistente');
   assert.ok(restored.auction && restored.gallery.length === 3, 'se re-enriquece al cargar');
+  assert.equal(restored.owner.name, 'Ricardo Rodríguez', 'conserva el publicador');
+  assert.equal(restored.sold, true, 'la venta se recuerda');
 
   const me = (await app.call('/api/accounts/me', { plan: 'premium' })).body;
   assert.equal(me.points, premiumPoints);
-  assert.equal(me.published, 1);
+  assert.equal(me.published, premiumBefore + 1);
   assert.equal((await app.call('/api/accounts/me', { plan: 'free' })).body.points, freePoints);
 
-  const team = (await app.call('/api/holding/team', { plan: 'holding' })).body;
-  assert.equal(team.members.find((m) => m.isCurrent).name, 'Juan Pérez');
+  // la sesión sigue abierta, la empresa conserva su código y su agente
+  const session = await app.call('/api/auth/session', { token });
+  assert.equal(session.status, 200);
+  assert.equal(session.body.email, 'lia@persist.pa');
+  const team = (await app.call('/api/holding/team', { token })).body;
+  assert.equal(team.company.code, code);
+  assert.equal(team.members.length, 2);
+  assert.equal((await app.call('/api/auth/login', { method: 'POST', body: { email: 'teo@persist.pa', password: 'clave456' } })).status, 200);
+  const history = (await app.call('/api/accounts/me/activity', { token })).body.history;
+  assert.equal(history.length, 2);
 
   // los ids siguen sin chocar con lo ya guardado
   const second = await app.call('/api/properties', { method: 'POST', plan: 'premium', body: { title: 'Otra', zone: 'Obarrio', txType: 'Alquiler', price: 900 } });
   assert.equal(second.body.property.id, newId + 1);
+  assert.equal((await app.call('/api/auth/register', {
+    method: 'POST', body: { plan: 'free', firstName: 'Nuevo', lastName: 'Usuario', email: 'nuevo@persist.pa', password: 'clave789' },
+  })).status, 201);
   assert.equal((await app.call(`/api/auctions/${auction.id}/offers`, { method: 'POST', body: { amount: auction.auction.minPrice + 200 } })).status, 201);
   assert.equal((await app.call('/api/roommates/1/messages', { method: 'POST', body: { text: 'Otra vez' } })).status, 201);
   await app.stop();
 
-  const count = (table) => pgMem.public.many(`SELECT id FROM ${table}`).length;
+  const count = (table) => pgMem.public.many(`SELECT * FROM ${table}`).length;
   assert.equal(count('offers'), 2);
   assert.equal(count('roommate_messages'), 2);
   assert.equal(count('published_properties'), 2);
+  assert.equal(count('companies'), 1);
+  assert.equal(count('transactions'), 2);
 });

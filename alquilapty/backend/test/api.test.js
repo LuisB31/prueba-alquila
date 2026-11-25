@@ -191,16 +191,22 @@ test('publicar: visitantes reciben 403 y datos inválidos 400', async () => {
   assert.equal((await call('/api/properties', { method: 'POST', body: { ...body, txType: 'Trueque' } })).status, 400);
 });
 
-test('holding: cambia de usuario, exige contraseña y respeta el límite del equipo', async () => {
+test('holding demo: 1 agente y 4 espacios libres; estadísticas e ingresos', async () => {
   const plan = 'holding';
-  const team = await call('/api/holding/team', { plan });
-  assert.equal(team.body.members.length, 3);
+  const team = (await call('/api/holding/team', { plan })).body;
+  assert.equal(team.members.length, 1);
+  assert.equal(team.limit, 5);
+  assert.equal(team.freeSlots, 4);
+  assert.match(team.company.code, /^\d{4}$/);
 
-  assert.equal((await call('/api/holding/switch', { method: 'POST', plan, body: { name: 'Juan Pérez', password: '' } })).status, 400);
-  assert.equal((await call('/api/holding/switch', { method: 'POST', plan, body: { name: 'Nadie', password: 'x' } })).status, 404);
-  const ok = await call('/api/holding/switch', { method: 'POST', plan, body: { name: 'Juan Pérez', password: 'x' } });
-  assert.equal(ok.body.members.find((m) => m.isCurrent).name, 'Juan Pérez');
-  assert.equal((await call('/api/holding/stats', { plan })).body.views.length, 9);
+  const stats = (await call('/api/holding/stats', { plan })).body;
+  assert.equal(stats.counts.venta, 4);
+  assert.equal(stats.counts.alquiler, 3);
+  assert.equal(stats.properties.length, 7);
+  assert.ok(stats.properties.every((p) => p.agent === 'Sara Llanos'));
+  assert.equal(stats.finance.labels.length, 6);
+  assert.ok(stats.finance.total > 0 && stats.finance.alquileres.every((v) => v > 0));
+  assert.equal(stats.traffic.views.length, 9);
 });
 
 test('roles: el panel Holding es exclusivo del plan Holding', async () => {
@@ -248,7 +254,8 @@ test('búsqueda: ignora tildes y mayúsculas, y combina varias palabras', async 
 
 test('publicar: el plan Free tiene un máximo de 3 propiedades', async () => {
   const body = { title: 'Depto prueba', zone: 'Obarrio', txType: 'Alquiler', price: 800 };
-  for (let i = 0; i < 3; i++) {
+  const already = (await call('/api/accounts/me', { plan: 'free' })).body.published; // la cuenta demo ya tiene 1
+  for (let i = already; i < 3; i++) {
     assert.equal((await call('/api/properties', { method: 'POST', plan: 'free', body })).status, 201);
   }
   const blocked = await call('/api/properties', { method: 'POST', plan: 'free', body });
@@ -258,6 +265,200 @@ test('publicar: el plan Free tiene un máximo de 3 propiedades', async () => {
   assert.equal(me.published, 3);
   assert.equal(me.publishLimit, 3);
   assert.equal((await call('/api/accounts/me', { plan: 'holding' })).body.publishLimit, null);
+});
+
+// ---------------------------------------------------------------------------
+// Registro, sesión, perfil, historial y empresa Holding
+// ---------------------------------------------------------------------------
+
+/** Llamada con sesión (token Bearer). */
+async function authed(path, token, { method = 'GET', body, plan } = {}) {
+  const res = await fetch(base + path, {
+    method,
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`, ...(plan ? { 'X-Demo-Plan': plan } : {}) },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  return { status: res.status, body: await res.json().catch(() => null) };
+}
+
+// Tarjeta de prueba (número público de pruebas, pasa Luhn). El pago es simulado.
+const CARD = { holder: 'Prueba', cardNumber: '4242 4242 4242 4242', expiry: '12/30', cvc: '123' };
+const person = (email) => ({ firstName: 'Ana', lastName: 'Prueba', email, password: 'secreto1' });
+
+test('registro free: crea la cuenta, inicia sesión y valida los datos', async () => {
+  const bad = async (body) => (await call('/api/auth/register', { method: 'POST', body })).status;
+  assert.equal(await bad({ ...person('ana@test.pa'), plan: 'vip' }), 400);
+  assert.equal(await bad({ ...person('no-es-correo'), plan: 'free' }), 400);
+  assert.equal(await bad({ ...person('ana@test.pa'), password: '123', plan: 'free' }), 400);
+  assert.equal(await bad({ ...person('ana@test.pa'), firstName: '', plan: 'free' }), 400);
+
+  const r = await call('/api/auth/register', { method: 'POST', body: { ...person('ana@test.pa'), plan: 'free' } });
+  assert.equal(r.status, 201);
+  assert.ok(r.body.token);
+  assert.equal(r.body.account.name, 'Ana Prueba');
+  assert.equal(r.body.account.plan, 'free');
+  assert.equal(r.body.receipt, null, 'free no paga');
+  assert.equal(JSON.stringify(r.body).includes('passwordHash'), false, 'nunca expone el hash');
+
+  // correo repetido (sin importar mayúsculas)
+  assert.equal(await bad({ ...person('ANA@test.pa'), plan: 'free' }), 409);
+
+  // con sesión, el plan lo decide la cuenta (se ignora el simulador)
+  const me = await authed('/api/accounts/me', r.body.token, { plan: 'holding' });
+  assert.equal(me.body.plan, 'free');
+  assert.equal(me.body.session, true);
+  assert.equal((await authed('/api/holding/team', r.body.token, { plan: 'holding' })).status, 403);
+});
+
+test('login y logout: credenciales correctas, incorrectas y token inválido', async () => {
+  await call('/api/auth/register', { method: 'POST', body: { ...person('log@test.pa'), plan: 'free' } });
+  assert.equal((await call('/api/auth/login', { method: 'POST', body: { email: 'log@test.pa', password: 'mala' } })).status, 401);
+  assert.equal((await call('/api/auth/login', { method: 'POST', body: { email: 'nadie@test.pa', password: 'secreto1' } })).status, 401);
+
+  const ok = await call('/api/auth/login', { method: 'POST', body: { email: 'LOG@test.pa', password: 'secreto1' } });
+  assert.equal(ok.status, 200);
+  const { token } = ok.body;
+  assert.equal((await authed('/api/auth/session', token)).body.email, 'log@test.pa');
+
+  assert.equal((await authed('/api/auth/logout', token, { method: 'POST' })).status, 200);
+  assert.equal((await authed('/api/auth/session', token)).status, 401, 'tras salir el token ya no sirve');
+  assert.equal((await call('/api/auth/logout', { method: 'POST' })).status, 401);
+
+  // las cuentas demo también pueden iniciar sesión
+  assert.equal((await call('/api/auth/login', { method: 'POST', body: { email: 'juan@demo.pa', password: 'demo1234' } })).status, 200);
+});
+
+test('registro premium: exige un pago (simulado) válido', async () => {
+  const body = { ...person('premium@test.pa'), plan: 'premium' };
+  const status = async (payment) => (await call('/api/auth/register', { method: 'POST', body: { ...body, payment } })).status;
+  assert.equal(await status(undefined), 400);
+  assert.equal(await status({ ...CARD, cardNumber: '4242 4242 4242 4241' }), 400, 'Luhn');
+  assert.equal(await status({ ...CARD, expiry: '01/20' }), 400, 'vencida');
+  assert.equal(await status({ ...CARD, expiry: '13/30' }), 400, 'mes inválido');
+  assert.equal(await status({ ...CARD, cvc: '1' }), 400);
+
+  const r = await call('/api/auth/register', { method: 'POST', body: { ...body, payment: CARD } });
+  assert.equal(r.status, 201);
+  assert.equal(r.body.account.plan, 'premium');
+  assert.equal(r.body.receipt.amount, 3);
+  assert.equal(r.body.receipt.last4, '4242');
+  assert.equal(JSON.stringify(r.body).includes('4242424242424242'), false, 'no guarda el número completo');
+});
+
+test('perfil: mis propiedades en venta/alquiler e historial; alquilar y comprar', async () => {
+  const premium = (await call('/api/accounts/me/activity', { plan: 'premium' })).body;
+  assert.ok(premium.properties.venta.some((p) => p.id === 8));
+  assert.ok(premium.properties.alquiler.some((p) => p.id === 9));
+  assert.ok(premium.history.some((h) => h.kind === 'Compra') && premium.history.some((h) => h.kind === 'Alquiler'));
+  assert.equal((await call('/api/accounts/me/activity', { plan: 'visitor' })).status, 403);
+
+  const { token } = (await call('/api/auth/register', { method: 'POST', body: { ...person('hist@test.pa'), plan: 'free' } })).body;
+  const empty = (await authed('/api/accounts/me/activity', token)).body;
+  assert.deepEqual(empty, { properties: { venta: [], alquiler: [] }, history: [] });
+
+  // publica una propiedad → aparece en "mis propiedades" con su nombre como publicador
+  const pub = await authed('/api/properties', token, { method: 'POST', body: { title: 'Mi depa', zone: 'Obarrio', txType: 'Alquiler', price: 700 } });
+  assert.equal(pub.status, 201);
+  assert.equal((await call(`/api/properties/${pub.body.property.id}`)).body.owner.name, 'Ana Prueba');
+  assert.equal((await authed('/api/accounts/me/activity', token)).body.properties.alquiler.length, 1);
+  assert.equal((await authed(`/api/properties/${pub.body.property.id}/acquire`, token, { method: 'POST' })).status, 400, 'no la propia');
+
+  // alquila una y compra otra → historial
+  assert.equal((await authed('/api/properties/5/acquire', token, { method: 'POST' })).status, 201);
+  const buy = await authed('/api/properties/12/acquire', token, { method: 'POST' });
+  assert.equal(buy.status, 201);
+  assert.equal(buy.body.transaction.kind, 'Compra');
+  assert.equal((await call('/api/properties/12/acquire', { method: 'POST', plan: 'premium' })).status, 409, 'ya vendida');
+  assert.equal((await call('/api/properties/12')).body.sold, true);
+
+  const history = (await authed('/api/accounts/me/activity', token)).body.history;
+  assert.deepEqual(history.map((h) => h.kind).sort(), ['Alquiler', 'Compra']);
+  assert.equal((await call('/api/properties/5/acquire', { method: 'POST', plan: 'visitor' })).status, 403);
+});
+
+test('holding: registro con pago genera un código de 4 dígitos único por empresa', async () => {
+  const reg = (email, companyName, payment = CARD) => call('/api/auth/register', {
+    method: 'POST', body: { ...person(email), plan: 'holding', companyName, payment },
+  });
+  assert.equal((await reg('h0@test.pa', '')).status, 400, 'nombre de empresa obligatorio');
+  assert.equal((await reg('h0@test.pa', 'Sin Pago', null)).status, 400, 'pago obligatorio');
+
+  const a = (await reg('h1@test.pa', 'Alfa Bienes')).body;
+  const b = (await reg('h2@test.pa', 'Beta Casas')).body;
+  assert.match(a.company.code, /^\d{4}$/);
+  assert.match(b.company.code, /^\d{4}$/);
+  assert.notEqual(a.company.code, b.company.code);
+  assert.equal(a.receipt.amount, 12);
+
+  const team = (await authed('/api/holding/team', a.token)).body;
+  assert.equal(team.company.name, 'Alfa Bienes');
+  assert.equal(team.members.length, 1);
+  assert.equal(team.members[0].role, 'Admin Principal');
+  assert.equal(team.freeSlots, 4);
+  // empresa nueva: sin propiedades ni ingresos todavía
+  const stats = (await authed('/api/holding/stats', a.token)).body;
+  assert.equal(stats.counts.total, 0);
+  assert.equal(stats.finance.total, 0);
+});
+
+test('holding: agregar agentes exige el código de SU empresa y máximo 5', async () => {
+  const reg = async (email, companyName) => (await call('/api/auth/register', {
+    method: 'POST', body: { ...person(email), plan: 'holding', companyName, payment: CARD },
+  })).body;
+  const alfa = await reg('ag1@test.pa', 'Gamma');
+  const beta = await reg('ag2@test.pa', 'Delta');
+  const agent = (n, code) => ({ firstName: 'Agente', lastName: `N${n}`, email: `agente${n}@gamma.pa`, password: 'clave123', code });
+  const add = (body) => authed('/api/holding/agents', alfa.token, { method: 'POST', body });
+
+  assert.equal((await add(agent(1, beta.company.code))).status, 403, 'el código de otra empresa no sirve');
+  assert.equal((await add(agent(1, '12'))).status, 400);
+  assert.equal((await add({ ...agent(1, alfa.company.code), email: 'ag2@test.pa' })).status, 409, 'correo ya usado');
+
+  for (let n = 1; n <= 4; n++) assert.equal((await add(agent(n, alfa.company.code))).status, 201);
+  const full = await add(agent(5, alfa.company.code));
+  assert.equal(full.status, 409, 'máximo 5 agentes');
+
+  const team = (await authed('/api/holding/team', alfa.token)).body;
+  assert.equal(team.members.length, 5);
+  assert.equal(team.freeSlots, 0);
+
+  // la otra empresa no ve a esos agentes
+  assert.equal((await authed('/api/holding/team', beta.token)).body.members.length, 1);
+
+  // el agente nuevo puede iniciar sesión y pertenece a la empresa
+  const login = (await call('/api/auth/login', { method: 'POST', body: { email: 'agente1@gamma.pa', password: 'clave123' } })).body;
+  assert.equal(login.account.company.name, 'Gamma');
+  assert.equal(login.account.plan, 'holding');
+
+  // cambiar a la cuenta de un agente exige SU contraseña
+  const target = team.members.find((m) => m.email === 'agente2@gamma.pa');
+  assert.equal((await authed('/api/holding/switch', alfa.token, { method: 'POST', body: { userId: target.id, password: 'mala' } })).status, 401);
+  const sw = await authed('/api/holding/switch', alfa.token, { method: 'POST', body: { userId: target.id, password: 'clave123' } });
+  assert.equal(sw.status, 200);
+  assert.equal(sw.body.account.email, 'agente2@gamma.pa');
+  assert.equal((await authed('/api/accounts/me', alfa.token)).body.email, 'agente2@gamma.pa');
+  // no puede cambiar a alguien de otra empresa
+  assert.equal((await authed('/api/holding/switch', beta.token, { method: 'POST', body: { userId: target.id, password: 'clave123' } })).status, 404);
+});
+
+test('holding: lo que publican los agentes y sus ventas cuentan en las estadísticas', async () => {
+  const h = (await call('/api/auth/register', {
+    method: 'POST', body: { ...person('stats@test.pa'), plan: 'holding', companyName: 'Épsilon', payment: CARD },
+  })).body;
+  const pub = (body) => authed('/api/properties', h.token, { method: 'POST', body });
+  const sale = (await pub({ title: 'Casa Épsilon', zone: 'Clayton', txType: 'Venta', price: 200000 })).body.property;
+  await pub({ title: 'Depa Épsilon', zone: 'Obarrio', txType: 'Alquiler', price: 1000 });
+
+  let stats = (await authed('/api/holding/stats', h.token)).body;
+  assert.deepEqual([stats.counts.venta, stats.counts.alquiler], [1, 1]);
+
+  // otro usuario compra la casa → ingreso del mes actual y pasa a "vendida"
+  assert.equal((await call(`/api/properties/${sale.id}/acquire`, { method: 'POST', plan: 'premium' })).status, 201);
+  stats = (await authed('/api/holding/stats', h.token)).body;
+  assert.equal(stats.counts.venta, 0);
+  assert.equal(stats.counts.vendidas, 1);
+  assert.equal(stats.finance.currentMonth, 200000);
+  assert.equal(stats.finance.ventas.at(-1), 200000);
 });
 
 test('plan inválido en la cabecera da 400', async () => {

@@ -8,13 +8,18 @@
  *
  * Eventos usados:
  *   "tab:change"    { tab }     se abrió una pestaña
- *   "plan:change"   { plan }    cambió el plan del simulador
+ *   "plan:change"   { plan }    cambió el plan (simulador, inicio o cierre de sesión)
+ *   "activity:change"           el usuario publicó, alquiló o compró algo
  *   "points:change" { points }  cambió el saldo de puntos
  *   "modal:close"   { id }      se cerró un modal
  */
 export const state = {
   /** Plan activo: 'visitor' | 'free' | 'premium' | 'holding' (se envía al backend). */
   plan: 'free',
+  /** Token de la sesión iniciada (null = se usa el simulador de planes). */
+  token: null,
+  /** Cuenta actual tal como la devuelve GET /api/accounts/me. */
+  account: null,
   /** Saldo de puntos del usuario actual (lo dicta el backend). */
   points: 0,
   /** Ids de propiedades en cola para el comparador (máx. 3). */

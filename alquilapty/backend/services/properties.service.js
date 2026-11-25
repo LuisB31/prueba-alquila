@@ -49,6 +49,8 @@ function toDetail(p) {
     utilitiesEst: p.utilitiesEst,
     monthlyCost: finance.monthlyCost(p),
     coords: p.coords,
+    ownerUserId: p.ownerUserId || null,
+    sold: Boolean(p.soldTo),
   };
 
   if (p.txType === 'Venta') {

@@ -38,7 +38,11 @@ module.exports = {
     publishProperty: 30,
   },
 
-  HOLDING_TEAM_LIMIT: 5,        // máximo de administradores en una cuenta Holding
+  HOLDING_TEAM_LIMIT: 5,        // máximo de agentes en una cuenta Holding (empresa)
+
+  // Precio mensual de cada plan (el pago es SIMULADO: no se cobra nada).
+  PLAN_PRICES: { free: 0, premium: 3, holding: 12 },
+  MIN_PASSWORD_LENGTH: 6,
 
   // Máximo de propiedades publicadas por plan (Infinity = ilimitado). Ver tabla de planes en el perfil.
   PUBLISH_LIMITS: { visitor: 0, free: 3, premium: 10, holding: Infinity },

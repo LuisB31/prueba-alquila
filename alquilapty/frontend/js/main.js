@@ -25,6 +25,8 @@ import * as map from './modules/map.js';
 import * as assistant from './modules/assistant.js';
 import * as holding from './modules/holding.js';
 import * as publish from './modules/publish.js';
+import * as auth from './modules/auth.js';
+import * as profile from './modules/profile.js';
 
 // ---------------------------------------------------------------------------
 // 1) API pública para el HTML
@@ -42,7 +44,9 @@ window.App = {
   ...assistant,
   ...holding,
   ...publish,
+  ...auth,
   changePlan: plans.changePlan,
+  choosePlan: plans.choosePlan,
   redeemPoints: plans.redeemPoints,
 };
 
@@ -57,14 +61,27 @@ on('tab:change', ({ tab }) => {
   if (tab === 'roi') investment.calculateROIAnalysis();
   if (tab === 'comparador') comparison.updateComparison();
   if (tab === 'mapa') map.refreshMap(); // el canvas necesita estar visible para medirse
-  if (tab === 'perfil') holding.loadHolding();
+  if (tab === 'perfil') {
+    profile.loadActivity();
+    holding.loadHolding();
+  }
 });
 
-// Cambió el plan: el listado cambia (anuncios) y el panel Holding necesita sus datos
+// Cambió el plan o la cuenta: el listado cambia (anuncios) y el perfil/panel recargan sus datos
 on('plan:change', () => {
   properties.refreshFeed();
+  if (navigation.getCurrentTab() === 'perfil') profile.loadActivity();
   holding.loadHolding();
 });
+
+// Publicó, alquiló o compró algo: el perfil y el panel Holding cambian
+on('activity:change', () => {
+  profile.loadActivity();
+  holding.loadHolding();
+});
+
+// "Mejorar a Premium/Holding" sin sesión abre el registro con ese plan
+on('auth:open', ({ view, plan }) => auth.openAuth(view, plan));
 
 // "Preguntar a la IA" desde el detalle de una propiedad
 on('assistant:ask', ({ text }) => {
@@ -123,6 +140,12 @@ window.addEventListener('hashchange', route);
 // analizado por completo, así que el DOM está listo y se puede iniciar directamente.
 initModals();
 route();                            // pestaña inicial según la URL
-plans.loadProfile();                // nombre, avatar y puntos desde la API
-properties.refreshFeed();           // listado inicial
 properties.renderTopNeighborhoods();
+// Si hay una sesión guardada entra con esa cuenta (eso ya carga perfil y listado);
+// si no, usa el simulador de planes.
+auth.restoreSession().then((restored) => {
+  if (restored) return;
+  plans.loadProfile();              // nombre, avatar y puntos desde la API
+  properties.refreshFeed();         // listado inicial
+  if (navigation.getCurrentTab() === 'perfil') profile.loadActivity();
+});
