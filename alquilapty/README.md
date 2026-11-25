@@ -84,6 +84,11 @@ Los errores del backend siempre tienen la misma forma: `{ "error": { "status": 4
 | POST | `/api/properties/:id/acquire` | Alquilar o comprar (simulado) |
 | GET | `/api/holding/team`, `/api/holding/stats` | Empresa, código, agentes, propiedades e ingresos |
 | POST | `/api/holding/agents`, `/api/holding/switch` | Agregar agente (con código) y cambiar de agente |
+| GET · POST · DELETE | `/api/favorites`, `/api/favorites/:propertyId` | Mis favoritos, guardar y quitar |
+| GET | `/api/chats` | Bandeja de mensajes (`unread` = no leídos) |
+| POST | `/api/chats` `{ propertyId, text? }` | Abrir (o retomar) el chat con el propietario (+10 pts la primera vez) |
+| GET | `/api/chats/:id?after=N` | Mensajes desde el id N; marca como leídos |
+| POST | `/api/chats/:id/messages` `{ text }` | Enviar mensaje (solo los dos participantes) |
 | GET | `/api/health` | Comprobación de estado |
 
 ## Cuentas, planes y empresas

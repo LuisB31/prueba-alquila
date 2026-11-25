@@ -139,6 +139,7 @@
                     <button onclick="App.openTab('mapa')" class="nav-btn px-3 py-2 rounded-xl text-xs font-medium hover:bg-white/10 transition-colors flex items-center gap-1.5" data-target="mapa"><i class="fas fa-map-marked-alt text-sky-400"></i> Mapa 3D</button>
                     <button onclick="App.openTab('comparador')" class="nav-btn px-3 py-2 rounded-xl text-xs font-medium hover:bg-white/10 transition-colors flex items-center gap-1.5" data-target="comparador"><i class="fas fa-balance-scale text-indigo-300"></i> Comparar</button>
                     <button onclick="App.openTab('ia')" class="nav-btn px-3 py-2 rounded-xl text-xs font-medium hover:bg-white/10 transition-colors flex items-center gap-1.5 text-secondary" data-target="ia"><i class="fas fa-robot text-accent"></i> Asistente IA</button>
+                    <button onclick="App.openTab('mensajes')" class="nav-btn show-registered-flex relative px-3 py-2 rounded-xl text-xs font-medium hover:bg-white/10 transition-colors items-center gap-1.5" data-target="mensajes"><i class="fas fa-comments text-secondary"></i> Mensajes <span class="chat-unread-badge hidden absolute -top-1 -right-1 bg-accent text-white text-[10px] font-bold rounded-full px-1.5 min-w-[18px] text-center leading-[18px]">0</span></button>
                     <button onclick="App.openTab('publicar')" class="nav-btn bg-accent hover:bg-red-500 text-white px-3 py-2 rounded-xl text-xs font-bold shadow-md transition-all hover:scale-105 flex items-center gap-1" data-target="publicar"><i class="fas fa-plus-circle"></i> Publicar</button>
 
                     <!-- Points Pill & Gamification Header -->
@@ -171,6 +172,7 @@
             <button onclick="App.openTab('roi')" class="px-2 py-1 text-emerald-300 flex flex-col items-center shrink-0"><i class="fas fa-calculator mb-1"></i> ROI</button>
             <button onclick="App.openTab('mapa')" class="px-2 py-1 text-sky-300 flex flex-col items-center shrink-0"><i class="fas fa-map-marked-alt mb-1"></i> Mapa</button>
             <button onclick="App.openTab('ia')" class="px-2 py-1 text-secondary flex flex-col items-center shrink-0"><i class="fas fa-robot mb-1"></i> IA</button>
+            <button onclick="App.openTab('mensajes')" class="show-registered-flex relative px-2 py-1 text-white/90 flex-col items-center shrink-0"><i class="fas fa-comments mb-1"></i> Mensajes <span class="chat-unread-badge hidden absolute top-0 right-0 bg-accent text-white text-[9px] font-bold rounded-full px-1 min-w-[16px] text-center">0</span></button>
             <button onclick="App.openTab('publicar')" class="px-2 py-1 text-accent font-bold flex flex-col items-center shrink-0"><i class="fas fa-plus-circle mb-1"></i> Publicar</button>
             <button onclick="App.openTab('perfil')" class="px-2 py-1 text-white/90 flex flex-col items-center shrink-0"><i class="fas fa-user mb-1"></i> Perfil</button>
             <button type="button" data-auth="out" onclick="App.openAuth('login')" class="px-2 py-1 text-white font-bold flex flex-col items-center shrink-0"><i class="fas fa-sign-in-alt mb-1"></i> Entrar</button>
@@ -879,6 +881,45 @@
         <!-- ========================================== -->
         <!-- PESTAÑA 9: MI PERFIL / GAMIFICACIÓN & PLANES-->
         <!-- ========================================== -->
+        <!-- ========================================== -->
+        <!-- PESTAÑA: MENSAJES (CHAT CON PROPIETARIOS)  -->
+        <!-- ========================================== -->
+        <div id="tab-mensajes" class="tab-content">
+            <div class="show-visitor max-w-lg mx-auto bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center space-y-4 mt-10">
+                <span class="text-5xl block">💬</span>
+                <h2 class="text-xl font-heading font-bold text-primary">Inicia sesión para chatear</h2>
+                <p class="text-xs text-gray-500">Con una cuenta puedes escribir a los propietarios y recibir mensajes de interesados.</p>
+                <button onclick="App.openAuth('register')" class="bg-accent hover:bg-red-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition-colors">✨ Crear Cuenta</button>
+            </div>
+
+            <div class="show-registered">
+                <h2 class="text-2xl font-heading font-bold text-primary mb-1 flex items-center gap-2">💬 Mensajes</h2>
+                <p class="text-xs text-gray-500 mb-4">Conversaciones con propietarios y con interesados en tus propiedades. Se actualizan solas cada pocos segundos.</p>
+                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden grid grid-cols-1 md:grid-cols-3 h-[600px]">
+                    <!-- Bandeja -->
+                    <div id="chat-inbox" class="md:block border-r border-gray-100 overflow-y-auto">
+                        <ul id="chat-list" class="p-2 space-y-1" aria-label="Conversaciones"></ul>
+                    </div>
+                    <!-- Conversación -->
+                    <div class="md:col-span-2 flex flex-col min-h-0">
+                        <div id="chat-placeholder" class="hidden md:flex flex-1 flex-col items-center justify-center text-center text-gray-400 p-6">
+                            <span class="text-5xl mb-2" aria-hidden="true">📨</span>
+                            <p class="text-xs">Elige una conversación de la izquierda.</p>
+                        </div>
+                        <div id="chat-thread" class="hidden flex-1 flex-col min-h-0">
+                            <div id="chat-thread-header" class="flex items-center gap-3 p-3 border-b border-gray-100"></div>
+                            <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-2 bg-gray-50/50" aria-live="polite"></div>
+                            <form id="chat-form" onsubmit="App.sendChatMessage(event)" class="p-3 border-t border-gray-100 flex items-end gap-2">
+                                <label for="chat-input" class="sr-only">Escribe un mensaje</label>
+                                <textarea id="chat-input" rows="1" maxlength="1000" onkeydown="App.onChatKey(event)" placeholder="Escribe un mensaje… (Enter para enviar)" class="flex-1 resize-none bg-gray-50 border border-gray-200 rounded-2xl px-3 py-2 text-xs outline-none focus:border-secondary max-h-32"></textarea>
+                                <button type="submit" class="bg-primary hover:bg-blue-900 text-white font-bold px-4 py-2 rounded-2xl text-xs transition-colors shrink-0"><i class="fas fa-paper-plane"></i> Enviar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="tab-perfil" class="tab-content">
             <!-- CTA PARA VISITANTES SIN CUENTA -->
             <div class="show-visitor">
@@ -950,6 +991,13 @@
                         <p class="text-[11px] text-gray-500 mb-3">Propiedades que has alquilado o comprado alguna vez.</p>
                         <ul id="profile-history" class="space-y-2 max-h-80 overflow-y-auto pr-1"></ul>
                     </div>
+                </div>
+
+                <!-- MIS FAVORITOS -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
+                    <h3 class="font-heading font-bold text-primary text-base mb-1">❤️ Mis Favoritos (<span id="profile-count-favorites">0</span>)</h3>
+                    <p class="text-[11px] text-gray-500 mb-3">Propiedades que guardaste para ver después.</p>
+                    <ul id="profile-favorites" class="grid grid-cols-1 md:grid-cols-2 gap-1"></ul>
                 </div>
 
                 <!-- GAMIFICATION: BADGES & POINT REDEMPTION CATALOG -->

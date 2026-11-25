@@ -49,9 +49,12 @@ function createApp() {
   // 4) Frontend estático (HTML siempre fresco; CSS/JS/imágenes con caché corta)
   app.use(
     express.static(FRONTEND_DIR, {
+      // HTML, JS y CSS se revalidan siempre (ETag: si no cambiaron responde 304, sin
+      // descargar de nuevo). Así, tras un despliegue nadie mezcla HTML nuevo con JS
+      // viejo de la caché. Imágenes y fuentes sí se guardan una hora.
       setHeaders(res, filePath) {
-        const isHtml = path.extname(filePath) === '.html';
-        res.set('Cache-Control', isHtml ? 'no-cache' : 'public, max-age=3600');
+        const alwaysFresh = ['.html', '.js', '.css'].includes(path.extname(filePath));
+        res.set('Cache-Control', alwaysFresh ? 'no-cache' : 'public, max-age=3600');
       },
     })
   );

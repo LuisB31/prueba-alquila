@@ -93,6 +93,7 @@ function memoize(fn) {
 
 const get = (path, query, key) => request(path, { query, key });
 const post = (path, body) => request(path, { method: 'POST', body: body ?? {} });
+const del = (path) => request(path, { method: 'DELETE' });
 
 /**
  * Catálogo de endpoints. Cada función devuelve una Promesa con el JSON de la respuesta.
@@ -149,4 +150,13 @@ export const api = {
   holdingStats: () => get('/holding/stats', undefined, 'holding-stats'),
   switchHoldingUser: (userId, password) => post('/holding/switch', { userId, password }),
   addHoldingAgent: (data) => post('/holding/agents', data),
+
+  // ---- Favoritos y chat ---------------------------------------------------
+  favorites: () => get('/favorites', undefined, 'favorites'),
+  addFavorite: (propertyId) => post(`/favorites/${propertyId}`),
+  removeFavorite: (propertyId) => del(`/favorites/${propertyId}`),
+  chats: () => get('/chats', undefined, 'chats'),
+  openChat: (propertyId, text) => post('/chats', { propertyId, text }),
+  chatMessages: (id, after) => get(`/chats/${id}`, { after }, 'chat-thread'),
+  sendChatMessage: (id, text) => post(`/chats/${id}/messages`, { text }),
 };

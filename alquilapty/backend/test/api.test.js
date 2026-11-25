@@ -16,10 +16,14 @@ test.before(async () => {
 test.after(() => server.close());
 
 /** Pequeño cliente: devuelve { status, body }. */
-async function call(path, { method = 'GET', body, plan } = {}) {
+async function call(path, { method = 'GET', body, plan, token } = {}) {
   const res = await fetch(base + path, {
     method,
-    headers: { 'Content-Type': 'application/json', ...(plan ? { 'X-Demo-Plan': plan } : {}) },
+    headers: {
+      'Content-Type': 'application/json',
+      ...(plan ? { 'X-Demo-Plan': plan } : {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
     body: body ? JSON.stringify(body) : undefined,
   });
   const text = await res.text();
@@ -480,4 +484,109 @@ test('SEO: robots.txt y sitemap.xml dinámicos', async () => {
   assert.match(robots.text, /Disallow: \/api\//);
   const sitemap = await call('/sitemap.xml');
   assert.match(sitemap.text, /<urlset/);
+});
+
+// ---------------------------------------------------------------------------
+// Favoritos y chat
+// ---------------------------------------------------------------------------
+
+/** Inicia sesión y devuelve el token. */
+async function login(email, password = 'demo1234') {
+  const r = await call('/api/auth/login', { method: 'POST', body: { email, password } });
+  assert.equal(r.status, 200, `login ${email}: ${r.text}`);
+  return r.body.token;
+}
+
+test('favoritos: guardar, listar, marcar en el detalle y quitar', async () => {
+  const token = await login('juan@demo.pa');
+  assert.equal((await call('/api/favorites', { plan: 'visitor' })).status, 403);
+  assert.equal((await call('/api/favorites/9999', { method: 'POST', token })).status, 404);
+
+  assert.equal((await call('/api/favorites/11', { method: 'POST', token })).status, 201);
+  assert.equal((await call('/api/favorites/11', { method: 'POST', token })).status, 200, 'repetir no duplica');
+  await call('/api/favorites/3', { method: 'POST', token });
+
+  const list = (await call('/api/favorites', { token })).body;
+  assert.deepEqual(list.ids, [3, 11], 'más recientes primero');
+  assert.equal(list.items[0].title.length > 0, true);
+  assert.equal((await call('/api/properties/11', { token })).body.favorite, true);
+  assert.equal((await call('/api/properties/11', { plan: 'premium' })).body.favorite, false, 'favoritos de otra cuenta');
+
+  assert.equal((await call('/api/favorites/11', { method: 'DELETE', token })).status, 200);
+  assert.deepEqual((await call('/api/favorites', { token })).body.ids, [3]);
+});
+
+test('chat: un interesado escribe al propietario y se responden', async () => {
+  // Ana (cuenta nueva) escribe a Ricardo (premium demo), dueño de la propiedad 8
+  const reg = await call('/api/auth/register', {
+    method: 'POST', body: { plan: 'free', firstName: 'Ana', lastName: 'Interesada', email: 'ana.chat@prueba.pa', password: 'secreta123' },
+  });
+  const ana = reg.body.token;
+  const ricardo = await login('ricardo@demo.pa');
+  const pointsBefore = reg.body.account.points;
+
+  const detail = (await call('/api/properties/8', { token: ana })).body;
+  assert.equal(detail.chatAvailable, true);
+  assert.equal((await call('/api/properties/8', { token: ricardo })).body.chatAvailable, false, 'el dueño no se escribe a sí mismo');
+  assert.equal((await call('/api/properties/3', { token: ana })).body.chatAvailable, false, 'anuncio de ejemplo sin dueño');
+
+  // Abre el chat con un primer mensaje (+10 puntos la primera vez)
+  const open = await call('/api/chats', { method: 'POST', token: ana, body: { propertyId: 8, text: 'Hola Ricardo, ¿puedo visitarla el sábado?' } });
+  assert.equal(open.status, 201);
+  assert.equal(open.body.points, pointsBefore + 10);
+  const chatId = open.body.conversation.id;
+  assert.equal(open.body.conversation.other.name, 'Ricardo Rodríguez');
+  assert.equal(open.body.messages.length, 1);
+
+  // Abrirlo otra vez reutiliza la conversación y no suma puntos
+  const again = await call('/api/chats', { method: 'POST', token: ana, body: { propertyId: 8 } });
+  assert.equal(again.status, 200);
+  assert.equal(again.body.conversation.id, chatId);
+  assert.equal(again.body.pointsAwarded, 0);
+
+  // Ricardo lo ve como no leído en su bandeja
+  let inbox = (await call('/api/chats', { token: ricardo })).body;
+  assert.equal(inbox.unread, 1);
+  assert.equal(inbox.items[0].role, 'propietario');
+  assert.equal(inbox.items[0].other.name, 'Ana Interesada');
+
+  // Lo abre (queda leído) y responde
+  const thread = (await call(`/api/chats/${chatId}`, { token: ricardo })).body;
+  assert.equal(thread.messages[0].text, 'Hola Ricardo, ¿puedo visitarla el sábado?');
+  assert.equal(thread.messages[0].mine, false);
+  assert.equal((await call('/api/chats', { token: ricardo })).body.unread, 0);
+  const reply = await call(`/api/chats/${chatId}/messages`, { method: 'POST', token: ricardo, body: { text: 'Claro, el sábado a las 10 am.' } });
+  assert.equal(reply.status, 201);
+  assert.equal(reply.body.message.mine, true);
+
+  // Ana recibe la respuesta: no leído en la bandeja y en "after" solo lo nuevo
+  inbox = (await call('/api/chats', { token: ana })).body;
+  assert.equal(inbox.unread, 1);
+  assert.equal(inbox.items[0].lastMessage.text, 'Claro, el sábado a las 10 am.');
+  const firstId = open.body.messages[0].id;
+  const fresh = (await call(`/api/chats/${chatId}?after=${firstId}`, { token: ana })).body.messages;
+  assert.deepEqual(fresh.map((m) => m.text), ['Claro, el sábado a las 10 am.']);
+  assert.equal(fresh[0].mine, false);
+});
+
+test('chat: privacidad y validaciones', async () => {
+  const ana = await login('ana.chat@prueba.pa', 'secreta123');
+  const chatId = (await call('/api/chats', { token: ana })).body.items[0].id;
+
+  // Un tercero (Juan) no puede leer ni escribir en la conversación ajena
+  const juan = await login('juan@demo.pa');
+  assert.equal((await call(`/api/chats/${chatId}`, { token: juan })).status, 404);
+  assert.equal((await call(`/api/chats/${chatId}/messages`, { method: 'POST', token: juan, body: { text: 'hola' } })).status, 404);
+  assert.equal((await call('/api/chats', { token: juan })).body.items.some((c) => c.id === chatId), false);
+
+  // Visitantes, mensajes vacíos o enormes, propiedades sin dueño o propias
+  assert.equal((await call('/api/chats', { plan: 'visitor' })).status, 403);
+  assert.equal((await call(`/api/chats/${chatId}/messages`, { method: 'POST', token: ana, body: { text: '   ' } })).status, 400);
+  assert.equal((await call(`/api/chats/${chatId}/messages`, { method: 'POST', token: ana, body: { text: 'x'.repeat(1001) } })).status, 400);
+  assert.equal((await call('/api/chats', { method: 'POST', token: ana, body: { propertyId: 3 } })).status, 409);
+  assert.equal((await call('/api/chats', { method: 'POST', token: juan, body: { propertyId: 4 } })).status, 400, 'la 4 es de Juan');
+
+  // El texto se guarda tal cual (el frontend lo escapa al pintarlo)
+  const xss = await call(`/api/chats/${chatId}/messages`, { method: 'POST', token: ana, body: { text: '<img src=x onerror=alert(1)>' } });
+  assert.equal(xss.body.message.text, '<img src=x onerror=alert(1)>');
 });

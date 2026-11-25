@@ -22,6 +22,8 @@ export const state = {
   account: null,
   /** Saldo de puntos del usuario actual (lo dicta el backend). */
   points: 0,
+  /** Ids de las propiedades favoritas del usuario actual. */
+  favorites: new Set(),
   /** Ids de propiedades en cola para el comparador (máx. 3). */
   compareQueue: [],
 };

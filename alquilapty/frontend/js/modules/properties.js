@@ -12,7 +12,8 @@ import { state, emit } from '../core/state.js';
 import { notify, openModal, closeModal, showLoading, showError } from '../core/ui.js';
 import { setListingSchema, setPageMeta } from './seo.js';
 import { restoreTabMeta, getCurrentTab } from './navigation.js';
-import { setPoints, requireAccount } from './plans.js';
+import { requireAccount } from './plans.js';
+import { favoriteButton } from './social.js';
 
 /** Tipo de operación elegido en los botones Alquilar / Comprar / Todos
  *  (debe coincidir con el botón resaltado de inicio en index.html: "Todos"). */
@@ -82,6 +83,7 @@ const propertyCard = (p, index) => html`
         <span class="absolute top-3 left-3 bg-primary/90 backdrop-blur text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">${p.txType}</span>
         ${p.auction ? auctionBadge('top-3 right-3') : ''}
         <div class="absolute bottom-3 left-3 bg-white/95 backdrop-blur px-3 py-1 rounded-full text-xs font-extrabold text-primary shadow">${priceLabel(p)}</div>
+        ${favoriteButton(p.id, 'absolute bottom-3 right-3 z-10')}
       </div>
 
       <div class="p-4 space-y-2">
@@ -231,7 +233,10 @@ function detailTemplate(p, destinations) {
         <h2 class="text-xl font-heading font-bold text-gray-800">${p.title}</h2>
         <p class="text-gray-500"><i class="fas fa-map-marker-alt text-accent" aria-hidden="true"></i> ${p.zone}, Ciudad de Panamá</p>
       </div>
-      <div class="text-right shrink-0 pl-3"><span class="text-2xl font-extrabold text-primary block">${priceLabel(p)}</span></div>
+      <div class="text-right shrink-0 pl-3 flex items-center gap-2">
+        <span class="text-2xl font-extrabold text-primary block">${priceLabel(p)}</span>
+        ${favoriteButton(p.id, 'border border-gray-200')}
+      </div>
     </div>
 
     <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 bg-gray-50 p-3 rounded-xl text-center font-semibold">
@@ -259,7 +264,7 @@ function detailTemplate(p, destinations) {
           <div class="text-gold font-bold">⭐ ${p.ownerRating} <span class="text-gray-400 font-normal">(${p.reviewsCount})</span></div>
         </div>
       </div>
-      <button type="button" onclick="App.contactOwner(${p.id})" class="bg-secondary text-primary font-bold px-3 py-2 rounded-xl hover:bg-teal-400 transition-colors shrink-0">💬 Contactar</button>
+      ${contactButton(p, 'px-3 py-2 shrink-0', '💬 Contactar')}
     </div>
 
     <div>
@@ -302,11 +307,26 @@ function detailTemplate(p, destinations) {
     <div class="flex flex-wrap gap-2 pt-2 border-t border-gray-100">
       <button type="button" onclick="App.askAIAboutProperty(${p.id})" class="flex-1 bg-primary text-white font-bold py-2.5 rounded-xl hover:bg-blue-900 transition-colors min-w-[120px]">🤖 Preguntar a la IA</button>
       <button type="button" onclick="App.addPropertyToCompare(${p.id})" class="flex-1 bg-indigo-100 text-indigo-700 font-bold py-2.5 rounded-xl hover:bg-indigo-200 transition-colors min-w-[100px]">⚖️ Comparar</button>
-      <button type="button" onclick="App.contactOwner(${p.id})" class="flex-1 bg-secondary text-primary font-bold py-2.5 rounded-xl hover:bg-teal-400 transition-colors min-w-[120px]">💬 Contactar Propietario</button>
+      ${contactButton(p, 'flex-1 py-2.5 min-w-[120px]', '💬 Chatear con el propietario')}
       ${p.auction && !p.sold ? html`<button type="button" onclick="App.openOfferFromDetail(${p.id})" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 rounded-xl transition-colors">💰 Hacer Oferta en Subasta</button>` : ''}
       ${acquireButton(p)}
     </div>
   </div>`;
+}
+
+/**
+ * Botón de chat con el propietario. Las propiedades de ejemplo sin dueño
+ * registrado no tienen chat; las propias tampoco (te escriben a ti).
+ */
+function contactButton(p, extra, label) {
+  const base = `${extra} font-bold rounded-xl transition-colors`;
+  if (p.ownerUserId && p.ownerUserId === state.account?.id) {
+    return html`<button type="button" onclick="App.openTab('mensajes'); App.closeModal('modal-property')" class="${base} bg-gray-100 text-gray-600 hover:bg-gray-200">📥 Ver mensajes de interesados</button>`;
+  }
+  if (!p.chatAvailable) {
+    return html`<button type="button" disabled title="Anuncio de ejemplo sin propietario registrado" class="${base} bg-gray-100 text-gray-400 cursor-not-allowed">💬 Chat no disponible</button>`;
+  }
+  return html`<button type="button" onclick="App.contactOwner(${p.id})" class="${base} bg-secondary text-primary hover:bg-teal-400">${label}</button>`;
 }
 
 /** Botón "Alquilar / Comprar" (simulado): queda en el historial del perfil. */
@@ -390,21 +410,6 @@ export async function updateModalCommute() {
     output.textContent = `${r.icon} Tiempo est: ~${r.minutes} min ${r.mode} ($${r.cost}/día)`;
   } catch (error) {
     output.textContent = error.message;
-  }
-}
-
-/** Contacta al publicador: el backend suma los puntos. */
-export async function contactOwner(id) {
-  if (!requireAccount('contactar al propietario')) {
-    closeModal('modal-property');
-    return;
-  }
-  try {
-    const result = await api.contactOwner(id);
-    setPoints(result.points);
-    notify(result.message, 'success');
-  } catch (error) {
-    notify(error.message, 'error');
   }
 }
 

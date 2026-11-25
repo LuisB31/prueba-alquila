@@ -71,6 +71,20 @@ const TABLES = {
     id          INTEGER PRIMARY KEY,
     data        JSONB NOT NULL
   )`,
+  favorites: `(
+    id          TEXT PRIMARY KEY,
+    user_id     INTEGER NOT NULL,
+    property_id INTEGER NOT NULL,
+    created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+  )`,
+  conversations: `(
+    id          INTEGER PRIMARY KEY,
+    data        JSONB NOT NULL
+  )`,
+  chat_messages: `(
+    id          INTEGER PRIMARY KEY,
+    data        JSONB NOT NULL
+  )`,
 };
 
 async function migrate() {
@@ -123,7 +137,7 @@ function mergeById(list, records) {
 }
 
 async function load(store) {
-  const [props, offers, messages, profiles, users, companies, sessions, transactions] = await Promise.all([
+  const [props, offers, messages, profiles, users, companies, sessions, transactions, favorites, conversations, chatMessages] = await Promise.all([
     pool.query('SELECT id, data FROM published_properties ORDER BY id'),
     pool.query('SELECT * FROM offers ORDER BY id'),
     pool.query('SELECT * FROM roommate_messages ORDER BY id'),
@@ -132,7 +146,16 @@ async function load(store) {
     pool.query('SELECT id, data FROM companies ORDER BY id'),
     pool.query('SELECT token, user_id FROM sessions'),
     pool.query('SELECT id, data FROM transactions ORDER BY id'),
+    pool.query('SELECT id, user_id, property_id, created_at FROM favorites ORDER BY created_at, id'),
+    pool.query('SELECT id, data FROM conversations ORDER BY id'),
+    pool.query('SELECT id, data FROM chat_messages ORDER BY id'),
   ]);
+
+  store.favorites = favorites.rows.map((r) => ({
+    id: r.id, userId: r.user_id, propertyId: r.property_id, createdAt: new Date(r.created_at).toISOString(),
+  }));
+  store.conversations = conversations.rows.map((r) => ({ ...r.data, id: r.id }));
+  store.chatMessages = chatMessages.rows.map((r) => ({ ...r.data, id: r.id }));
 
   mergeById(store.users, users.rows.map((r) => ({ ...r.data, id: r.id })));
   mergeById(store.companies, companies.rows.map((r) => ({ ...r.data, id: r.id })));
@@ -237,6 +260,32 @@ function saveTransaction(tx) {
   return query('INSERT INTO transactions (id, data) VALUES ($1, $2)', [id, data]);
 }
 
+function saveFavorite(fav) {
+  return query(
+    'INSERT INTO favorites (id, user_id, property_id, created_at) VALUES ($1, $2, $3, $4) ON CONFLICT (id) DO NOTHING',
+    [fav.id, fav.userId, fav.propertyId, fav.createdAt]
+  );
+}
+
+function deleteFavorite(userId, propertyId) {
+  return query('DELETE FROM favorites WHERE id = $1', [`${userId}:${propertyId}`]);
+}
+
+/** Guarda una conversación (nueva o actualizada: último mensaje, lecturas). */
+function saveConversation(conversation) {
+  const { id, ...data } = conversation;
+  return query(
+    `INSERT INTO conversations (id, data) VALUES ($1, $2)
+     ON CONFLICT (id) DO UPDATE SET data = EXCLUDED.data`,
+    [id, data]
+  );
+}
+
+function saveChatMessage(message) {
+  const { id, ...data } = message;
+  return query('INSERT INTO chat_messages (id, data) VALUES ($1, $2)', [id, data]);
+}
+
 async function close() {
   if (pool) await pool.end();
   pool = null;
@@ -246,4 +295,5 @@ module.exports = {
   init, enabled, close,
   saveProperty, saveOffer, saveMessage, saveRoommateProfile,
   saveUser, saveCompany, saveSession, deleteSession, saveTransaction,
+  saveFavorite, deleteFavorite, saveConversation, saveChatMessage,
 };

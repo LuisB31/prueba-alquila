@@ -40,6 +40,11 @@ const store = {
 
   // Registros generados durante la sesión (simulan tablas)
   offers: [],
+  /** Favoritos: { id "usuario:propiedad", userId, propertyId, createdAt } */
+  favorites: [],
+  /** Chat: conversaciones { id, propertyId, buyerId, ownerId, lastMessageAt, lastRead } y sus mensajes */
+  conversations: [],
+  chatMessages: [],
   messages: [],
   roommateProfiles: [],
 

@@ -121,3 +121,31 @@ test('los datos de los usuarios sobreviven a un reinicio', async () => {
   assert.equal(count('companies'), 1);
   assert.equal(count('transactions'), 2);
 });
+
+test('favoritos y chat sobreviven a un reinicio', async () => {
+  let app = await boot();
+  const reg = await app.call('/api/auth/register', {
+    method: 'POST', body: { plan: 'free', firstName: 'Luz', lastName: 'Chat', email: 'luz@chat.pa', password: 'secreta123' },
+  });
+  const luz = reg.body.token;
+  const ricardo = (await app.call('/api/auth/login', { method: 'POST', body: { email: 'ricardo@demo.pa', password: 'demo1234' } })).body.token;
+
+  assert.equal((await app.call('/api/favorites/9', { method: 'POST', token: luz })).status, 201);
+  const open = await app.call('/api/chats', { method: 'POST', token: luz, body: { propertyId: 9, text: '¿Aceptan mascotas?' } });
+  const chatId = open.body.conversation.id;
+  await app.call(`/api/chats/${chatId}/messages`, { method: 'POST', token: ricardo, body: { text: 'Sí, perros pequeños.' } });
+  await app.stop();
+
+  app = await boot();
+  assert.deepEqual((await app.call('/api/favorites', { token: luz })).body.ids, [9]);
+  const inbox = (await app.call('/api/chats', { token: luz })).body;
+  assert.equal(inbox.unread, 1, 'el no leído también persiste');
+  const thread = (await app.call(`/api/chats/${chatId}`, { token: luz })).body;
+  assert.deepEqual(thread.messages.map((m) => m.text), ['¿Aceptan mascotas?', 'Sí, perros pequeños.']);
+
+  // Los ids siguen sin chocar tras el reinicio
+  const next = await app.call(`/api/chats/${chatId}/messages`, { method: 'POST', token: luz, body: { text: 'Perfecto, gracias.' } });
+  assert.equal(next.status, 201);
+  assert.ok(next.body.message.id > thread.messages[1].id);
+  await app.stop();
+});

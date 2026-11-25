@@ -88,6 +88,12 @@ body[data-plan="free"] .show-registered,
 body[data-plan="premium"] .show-registered,
 body[data-plan="holding"] .show-registered { display: block; }
 
+/* Igual, pero para elementos que se muestran como flex (p. ej. el botón "Mensajes" del menú) */
+.show-registered-flex { display: none; }
+body[data-plan="free"] .show-registered-flex,
+body[data-plan="premium"] .show-registered-flex,
+body[data-plan="holding"] .show-registered-flex { display: flex; }
+
 /* Publicidad: solo para usuarios Free y visitantes.
    Usa un contenedor SIN clases de display propias; el diseño interno va en un hijo. */
 .ad-container { display: none; }

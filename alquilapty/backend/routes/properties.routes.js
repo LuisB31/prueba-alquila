@@ -48,7 +48,14 @@ router.get('/nearby', (req, res) => {
 
 /** GET /api/properties/:id */
 router.get('/:id', (req, res) => {
-  res.json(properties.toDetail(properties.findById(requireId(req.params.id))));
+  const property = properties.findById(requireId(req.params.id));
+  const social = require('../services/social.service');
+  res.json({
+    ...properties.toDetail(property),
+    favorite: req.user ? social.isFavorite(req.user, property.id) : false,
+    // Solo hay chat si la publicó un usuario de la plataforma y no es el propio visitante
+    chatAvailable: Boolean(property.ownerUserId) && property.ownerUserId !== req.user?.id,
+  });
 });
 
 /** GET /api/properties/:id/commute?dest=Centro Financiero */

@@ -30,5 +30,6 @@ router.use('/map', require('./map.routes'));
 router.use('/assistant', require('./assistant.routes'));
 router.use('/', require('./analysis.routes'));   // /investments y /comparison
 router.use('/', require('./account.routes'));    // /accounts, /holding, /rewards
+router.use('/', require('./social.routes'));     // /favorites, /chats
 
 module.exports = router;

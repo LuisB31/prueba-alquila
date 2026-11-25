@@ -46,6 +46,10 @@ export const TABS = {
     title: 'Publica tu propiedad | AlquilaPTY',
     description: 'Publica tu inmueble en alquiler o venta y, si quieres, actívalo como subasta inversa.',
   },
+  mensajes: {
+    title: 'Mensajes | AlquilaPTY',
+    description: 'Conversa con propietarios e interesados de las propiedades de AlquilaPTY.',
+  },
   perfil: {
     title: 'Mi perfil, puntos y planes | AlquilaPTY',
     description: 'Gestiona tu cuenta, canjea puntos y elige el plan de AlquilaPTY que mejor se adapte a ti.',

@@ -27,6 +27,7 @@ import * as holding from './modules/holding.js';
 import * as publish from './modules/publish.js';
 import * as auth from './modules/auth.js';
 import * as profile from './modules/profile.js';
+import * as social from './modules/social.js';
 
 // ---------------------------------------------------------------------------
 // 1) API pública para el HTML
@@ -45,6 +46,13 @@ window.App = {
   ...holding,
   ...publish,
   ...auth,
+  // favoritos y chat ("Contactar" abre el chat con el propietario)
+  toggleFavorite: social.toggleFavorite,
+  contactOwner: social.contactOwner,
+  selectChat: social.selectChat,
+  closeChatThread: social.closeChatThread,
+  sendChatMessage: social.sendChatMessage,
+  onChatKey: social.onChatKey,
   changePlan: plans.changePlan,
   choosePlan: plans.choosePlan,
   redeemPoints: plans.redeemPoints,
@@ -64,11 +72,16 @@ on('tab:change', ({ tab }) => {
   if (tab === 'perfil') {
     profile.loadActivity();
     holding.loadHolding();
+    social.loadFavorites();
   }
+  if (tab === 'mensajes') social.openMessagesTab();
+  else social.leaveMessagesTab();
 });
 
 // Cambió el plan o la cuenta: el listado cambia (anuncios) y el perfil/panel recargan sus datos
-on('plan:change', () => {
+on('plan:change', async () => {
+  social.resetForAccount();
+  await social.loadFavorites(); // antes del listado, para pintar los corazones
   properties.refreshFeed();
   if (navigation.getCurrentTab() === 'perfil') profile.loadActivity();
   holding.loadHolding();
@@ -143,9 +156,11 @@ route();                            // pestaña inicial según la URL
 properties.renderTopNeighborhoods();
 // Si hay una sesión guardada entra con esa cuenta (eso ya carga perfil y listado);
 // si no, usa el simulador de planes.
-auth.restoreSession().then((restored) => {
+auth.restoreSession().then(async (restored) => {
+  social.startInboxPolling();       // contador de mensajes no leídos
   if (restored) return;
   plans.loadProfile();              // nombre, avatar y puntos desde la API
+  await social.loadFavorites();     // corazones del listado
   properties.refreshFeed();         // listado inicial
   if (navigation.getCurrentTab() === 'perfil') profile.loadActivity();
 });
